@@ -1,0 +1,98 @@
+# Home data
+- hero_title:
+    - type: string
+    - required: true
+- hero_subtitle:
+    - type: string
+    - required: true
+- hero_description:
+    - type: string
+    - required: true
+
+# Experience
+- company_name: 
+    - type: string
+    - required: true
+- position:
+    - type: string
+    - required: true
+- short_description:
+    - type: string
+    - required: false
+- tags:
+    - type: list
+    - items:
+        - type: string
+    - required: false
+- start_date:
+    - type: string
+    - required: false
+z
+# Projects
+- name: 
+    - type: string
+    - required: true
+- type:
+    - type: string
+    - required: true
+- description:
+    - type: string
+    - required: true
+- images:
+    - type: list
+    - items:
+        - type: string
+    - required: false
+- colaborators:
+    - type: list
+    - items:
+        - type: object
+            - name:
+                - type: string
+                - required: false
+            - contact:
+                - type: url
+                - required: true
+    - required: false
+- technologies:
+    - type: list
+    - items:
+        - type: string
+    - required: true
+- demo:
+    - type: url
+    - required: false
+- repository:
+    - type: url
+    - required: true
+
+# Skills
+- name:
+    - type: string
+    - required: true
+- icon:
+    - type: string
+    - required: true
+- category:
+    - type: string
+    - required: true
+    - options: ["Backend & Architechure", "DevOps & Cloud", "Frontend", "DevTool", "Databases", "AI & Automations"]
+- projects:
+    - type: list
+    - items:
+        - type: string
+    - required: false
+
+# About me data
+- title:
+    - type: string
+    - required: true
+- text:
+    - type: list
+    - items:
+        - type: string
+    - required: true
+- photo:
+    - type: string
+    - required: true
+    
