@@ -1,0 +1,41 @@
+---
+interface Props {
+  id?: string;
+  ariaLabel: string;
+  onclick?: string;
+  icon: string;
+  activeIcon?: string;
+  lightModeIconColor?: string;
+  darkModeIconColor?: string;
+  defaultIconColor?: string;
+  class?: string;
+}
+
+const {
+  id,
+  ariaLabel,
+  onclick,
+  icon,
+  activeIcon,
+  lightModeIconColor = 'text-secondary',
+  darkModeIconColor = 'text-secondary',
+  defaultIconColor = 'text-secondary',
+  class: className = ''
+} = Astro.props;
+---
+
+<button
+  id={id}
+  aria-label={ariaLabel}
+  onclick={onclick}
+  class={`p-3.5 rounded-2xl bg-elevated border border-border hover:bg-border focus:outline-none ${className}`}
+>
+  {activeIcon ? (
+    <>
+      <span class={`${icon} ${lightModeIconColor} text-2xl dark:hidden block`} aria-hidden="true"></span>
+      <span class={`${activeIcon} ${darkModeIconColor} text-2xl hidden dark:block`} aria-hidden="true"></span>
+    </>
+  ) : (
+    <span class={`${icon} ${defaultIconColor} text-2xl block`} aria-hidden="true"></span>
+  )}
+</button>

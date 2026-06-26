@@ -69,8 +69,8 @@ typography:
 
 radii:
   radius-sm: "8px"    # Minor controls, theme switchers, status badges
-  radius-md: "12px"   # Standard buttons, contextual micro-imagery
-  radius-lg: "16px"   # Core structural layout units, parent containers
+  radius-md: "16px"   # Standard buttons, contextual micro-imagery
+  radius-lg: "32px"   # Core structural layout units, parent containers, bento cards
 
 icons:
   library: "Google Material Icons"
@@ -107,8 +107,8 @@ The palette uses explicit nomenclature (`brand-dominant` and `brand-action`) to 
 ## Corner Radii Standards
 
 - **`radius-sm` (8px):** Applied to minor utilities and floating global controls.
-- **`radius-md` (12px):** Applied to high-priority buttons and embedded image contexts (e.g., About section portrait).
-- **`radius-lg` (16px):** Core structural units, Project preview cards, and Bento modules.
+- **`radius-md` (16px):** Applied to high-priority buttons and embedded image contexts (e.g., About section portrait).
+- **`radius-lg` (32px):** Core structural units, Project preview cards, Bento modules, and elevated surfaces.
 
 ## Z-Axis Orchestration (Layer Stack)
 

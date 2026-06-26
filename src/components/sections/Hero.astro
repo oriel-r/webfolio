@@ -1,0 +1,50 @@
+---
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getEntry } from 'astro:content';
+import Button from '../ui/Button.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const heroEntry = await getEntry('hero', 'index');
+const hero = heroEntry.data[lang] || heroEntry.data['es'];
+---
+
+<section id="hero" class="w-full md:min-w-[100vw] min-h-screen flex flex-col md:flex-row items-center justify-center shrink-0 snap-start px-8 md:px-24">
+  <div class="flex flex-col md:flex-row items-center justify-between w-full max-w-7xl mx-auto gap-12">
+
+    <!-- Text Content -->
+    <div class="space-y-6 md:w-1/2">
+      <div>
+        <h2 class="text-accent font-medium">
+          {hero.title}
+        </h2>
+      </div>
+
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-primary leading-[1.1] font-display">
+        {hero.subtitle}
+      </h1>
+
+      <p class="text-base text-secondary max-w-lg leading-relaxed mt-8">
+        {hero.description}
+      </p>
+
+      <p class="text-sm text-muted mt-2">
+        {t('hero.cta')}
+      </p>
+    </div>
+
+    <!-- Illustration Placeholder -->
+    <div class="md:w-1/2 flex justify-center md:justify-end">
+      <div class="w-full max-w-md aspect-[4/3] rounded-2xl flex items-center justify-center">
+        <div class="text-center text-muted">
+          <p class="text-xs mb-2">[Capybara Illustration Space]</p>
+          <div class="w-64 h-48 bg-elevated rounded-lg shadow-inner flex items-center justify-center border-2 border-dashed border-border">
+             <span class="text-sm">img</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

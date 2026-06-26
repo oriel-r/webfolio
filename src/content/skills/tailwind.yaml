@@ -1,0 +1,5 @@
+name: "Tailwind"
+icon: "tailwind"
+category: "Frontend"
+projects:
+  - "webfolio"

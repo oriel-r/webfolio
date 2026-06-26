@@ -1,0 +1,6 @@
+name: "React"
+icon: "react"
+category: "Frontend"
+projects:
+  - "gf-instalaciones"
+  - "webfolio"

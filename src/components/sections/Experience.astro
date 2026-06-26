@@ -1,0 +1,82 @@
+---
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getCollection } from 'astro:content';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const experienceEntries = await getCollection('experience');
+const experience = experienceEntries
+  .map((entry) => ({
+    id: entry.id,
+    ...entry.data[lang] || entry.data['es'],
+  }))
+  .sort((a, b) => {
+    const dateOrder: Record<string, number> = {
+      'Enero 2025': 1, 'January 2025': 1,
+      'Junio 2025': 2, 'June 2025': 2,
+      'Abril 2026': 3, 'April 2026': 3,
+    };
+    return (dateOrder[a.start_date ?? ''] ?? 0) - (dateOrder[b.start_date ?? ''] ?? 0);
+  });
+---
+
+<section id="experience" class="w-full md:min-w-[100vw] min-h-screen flex items-center justify-center shrink-0 snap-start px-8">
+  <div class="relative w-full max-w-5xl mx-auto h-[500px] flex items-center">
+    <!-- The horizontal line -->
+    <div class="absolute left-0 right-0 h-0.5 bg-brand-dominant-300 dark:bg-brand-dominant-700/50 z-0"></div>
+
+    <!-- Timeline container -->
+    <div class="relative z-10 w-full flex justify-between items-center px-12 md:px-24">
+
+      {experience.map((exp, i) => (
+        <div class="relative flex justify-center">
+          {i % 2 === 0 ? (
+            <>
+              <!-- Text above -->
+              <span class="absolute bottom-4 text-sm font-medium text-secondary whitespace-nowrap mb-2">{exp.start_date}</span>
+              <!-- Dot -->
+              <div class="w-2.5 h-2.5 bg-accent rounded-full ring-4 ring-canvas"></div>
+              <!-- Card below -->
+              <div class="absolute top-6 mt-4 w-48 md:w-56 h-36 md:h-40 bg-brand-dominant-200 dark:bg-brand-dominant-800/60 rounded-xl shadow-sm border border-brand-dominant-100 dark:border-brand-dominant-700/40 p-4 flex flex-col justify-between">
+                <div>
+                  <p class="text-xs text-accent font-medium">{exp.position}</p>
+                  <p class="text-sm font-semibold text-brand-dominant-800 dark:text-brand-dominant-100 mt-1">{exp.company_name}</p>
+                </div>
+                {exp.tags && (
+                  <div class="flex flex-wrap gap-1 mt-auto">
+                    {exp.tags.slice(0, 3).map((tag: string) => (
+                      <span class="text-[10px] px-1.5 py-0.5 bg-white/50 dark:bg-black/20 rounded-full text-brand-dominant-700 dark:text-brand-dominant-200 font-code">{tag}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <!-- Card above -->
+              <div class="absolute bottom-6 mb-4 w-48 md:w-56 h-36 md:h-40 bg-brand-dominant-200 dark:bg-brand-dominant-800/60 rounded-xl shadow-sm border border-brand-dominant-100 dark:border-brand-dominant-700/40 p-4 flex flex-col justify-between">
+                <div>
+                  <p class="text-xs text-accent font-medium">{exp.position}</p>
+                  <p class="text-sm font-semibold text-brand-dominant-800 dark:text-brand-dominant-100 mt-1">{exp.company_name}</p>
+                </div>
+                {exp.tags && (
+                  <div class="flex flex-wrap gap-1 mt-auto">
+                    {exp.tags.slice(0, 3).map((tag: string) => (
+                      <span class="text-[10px] px-1.5 py-0.5 bg-white/50 dark:bg-black/20 rounded-full text-brand-dominant-700 dark:text-brand-dominant-200 font-code">{tag}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <!-- Dot -->
+              <div class="w-2.5 h-2.5 bg-accent rounded-full ring-4 ring-canvas"></div>
+              <!-- Text below -->
+              <span class="absolute top-4 text-sm font-medium text-secondary whitespace-nowrap mt-2">{exp.start_date}</span>
+            </>
+          )}
+        </div>
+      ))}
+
+    </div>
+  </div>
+</section>

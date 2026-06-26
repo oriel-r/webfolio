@@ -1,0 +1,21 @@
+---
+interface Props {
+  class?: string;
+  variant?: 'default' | 'outline';
+}
+
+const { class: className = '', variant = 'default', ...rest } = Astro.props;
+
+const baseStyles = 'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
+
+const variants = {
+  default: 'bg-elevated text-primary hover:bg-border',
+  outline: 'text-primary border border-border',
+};
+
+const classes = [baseStyles, variants[variant], className].filter(Boolean).join(' ');
+---
+
+<div class={classes} {...rest}>
+  <slot />
+</div>

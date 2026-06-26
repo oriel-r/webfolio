@@ -1,0 +1,71 @@
+---
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const columns = [
+  {
+    grow: 'lg:flex-[2] md:flex-[2]',
+    cards: [
+      { title: t('technologies.backend'), skills: ['Node.js', 'NestJS', 'Go', 'Python', 'Express', 'FastAPI'], cardGrow: 'flex-1', tagSize: 'lg', titleSize: 'lg' }
+    ]
+  },
+  {
+    grow: 'lg:flex-[1.5] md:flex-[1.5]',
+    cards: [
+      { title: t('technologies.devops'), skills: ['Docker', 'AWS', 'Linux', 'CI/CD', 'Nginx'], cardGrow: 'flex-[2]', tagSize: 'sm', titleSize: 'md' },
+      { title: t('technologies.ai'), skills: ['ChatGPT', 'Claude', 'Cursor', 'Copilot'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
+    ]
+  },
+  {
+    grow: 'lg:flex-[1] md:flex-[1]',
+    cards: [
+      { title: t('technologies.frontend'), skills: ['React', 'Next.js', 'Astro', 'Tailwind', 'TypeScript'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' },
+      { title: t('technologies.databases'), skills: ['PostgreSQL', 'MongoDB', 'Redis', 'MySQL', 'Prisma'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
+    ]
+  }
+];
+---
+
+<section id="technologies" class="w-full md:min-w-[100vw] min-h-screen flex items-start justify-center shrink-0 snap-start px-8 md:px-24 pt-24 pb-28">
+  <div class="flex flex-col lg:flex-row items-stretch w-full max-w-[1664px] mx-auto h-full gap-8 md:gap-6 lg:gap-8 md:min-h-[400px] lg:aspect-[1664/760]">
+    {columns.map((col) => (
+      <div class:list={[
+        'flex min-w-0',
+        'flex-col gap-6',
+        'md:flex-row md:gap-6',
+        'lg:flex-col lg:gap-8',
+        col.grow
+      ]}>
+        {col.cards.map((card) => (
+          <div class:list={[
+            'flex flex-col p-6 rounded-[32px] bg-elevated border border-border min-w-0',
+            card.cardGrow
+          ]}>
+            <h3 class:list={[
+              'font-semibold text-primary font-display',
+                  card.titleSize === 'lg'
+                    ? 'text-xl md:text-5xl lg:text-6xl mb-6 md:mb-8'
+                    : card.titleSize === 'md'
+                      ? 'text-xl md:text-4xl mb-4'
+                      : 'text-xl md:text-2xl mb-4'
+            ]}>{card.title}</h3>
+            <div class="flex flex-wrap gap-2">
+              {card.skills.map(skill => (
+                <span class:list={[
+                  'font-medium rounded-full bg-surface/50 text-primary border border-border-subtle font-code',
+                  card.tagSize === 'lg'
+                    ? 'px-4 py-2 text-base md:px-5 md:py-2.5 md:text-lg'
+                    : 'px-3.5 py-1.5 text-sm md:px-4 md:py-2 md:text-base'
+                ]}>
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+</section>

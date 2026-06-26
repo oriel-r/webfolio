@@ -1,0 +1,16 @@
+---
+interface Props {
+  class?: string;
+  as?: string;
+}
+
+const { class: className = '', as: Element = 'div', ...rest } = Astro.props;
+
+const baseStyles = 'rounded-[32px] border border-border bg-surface shadow-sm transition-all hover:shadow-md';
+
+const classes = [baseStyles, className].filter(Boolean).join(' ');
+---
+
+<Element class={classes} {...rest}>
+  <slot />
+</Element>

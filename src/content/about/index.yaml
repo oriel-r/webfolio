@@ -1,0 +1,11 @@
+photo: "/images/profile.jpg"
+es:
+  title: "Mi porque"
+  text:
+    - "Creo firmemente en la práctica deliberada como el mejor camino para dominar una habilidad."
+    - "Esta colección de proyectos es mi forma de resolver desafíos concretos y aplicar esos conocimientos."
+en:
+  title: "About me"
+  text:
+    - "I firmly believe in deliberate practice as the best way to master a skill."
+    - "This collection of projects is my way of solving concrete challenges and applying that knowledge."

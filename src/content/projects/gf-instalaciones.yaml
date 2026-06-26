@@ -1,0 +1,30 @@
+es:
+  name: "GF Instalaciones"
+  type: "WebApp"
+  description: "Plataforma web para la gestión y seguimiento de servicios de instalaciones eléctricas y sanitarias."
+  images:
+    - "/images/projects/gf-instalaciones-hero.png"
+  colaborators:
+    - name: "GF Instalaciones"
+      contact: "https://gfinstalaciones.com"
+  technologies:
+    - "Node.js"
+    - "React"
+    - "PostgreSQL"
+    - "Docker"
+  repository: "https://github.com/orielromero/gf-instalaciones"
+en:
+  name: "GF Instalaciones"
+  type: "WebApp"
+  description: "Web platform for managing and tracking electrical and sanitary installation services."
+  images:
+    - "/images/projects/gf-instalaciones-hero.png"
+  colaborators:
+    - name: "GF Instalaciones"
+      contact: "https://gfinstalaciones.com"
+  technologies:
+    - "Node.js"
+    - "React"
+    - "PostgreSQL"
+    - "Docker"
+  repository: "https://github.com/orielromero/gf-instalaciones"

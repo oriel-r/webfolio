@@ -1,0 +1,6 @@
+name: "TypeScript"
+icon: "typescript"
+category: "DevTool"
+projects:
+  - "webfolio"
+  - "gf-instalaciones"

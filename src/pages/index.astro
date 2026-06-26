@@ -1,14 +1,118 @@
 ---
-import Layout from '../layouts/Layout.astro'
-import { getLangFromUrl, useTranslations } from '../i18n/utils'
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/layout/Navbar.astro";
+import UxControls from "../components/ui/UxControls.astro";
+import Hero from "../components/sections/Hero.astro";
+import Experience from "../components/sections/Experience.astro";
+import Projects from "../components/sections/Projects.astro";
+import Technologies from "../components/sections/Technologies.astro";
+import About from "../components/sections/About.astro";
+import Contact from "../components/sections/Contact.astro";
 
-const lang = getLangFromUrl(Astro.url)
-const t = useTranslations(lang)
+// UI Components for the demo showcase
+import Button from "../components/ui/Button.astro";
+import Tag from "../components/ui/Tag.astro";
+import Card from "../components/ui/Card.astro";
+import ProjectCard from "../components/ui/ProjectCard.astro";
 ---
+
 <Layout>
-	<main>
-		<p>{t('hero.name')} - {t('hero.subtitle')}</p>
-		<h1>{t('hero.title')}</h1>
-		<p>{t('hero.description')}</p>
+	<Navbar />
+	<UxControls />
+	<main
+		id="scroll-container"
+		class="flex flex-col md:flex-row w-full h-auto md:h-screen overflow-x-hidden md:overflow-x-scroll md:overflow-y-hidden snap-y md:snap-x snap-mandatory transition-colors duration-300"
+	>
+		<!-- The Actual Webfolio Sections -->
+		<Hero />
+		<Experience />
+		<Projects />
+		<About />
+		<Technologies />
+		<Contact />
 	</main>
 </Layout>
+
+<script>
+	function initScroll() {
+		const scrollContainer = document.getElementById("scroll-container");
+		if (!scrollContainer) return;
+
+		const sections = Array.from(
+			scrollContainer.querySelectorAll<HTMLElement>("section"),
+		);
+		let currentIndex = 0;
+		let isScrolling = false;
+
+		function scrollToSection(index: number) {
+			if (index < 0 || index >= sections.length || isScrolling) return;
+			currentIndex = index;
+			isScrolling = true;
+			sections[index].scrollIntoView({
+				behavior: "smooth",
+				inline: "start",
+				block: "nearest",
+			});
+			setTimeout(() => {
+				isScrolling = false;
+			}, 800);
+		}
+
+		// Wheel → snap to next/prev section on desktop
+		scrollContainer.addEventListener(
+			"wheel",
+			(evt) => {
+				if (window.innerWidth >= 768) {
+					evt.preventDefault();
+					if (evt.deltaY > 0) {
+						scrollToSection(
+							Math.min(currentIndex + 1, sections.length - 1),
+						);
+					} else if (evt.deltaY < 0) {
+						scrollToSection(Math.max(currentIndex - 1, 0));
+					}
+				}
+			},
+			{ passive: false },
+		);
+
+		// Keyboard navigation (arrow keys)
+		document.addEventListener("keydown", (evt) => {
+			if (window.innerWidth < 768) return;
+			if (evt.key === "ArrowRight") {
+				evt.preventDefault();
+				scrollToSection(
+					Math.min(currentIndex + 1, sections.length - 1),
+				);
+			} else if (evt.key === "ArrowLeft") {
+				evt.preventDefault();
+				scrollToSection(Math.max(currentIndex - 1, 0));
+			}
+		});
+
+		// Track current section on scroll
+		scrollContainer.addEventListener(
+			"scroll",
+			() => {
+				const containerWidth = scrollContainer.clientWidth;
+				const scrollLeft = scrollContainer.scrollLeft;
+				let closest = 0;
+				let minDist = Infinity;
+
+				sections.forEach((section, i) => {
+					const dist = Math.abs(section.offsetLeft - scrollLeft);
+					if (dist < minDist) {
+						minDist = dist;
+						closest = i;
+					}
+				});
+
+				currentIndex = closest;
+			},
+			{ passive: true },
+		);
+	}
+
+	document.addEventListener("astro:after-swap", initScroll);
+	initScroll();
+</script>

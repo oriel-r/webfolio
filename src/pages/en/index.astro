@@ -1,14 +1,24 @@
 ---
 import Layout from '../../layouts/Layout.astro'
-import { getLangFromUrl, useTranslations } from '../../i18n/utils'
-
-const lang = getLangFromUrl(Astro.url)
-const t = useTranslations(lang)
+import Navbar from '../../components/layout/Navbar.astro'
+import UxControls from '../../components/ui/UxControls.astro'
+import Hero from '../../components/sections/Hero.astro'
+import Experience from '../../components/sections/Experience.astro'
+import Projects from '../../components/sections/Projects.astro'
+import Technologies from '../../components/sections/Technologies.astro'
+import About from '../../components/sections/About.astro'
+import Contact from '../../components/sections/Contact.astro'
 ---
+
 <Layout>
-	<main>
-		<p>{t('hero.name')} - {t('hero.subtitle')}</p>
-		<h1>{t('hero.title')}</h1>
-		<p>{t('hero.description')}</p>
+	<Navbar />
+	<UxControls />
+	<main class="w-full h-full text-zinc-900 bg-white dark:bg-zinc-950 dark:text-zinc-50">
+		<Hero />
+		<Experience />
+		<Projects />
+		<Technologies />
+		<About />
+		<Contact />
 	</main>
 </Layout>

@@ -1,0 +1,42 @@
+---
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getEntry } from 'astro:content';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const aboutEntry = await getEntry('about', 'index');
+const about = aboutEntry.data[lang] || aboutEntry.data['es'];
+const photo = aboutEntry.data.photo;
+---
+
+<section id="about" class="w-full md:min-w-[100vw] min-h-screen flex items-center justify-center shrink-0 snap-start px-8 md:px-24">
+  <div class="flex flex-col md:flex-row items-center justify-between w-full max-w-7xl mx-auto gap-12">
+
+    <!-- Text Content -->
+    <div class="w-full md:w-1/2 space-y-6">
+      <h2 class="text-4xl md:text-5xl font-medium tracking-tight text-primary font-display">
+        {about.title}
+      </h2>
+      <div class="text-base text-secondary max-w-sm leading-relaxed">
+        {about.text.map((paragraph: string) => (
+          <p class={about.text.indexOf(paragraph) > 0 ? 'mt-4' : ''}>
+            {paragraph}
+          </p>
+        ))}
+      </div>
+    </div>
+
+    <!-- Profile Image -->
+    <div class="w-full md:w-1/2 flex justify-center md:justify-end">
+      <div class="w-[min(85vw,288px)] md:w-[clamp(288px,30vw,578px)] aspect-square bg-elevated rounded-3xl shadow-lg overflow-hidden relative flex items-center justify-center">
+        {photo ? (
+          <img src={photo} alt={about.title} class="w-full h-full object-cover" />
+        ) : (
+          <span class="text-sm text-muted">[Profile Image Space]</span>
+        )}
+      </div>
+    </div>
+
+  </div>
+</section>

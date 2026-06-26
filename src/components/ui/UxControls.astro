@@ -1,0 +1,20 @@
+---
+import ToggleButton from './ToggleButton.astro';
+---
+
+<div class="fixed bottom-6 left-6 md:bottom-auto md:left-auto md:top-6 md:right-12 z-50 flex items-center gap-4">
+  <ToggleButton
+    ariaLabel="Accessibility"
+    icon="icon-[ic--outline-accessibility-new]"
+    defaultIconColor="text-secondary"
+  />
+  <ToggleButton
+    id="theme-toggle"
+    ariaLabel="Toggle Theme"
+    onclick="toggleTheme()"
+    icon="icon-[ic--outline-dark-mode]"
+    activeIcon="icon-[ic--outline-light-mode]"
+    lightModeIconColor="text-brand-dominant-500"
+    darkModeIconColor="text-brand-action-500"
+  />
+</div>

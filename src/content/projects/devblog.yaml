@@ -1,0 +1,26 @@
+es:
+  name: "DevBlog"
+  type: "Blog"
+  description: "Plataforma de blogging para desarrolladores con editor Markdown, syntax highlighting, sistema de comentarios y soporte para series de artículos."
+  images:
+    - "/images/projects/devblog-hero.png"
+  technologies:
+    - "Astro"
+    - "MDX"
+    - "Tailwind"
+    - "Cloudflare Workers"
+  demo: "https://devblog-demo.dev"
+  repository: "https://github.com/orielromero/devblog"
+en:
+  name: "DevBlog"
+  type: "Blog"
+  description: "Blogging platform for developers with Markdown editor, syntax highlighting, comment system, and article series support."
+  images:
+    - "/images/projects/devblog-hero.png"
+  technologies:
+    - "Astro"
+    - "MDX"
+    - "Tailwind"
+    - "Cloudflare Workers"
+  demo: "https://devblog-demo.dev"
+  repository: "https://github.com/orielromero/devblog"

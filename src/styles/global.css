@@ -1,0 +1,99 @@
+@import "tailwindcss";
+@plugin "@iconify/tailwind4";
+
+@theme {
+  /* --- Brand Colors --- */
+  --color-brand-dominant-100: #E3F6FF;
+  --color-brand-dominant-200: #AAE4FF;
+  --color-brand-dominant-300: #71D1FF;
+  --color-brand-dominant-400: #39BFFF;
+  --color-brand-dominant-500: #00ADFF;
+  --color-brand-dominant-600: #0087C6;
+  --color-brand-dominant-700: #00608E;
+  --color-brand-dominant-800: #003A55;
+  --color-brand-dominant-900: #00131C;
+
+  --color-brand-action-100: #FFECE3;
+  --color-brand-action-200: #FFC5AA;
+  --color-brand-action-300: #FF9F71;
+  --color-brand-action-400: #FF7839;
+  --color-brand-action-500: #FF5200;
+  --color-brand-action-600: #C64000;
+  --color-brand-action-700: #8E2E00;
+  --color-brand-action-800: #551B00;
+  --color-brand-action-900: #1C0900;
+
+  --color-brand-neutral-100: #EFF2F3;
+  --color-brand-neutral-200: #CED7DB;
+  --color-brand-neutral-300: #ADBCC3;
+  --color-brand-neutral-400: #8DA2AB;
+  --color-brand-neutral-500: #6C8793;
+  --color-brand-neutral-600: #546972;
+  --color-brand-neutral-700: #3C4B52;
+  --color-brand-neutral-800: #242D31;
+  --color-brand-neutral-900: #0C0F10;
+
+  /* --- Semantic Theme Tokens (resolve via CSS vars) --- */
+  --color-canvas: var(--bg-canvas);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-border: var(--border-default);
+  --color-border-subtle: var(--border-subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-text: var(--accent-text);
+  --color-cta: var(--cta);
+  --color-cta-hover: var(--cta-hover);
+
+  /* --- Typography --- */
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-code: "IBM Plex Mono", monospace;
+  --font-accessible: "Atkinson Hyperlegible", sans-serif;
+
+  /* --- Radii --- */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 32px;
+
+  /* --- Motion --- */
+  --ease-spatial: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-base: 300ms;
+}
+
+/* Light theme (default) */
+:root {
+  --bg-canvas: #EFF2F3;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #CED7DB;
+  --text-primary: #0C0F10;
+  --text-secondary: #546972;
+  --text-muted: #8DA2AB;
+  --border-default: #CED7DB;
+  --border-subtle: #EFF2F3;
+  --accent: #00ADFF;
+  --accent-hover: #0087C6;
+  --accent-text: #003A55;
+  --cta: #FF5200;
+  --cta-hover: #C64000;
+}
+
+/* Dark theme */
+.dark {
+  --bg-canvas: #0C0F10;
+  --bg-surface: #242D31;
+  --bg-elevated: #3C4B52;
+  --text-primary: #EFF2F3;
+  --text-secondary: #ADBCC3;
+  --text-muted: #6C8793;
+  --border-default: #3C4B52;
+  --border-subtle: #242D31;
+  --accent: #39BFFF;
+  --accent-hover: #71D1FF;
+  --accent-text: #AAE4FF;
+  --cta: #FF7839;
+  --cta-hover: #FF9F71;
+}
