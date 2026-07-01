@@ -32,6 +32,12 @@ and will contain the following sections:
 - Inicio
 - Experiencia
 - Proyectos
-- Habilidades
+- Tecnologías
 - Sobre mi
 - Contacto
+
+## DX
+
+- Every use `pnpm` and variants for package management or scripts or others
+
+

@@ -1,11 +1,23 @@
 ---
 import ToggleButton from './ToggleButton.astro';
+import { getLangFromUrl } from '../../i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const targetLang = currentLang === 'es' ? 'en' : 'es';
+let targetPath: string;
+if (currentLang === 'es') {
+  targetPath = `/en${Astro.url.pathname}`;
+} else {
+  targetPath = Astro.url.pathname.replace(/^\/en/, '') || '/';
+}
 ---
 
-<div class="fixed bottom-6 left-6 md:bottom-auto md:left-auto md:top-6 md:right-12 z-50 flex items-center gap-4">
+<div class="fixed bottom-6 left-6 md:bottom-auto md:left-auto md:top-6 md:right-12 z-50 flex flex-row-reverse md:flex-row items-center gap-4">
   <ToggleButton
-    ariaLabel="Accessibility"
-    icon="icon-[ic--outline-accessibility-new]"
+    id="lang-toggle"
+    ariaLabel={`Switch to ${targetLang === 'en' ? 'English' : 'Español'}`}
+    onclick={`window.location.href='${targetPath}'`}
+    text={targetLang.toUpperCase()}
     defaultIconColor="text-secondary"
   />
   <ToggleButton

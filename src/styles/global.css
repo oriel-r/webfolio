@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @plugin "@iconify/tailwind4";
 
+@variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* --- Brand Colors --- */
   --color-brand-dominant-100: #E3F6FF;
@@ -62,6 +64,14 @@
   /* --- Motion --- */
   --ease-spatial: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-base: 300ms;
+
+  /* --- Elevation / Shadows (Layer-respecting, mode-switched) --- */
+  --shadow-layer-2: var(--shadow-interactive);
+  --shadow-layer-2-hover: var(--shadow-interactive-hover);
+  --shadow-bento: var(--shadow-bento-base);
+  --shadow-bento-glow: var(--shadow-bento-hover);
+  --shadow-layer-3: var(--shadow-overlay);
+  --shadow-layer-4: var(--shadow-immersive);
 }
 
 /* Light theme (default) */
@@ -79,6 +89,22 @@
   --accent-text: #003A55;
   --cta: #FF5200;
   --cta-hover: #C64000;
+
+  --shadow-interactive: 2px 2px 8px 0px rgba(12, 15, 16, 0.08);
+  --shadow-interactive-hover: 4px 4px 16px 0px rgba(12, 15, 16, 0.14);
+  --shadow-bento-base: 2px 2px 8px 0px rgba(12, 15, 16, 0.08);
+  --shadow-bento-hover: 4px 4px 16px 0px rgba(12, 15, 16, 0.14);
+  --shadow-overlay: 2px 2px 14px 0px rgba(12, 15, 16, 0.10);
+  --shadow-immersive: 2px 2px 24px 0px rgba(12, 15, 16, 0.12);
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* Dark theme */
@@ -96,4 +122,40 @@
   --accent-text: #AAE4FF;
   --cta: #FF7839;
   --cta-hover: #FF9F71;
+
+  --shadow-interactive: 2px 2px 20px 0px rgba(0, 173, 255, 0.25);
+  --shadow-interactive-hover: 2px 2px 32px 0px rgba(0, 173, 255, 0.7);
+  --shadow-bento-base: 2px 2px 20px 0px rgba(0, 173, 255, 0.35);
+  --shadow-bento-hover: 2px 2px 32px 0px rgba(0, 173, 255, 0.8);
+  --shadow-overlay: 2px 2px 24px 0px rgba(0, 173, 255, 0.45);
+  --shadow-immersive: 2px 2px 30px 0px rgba(0, 173, 255, 0.55);
+}
+
+/* Portrait tablet mode: vertical layout like mobile */
+.is-portrait-tablet {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.is-portrait-tablet > div:first-child {
+  flex-direction: column;
+  min-height: auto;
+}
+
+.is-portrait-tablet > div:first-child > div {
+  flex: none;
+}
+
+.is-portrait-tablet > div:first-child > div > div {
+  border-radius: 0.75rem;
+}
+
+.is-portrait-tablet h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.is-portrait-tablet span {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
 }

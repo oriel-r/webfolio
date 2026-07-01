@@ -6,20 +6,20 @@ const t = useTranslations(lang);
 
 const columns = [
   {
-    grow: 'lg:flex-[2] md:flex-[2]',
+    grow: 'md:flex-[2]',
     cards: [
       { title: t('technologies.backend'), skills: ['Node.js', 'NestJS', 'Go', 'Python', 'Express', 'FastAPI'], cardGrow: 'flex-1', tagSize: 'lg', titleSize: 'lg' }
     ]
   },
   {
-    grow: 'lg:flex-[1.5] md:flex-[1.5]',
+    grow: 'md:flex-[1.5]',
     cards: [
       { title: t('technologies.devops'), skills: ['Docker', 'AWS', 'Linux', 'CI/CD', 'Nginx'], cardGrow: 'flex-[2]', tagSize: 'sm', titleSize: 'md' },
       { title: t('technologies.ai'), skills: ['ChatGPT', 'Claude', 'Cursor', 'Copilot'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
     ]
   },
   {
-    grow: 'lg:flex-[1] md:flex-[1]',
+    grow: 'md:flex-[1]',
     cards: [
       { title: t('technologies.frontend'), skills: ['React', 'Next.js', 'Astro', 'Tailwind', 'TypeScript'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' },
       { title: t('technologies.databases'), skills: ['PostgreSQL', 'MongoDB', 'Redis', 'MySQL', 'Prisma'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
@@ -28,36 +28,33 @@ const columns = [
 ];
 ---
 
-<section id="technologies" class="w-full md:min-w-[100vw] min-h-screen flex items-start justify-center shrink-0 snap-start px-8 md:px-24 pt-24 pb-28">
-  <div class="flex flex-col lg:flex-row items-stretch w-full max-w-[1664px] mx-auto h-full gap-8 md:gap-6 lg:gap-8 md:min-h-[400px] lg:aspect-[1664/760]">
+<section id="technologies" class="w-full min-h-screen flex items-start justify-center shrink-0 snap-start px-4 md:px-8 lg:px-12 xl:px-24 pb-8 md:pb-28">
+  <div class="flex flex-col md:flex-row md:items-stretch gap-4 md:gap-4 lg:gap-6 xl:gap-8 w-full max-w-[1664px] mx-auto h-full md:min-h-[300px] lg:min-h-[400px] lg:aspect-[1664/760] pt-20 md:pt-24">
     {columns.map((col) => (
       <div class:list={[
-        'flex min-w-0',
-        'flex-col gap-6',
-        'md:flex-row md:gap-6',
-        'lg:flex-col lg:gap-8',
+        'flex min-w-0 flex-col gap-4 md:gap-4 lg:gap-6 xl:gap-8',
         col.grow
       ]}>
         {col.cards.map((card) => (
           <div class:list={[
-            'flex flex-col p-6 rounded-[32px] bg-elevated border border-border min-w-0',
+            'flex flex-col p-4 md:p-4 lg:p-5 xl:p-6 rounded-xl md:rounded-2xl lg:rounded-[32px] bg-elevated border border-border min-w-0 shadow-bento hover:shadow-bento-glow transition-all duration-300 ease-spatial md:hover:scale-[1.02] will-change-transform isolate',
             card.cardGrow
           ]}>
             <h3 class:list={[
               'font-semibold text-primary font-display',
-                  card.titleSize === 'lg'
-                    ? 'text-xl md:text-5xl lg:text-6xl mb-6 md:mb-8'
-                    : card.titleSize === 'md'
-                      ? 'text-xl md:text-4xl mb-4'
-                      : 'text-xl md:text-2xl mb-4'
+              card.titleSize === 'lg'
+                ? 'text-base md:text-xl lg:text-3xl xl:text-5xl 2xl:text-6xl mb-2 md:mb-4 lg:mb-6 xl:mb-8'
+                : card.titleSize === 'md'
+                  ? 'text-base md:text-lg lg:text-2xl xl:text-3xl 2xl:text-4xl mb-2 md:mb-3 lg:mb-4'
+                  : 'text-base md:text-base lg:text-lg xl:text-2xl mb-2 md:mb-2 lg:mb-3 xl:mb-4'
             ]}>{card.title}</h3>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-1 md:gap-1 lg:gap-1.5 xl:gap-2">
               {card.skills.map(skill => (
                 <span class:list={[
                   'font-medium rounded-full bg-surface/50 text-primary border border-border-subtle font-code',
                   card.tagSize === 'lg'
-                    ? 'px-4 py-2 text-base md:px-5 md:py-2.5 md:text-lg'
-                    : 'px-3.5 py-1.5 text-sm md:px-4 md:py-2 md:text-base'
+                    ? 'px-2 py-0.5 text-xs md:px-2.5 md:py-1 md:text-sm lg:px-3 lg:py-1.5 lg:text-base xl:px-5 xl:py-2.5 xl:text-lg'
+                    : 'px-2 py-0.5 text-xs md:px-2 md:py-1 md:text-xs lg:px-3 lg:py-1.5 lg:text-sm xl:px-4 xl:py-2 xl:text-base'
                 ]}>
                   {skill}
                 </span>
@@ -69,3 +66,18 @@ const columns = [
     ))}
   </div>
 </section>
+
+<script is:inline>
+  (function () {
+    function update() {
+      var el = document.getElementById('technologies');
+      if (!el) return;
+      var w = window.innerWidth;
+      var portrait = window.matchMedia('(orientation: portrait)').matches;
+      el.classList.toggle('is-portrait-tablet', w >= 768 && w <= 1023 && portrait);
+    }
+    update();
+    window.addEventListener('resize', update);
+    window.addEventListener('orientationchange', update);
+  })();
+</script>
