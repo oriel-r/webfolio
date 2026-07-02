@@ -30,7 +30,7 @@ const {
   id={id}
   aria-label={ariaLabel}
   onclick={onclick}
-  class={`w-[54px] h-[54px] flex items-center justify-center rounded-2xl bg-elevated border border-border hover:bg-border focus:outline-none ${className}`}
+  class={`w-[54px] h-[54px] flex items-center justify-center rounded-2xl bg-elevated border border-border hover:bg-border focus:outline-none transition-colors duration-500 ease-spatial ${className}`}
 >
   {text ? (
     <span class={`${defaultIconColor} text-2xl font-bold leading-none block`}>{text}</span>

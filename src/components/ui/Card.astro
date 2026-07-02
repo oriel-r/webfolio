@@ -6,7 +6,7 @@ interface Props {
 
 const { class: className = '', as: Element = 'div', ...rest } = Astro.props;
 
-const baseStyles = 'rounded-[32px] border border-border bg-surface shadow-layer-2 hover:shadow-layer-2-hover transition-all duration-300 ease-spatial md:hover:scale-[1.02] will-change-transform isolate';
+const baseStyles = 'rounded-[32px] border border-border bg-surface shadow-layer-2 hover:shadow-layer-2-hover transition-all duration-500 ease-spatial md:hover:scale-[1.02] will-change-transform isolate';
 
 const classes = [baseStyles, className].filter(Boolean).join(' ');
 ---

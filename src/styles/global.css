@@ -107,6 +107,31 @@
   display: none;
 }
 
+/* Smooth theme transition between light and dark modes */
+html {
+  transition:
+    background-color var(--duration-base) var(--ease-spatial),
+    color var(--duration-base) var(--ease-spatial);
+}
+
+html,
+html *,
+html *::before,
+html *::after {
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-spatial);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  html *,
+  html *::before,
+  html *::after {
+    transition: none !important;
+  }
+}
+
 /* Dark theme */
 .dark {
   --bg-canvas: #0C0F10;
