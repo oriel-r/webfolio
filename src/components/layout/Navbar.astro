@@ -16,14 +16,14 @@ const navItems = [
 
 <!-- Mobile: horizontal carousel navbar -->
 <nav class="fixed top-0 left-0 right-0 z-50 md:hidden">
-  <div id="mobile-nav" class="overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
+  <div id="mobile-nav" class="overflow-x-auto no-scrollbar">
     <ul class="flex items-center gap-8 w-max py-6 px-[50vw]">
       {navItems.map((item, i) => (
-        <li>
+        <li class="nav-mobile-item shrink-0">
           <a
             href={item.href}
             data-nav-index={i}
-            class="nav-mobile-link shrink-0 text-xl font-medium text-muted hover:text-accent transition-colors duration-500 ease-spatial snap-center"
+            class="nav-mobile-link text-xl font-medium text-muted hover:text-accent transition-colors duration-500 ease-spatial"
           >
             {item.label}
           </a>
@@ -37,11 +37,12 @@ const navItems = [
 <nav class="fixed top-0 left-0 right-0 z-50 py-6 px-12 hidden md:flex justify-center items-center gap-12 pointer-events-none">
   <div class="pointer-events-auto">
     <ul class="flex items-center gap-4 sm:gap-6">
-      {navItems.map((item) => (
+      {navItems.map((item, i) => (
         <li>
           <a
             href={item.href}
-            class="text-sm font-medium text-muted hover:text-accent transition-colors duration-500 ease-spatial"
+            data-nav-index={i}
+            class="nav-desktop-link text-sm font-medium text-muted hover:text-accent transition-colors duration-500 ease-spatial"
           >
             {item.label}
           </a>
@@ -51,15 +52,43 @@ const navItems = [
   </div>
 </nav>
 
-<script>
-  function initMobileNav() {
-    const mobileNav = document.getElementById('mobile-nav');
-    if (!mobileNav) return;
+<style>
+  #mobile-nav {
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: auto;        /* desactiva momentum/inercia iOS */
+    touch-action: pan-x;                      /* solo swipe horizontal */
+    overscroll-behavior-x: contain;          /* no propagar scroll al body */
+    scrollbar-width: none;
+  }
+  #mobile-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .nav-mobile-item {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;                /* FUERZA detener en cada tab */
+  }
+</style>
 
-    const links = mobileNav.querySelectorAll<HTMLAnchorElement>('.nav-mobile-link');
+<script>
+  function initNavbar() {
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileLinks = mobileNav
+      ? Array.from(mobileNav.querySelectorAll<HTMLAnchorElement>('.nav-mobile-link'))
+      : [];
+    const desktopLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.nav-desktop-link'));
 
     function setActive(index: number) {
-      links.forEach((link, i) => {
+      mobileLinks.forEach((link, i) => {
+        if (i === index) {
+          link.classList.add('text-accent');
+          link.classList.remove('text-muted');
+        } else {
+          link.classList.remove('text-accent');
+          link.classList.add('text-muted');
+        }
+      });
+      desktopLinks.forEach((link, i) => {
         if (i === index) {
           link.classList.add('text-accent');
           link.classList.remove('text-muted');
@@ -70,10 +99,12 @@ const navItems = [
       });
     }
 
-    function centerLink(index: number) {
-      const link = links[index];
+    function centerMobileLink(index: number) {
+      const link = mobileLinks[index];
       if (!link || !mobileNav) return;
-      const linkCenter = link.offsetLeft + link.offsetWidth / 2;
+      const linkRect = link.getBoundingClientRect();
+      const navRect = mobileNav.getBoundingClientRect();
+      const linkCenter = mobileNav.scrollLeft + (linkRect.left - navRect.left) + linkRect.width / 2;
       const containerCenter = mobileNav.clientWidth / 2;
       mobileNav.scrollTo({
         left: linkCenter - containerCenter,
@@ -81,7 +112,7 @@ const navItems = [
       });
     }
 
-    links.forEach((link) => {
+    mobileLinks.forEach((link) => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
         const index = Number(link.dataset.navIndex);
@@ -89,20 +120,33 @@ const navItems = [
           new CustomEvent('navClick', { detail: { index } }),
         );
         setActive(index);
-        centerLink(index);
+        centerMobileLink(index);
+      });
+    });
+
+    desktopLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const index = Number(link.dataset.navIndex);
+        window.dispatchEvent(
+          new CustomEvent('navClick', { detail: { index } }),
+        );
+        setActive(index);
       });
     });
 
     window.addEventListener('sectionChange', ((e: CustomEvent) => {
       const index = e.detail.index;
       setActive(index);
-      centerLink(index);
+      centerMobileLink(index);
     }) as EventListener);
 
     setActive(0);
-    requestAnimationFrame(() => centerLink(0));
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => centerMobileLink(0));
+    });
   }
 
-  document.addEventListener('astro:after-swap', initMobileNav);
-  initMobileNav();
+  document.addEventListener('astro:after-swap', initNavbar);
+  initNavbar();
 </script>
