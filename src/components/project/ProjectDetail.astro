@@ -42,9 +42,7 @@ const galleryId = `gallery-${slug}`;
 const collaboratorText =
   colaborators.length > 0
     ? colaborators.map((c) => c.name ?? '').filter(Boolean).join(', ')
-    : t('detail.noColaborators');
-
-const repositoryLabel = t('detail.close') === 'Close' ? 'Repository' : 'Repositorio';
+    : '';
 ---
 
 <div class="project-detail relative w-full min-h-screen md:h-screen flex flex-col md:flex-row bg-canvas text-primary overflow-hidden project-detail-page">
@@ -60,19 +58,9 @@ const repositoryLabel = t('detail.close') === 'Close' ? 'Repository' : 'Reposito
 
   <!-- Gallery column (left on desktop / top on mobile) -->
   <section
-    class="project-gallery relative w-full md:w-1/2 h-[55vh] md:h-full shrink-0 overflow-hidden bg-elevated"
+    class="project-gallery relative w-full md:w-1/2 aspect-square md:aspect-auto md:h-full shrink-0 overflow-hidden bg-elevated"
     style={`view-transition-name: project-${slug}-gallery;`}
   >
-    <!-- Image counter (top-left of gallery, matches mockup 1/4 pill) -->
-    <div
-      class="absolute top-4 left-4 md:top-6 md:left-6 z-20 px-3 py-1.5 rounded-md bg-canvas/90 backdrop-blur-sm border border-border"
-      aria-live="polite"
-    >
-      <span class="text-sm font-medium font-code text-primary" data-counter>
-        <span data-counter-current>1</span>/{totalImages}
-      </span>
-    </div>
-
     <!-- Radios (driven by labels & swipe) -->
     <div class="sr-only" data-radios>
       {Array.from({ length: totalImages }).map((_, i) => (
@@ -87,24 +75,63 @@ const repositoryLabel = t('detail.close') === 'Close' ? 'Repository' : 'Reposito
       ))}
     </div>
 
-    <!-- Big slide stage -->
-    <div class="absolute inset-0">
+    <!-- Scrollable image track -->
+    <div class="gallery-track absolute inset-0 flex md:flex-col overflow-x-auto md:overflow-x-hidden md:overflow-y-auto snap-x md:snap-y snap-mandatory scrollbar-hide overscroll-x-contain md:overscroll-y-contain md:overscroll-x-auto">
       {images.map((src, i) => (
         <img
           src={src}
           alt={`${name} - ${i + 1}`}
-          class="gallery-slide absolute inset-0 w-full h-full object-cover"
+          class="gallery-slide flex-none w-full md:w-auto md:h-full object-cover"
           loading={i === 0 ? 'eager' : 'lazy'}
           data-slide={i}
         />
       ))}
     </div>
+
+    <!-- Dot indicators -->
+    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-auto md:right-4 md:left-auto md:top-1/2 md:-translate-y-1/2 md:translate-x-0 z-20 flex md:flex-col gap-2" aria-label="Image indicators">
+      {Array.from({ length: totalImages }).map((_, i) => (
+        <div
+          class="gallery-dot w-2 h-2 rounded-2xl bg-white/40 transition-colors duration-300"
+          data-dot-index={i}
+        />
+      ))}
+    </div>
+
+    <!-- Prev / Next navigation (CSS-only via labels + :has) -->
+    {totalImages > 1 && Array.from({ length: totalImages }).map((_, i) => (
+      <div
+        class="gallery-nav-group absolute inset-0 flex items-center justify-between md:flex-col md:justify-between px-3 md:px-0 md:py-4 z-20 pointer-events-none"
+        data-nav-for={i}
+      >
+        {i > 0 && (
+          <label
+            for={`${galleryId}-${i - 1}`}
+            class="gallery-nav-btn pointer-events-auto p-3 md:p-2 flex items-center justify-center text-white cursor-pointer"
+            aria-label="Previous image"
+          >
+            <span class="icon-[ic--outline-chevron-left] md:hidden text-2xl" aria-hidden="true"></span>
+            <span class="icon-[ic--outline-expand-less] hidden md:block text-6xl" aria-hidden="true"></span>
+          </label>
+        )}
+        {i < totalImages - 1 && (
+          <label
+            for={`${galleryId}-${i + 1}`}
+            class="gallery-nav-btn pointer-events-auto p-3 md:p-2 flex items-center justify-center text-white cursor-pointer ml-auto md:ml-0 md:mt-auto"
+            aria-label="Next image"
+          >
+            <span class="icon-[ic--outline-chevron-right] md:hidden text-2xl" aria-hidden="true"></span>
+            <span class="icon-[ic--outline-expand-more] hidden md:block text-6xl" aria-hidden="true"></span>
+          </label>
+        )}
+      </div>
+    ))}
   </section>
 
   <!-- Details column -->
-  <section class="details relative w-full md:w-1/2 flex-1 md:h-full overflow-y-auto px-6 py-16 md:px-12 md:py-12 md:pt-20 bg-canvas">
+  <section class="details relative w-full md:w-1/2 flex-1 md:h-full overflow-y-auto px-6 pt-6 pb-6 md:px-12 md:py-12 md:pt-20 bg-canvas">
     <header class="max-w-xl mx-auto md:mx-0">
-      <h1 class="text-3xl md:text-5xl lg:text-6xl font-display font-medium tracking-tight text-primary mb-2">
+      <h1 class="text-2xl md:text-5xl lg:text-6xl font-display font-medium tracking-tight text-primary mb-2">
         {name}
       </h1>
       <p class="text-sm md:text-base text-muted font-code uppercase tracking-wider">
@@ -112,42 +139,34 @@ const repositoryLabel = t('detail.close') === 'Close' ? 'Repository' : 'Reposito
       </p>
     </header>
 
-    <!-- Thumbnails (each label drives the radio) -->
-    <div class="mt-8 md:mt-10 max-w-xl mx-auto md:mx-0">
-      <div class={`grid gap-2 ${totalImages <= 4 ? 'grid-cols-4' : 'grid-cols-3'}`}>
-        {images.map((src, i) => (
-          <label
-            for={`${galleryId}-${i}`}
-            class="thumb block aspect-square rounded-md overflow-hidden cursor-pointer border border-border bg-elevated transition-all duration-500 ease-spatial hover:scale-[1.02]"
-            aria-label={`Go to image ${i + 1}`}
-          >
-            <img
-              src={src}
-              alt={`${name} thumbnail ${i + 1}`}
-              class="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </label>
-        ))}
-      </div>
-
-      <p class="mt-6 text-base text-secondary leading-relaxed">
+    <div class="mt-6 md:mt-10 max-w-xl mx-auto md:mx-0">
+      <p class="gallery-desc text-base text-secondary leading-relaxed line-clamp-1 md:line-clamp-none" data-desc>
         {long_description ?? description}
       </p>
+      <button
+        class="gallery-desc-toggle md:hidden mt-1 text-sm text-accent hover:text-accent-hover font-medium cursor-pointer"
+        data-desc-toggle
+        data-read-more={t('detail.readMore')}
+        data-read-less={t('detail.readLess')}
+        aria-expanded="false"
+      >
+        {t('detail.readMore')}
+      </button>
     </div>
 
-    <!-- Colaboradores -->
-    <div class="mt-10 max-w-xl mx-auto md:mx-0">
-      <h2 class="text-lg md:text-xl font-display font-medium text-primary mb-2">
-        {t('detail.colaborators')}
-      </h2>
-      <p class="text-sm md:text-base text-secondary leading-relaxed">
-        {collaboratorText}
-      </p>
-    </div>
+    {colaborators.length > 0 && (
+      <div class="mt-6 md:mt-10 max-w-xl mx-auto md:mx-0">
+        <h2 class="text-lg md:text-xl font-display font-medium text-primary mb-2">
+          {t('detail.colaborators')}
+        </h2>
+        <p class="text-sm md:text-base text-secondary leading-relaxed">
+          {collaboratorText}
+        </p>
+      </div>
+    )}
 
     <!-- Tecnologías + acciones -->
-    <div class="mt-10 max-w-xl mx-auto md:mx-0">
+    <div class="mt-6 md:mt-10 max-w-xl mx-auto md:mx-0">
       <h2 class="text-lg md:text-xl font-display font-medium text-primary mb-4">
         {t('detail.technologies')}
       </h2>
@@ -210,8 +229,7 @@ const repositoryLabel = t('detail.close') === 'Close' ? 'Repository' : 'Reposito
   </section>
 </div>
 
-<style>
-  /* Gallery: CSS-only image switcher using sibling radios */
+<style set:html={`
   .project-gallery [data-gallery-input] {
     position: absolute;
     opacity: 0;
@@ -219,117 +237,148 @@ const repositoryLabel = t('detail.close') === 'Close' ? 'Repository' : 'Reposito
     width: 1px;
     height: 1px;
   }
-
-  .project-gallery .gallery-slide {
-    opacity: 0;
+  .gallery-nav-group {
+    display: none;
+  }
+  .gallery-nav-group label.gallery-nav-btn {
+    color: white;
+    mix-blend-mode: difference;
+    opacity: 0.35;
     transition: opacity var(--duration-base) var(--ease-spatial);
   }
-  .project-gallery .gallery-slide[data-slide='0'] {
+  .gallery-nav-group label.gallery-nav-btn:hover {
     opacity: 1;
   }
-
-  .project-gallery:has([data-gallery-input][data-index='1']:checked) .gallery-slide[data-slide='0'],
-  .project-gallery:has([data-gallery-input][data-index='2']:checked) .gallery-slide[data-slide='0'],
-  .project-gallery:has([data-gallery-input][data-index='3']:checked) .gallery-slide[data-slide='0'] {
-    opacity: 0;
+  @media (min-width: 768px) {
+    .gallery-nav-group label.gallery-nav-btn {
+      opacity: 0;
+    }
+    .gallery-nav-group:hover label.gallery-nav-btn {
+      opacity: 0.6;
+    }
+    .gallery-nav-group label.gallery-nav-btn:hover {
+      opacity: 1;
+    }
   }
-
-  .project-gallery:has([data-gallery-input][data-index='1']:checked) .gallery-slide[data-slide='1'],
-  .project-gallery:has([data-gallery-input][data-index='2']:checked) .gallery-slide[data-slide='2'],
-  .project-gallery:has([data-gallery-input][data-index='3']:checked) .gallery-slide[data-slide='3'] {
-    opacity: 1;
+  .gallery-track {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
   }
-
-  /* Thumbnails: active ring via :has on gallery section */
-  .project-gallery:has([data-gallery-input][data-index='0']:checked) ~ .details .thumb[for$='-0'],
-  .project-gallery:has([data-gallery-input][data-index='1']:checked) ~ .details .thumb[for$='-1'],
-  .project-gallery:has([data-gallery-input][data-index='2']:checked) ~ .details .thumb[for$='-2'],
-  .project-gallery:has([data-gallery-input][data-index='3']:checked) ~ .details .thumb[for$='-3'] {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+  @media (min-width: 768px) {
+    .gallery-track {
+      scroll-snap-type: y mandatory;
+    }
   }
-
-  /* Counter: replace inner text via CSS (no JS) */
-  .project-gallery [data-counter-current] {
-    /* default = 1 */
+  .gallery-slide {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
   }
-  .project-gallery:has([data-gallery-input][data-index='1']:checked) [data-counter-current] {
-    visibility: hidden;
-    position: relative;
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
-  .project-gallery:has([data-gallery-input][data-index='1']:checked) [data-counter-current]::before {
-    content: '2';
-    visibility: visible;
-    position: absolute;
-    inset: 0;
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
-
-  .project-gallery:has([data-gallery-input][data-index='2']:checked) [data-counter-current] {
-    visibility: hidden;
-    position: relative;
+  .overscroll-x-contain {
+    overscroll-behavior-x: contain;
   }
-  .project-gallery:has([data-gallery-input][data-index='2']:checked) [data-counter-current]::before {
-    content: '3';
-    visibility: visible;
-    position: absolute;
-    inset: 0;
+  .overscroll-y-contain {
+    overscroll-behavior-y: contain;
   }
-
-  .project-gallery:has([data-gallery-input][data-index='3']:checked) [data-counter-current] {
-    visibility: hidden;
-    position: relative;
-  }
-  .project-gallery:has([data-gallery-input][data-index='3']:checked) [data-counter-current]::before {
-    content: '4';
-    visibility: visible;
-    position: absolute;
-    inset: 0;
-  }
-</style>
+  ${images.map((_, i) => `
+    .project-gallery:has([data-gallery-input][data-index='${i}']:checked) [data-dot-index='${i}'] {
+      background-color: white;
+    }
+    .project-gallery:has([data-gallery-input][data-index='${i}']:checked) .gallery-nav-group[data-nav-for='${i}'] {
+      display: flex;
+    }
+  `).join('\n')}
+`} />
 
 <script>
-  // Minimal swipe handler for mobile gallery
-  function initSwipe() {
+  const isDesktop = () => window.innerWidth >= 768;
+
+  function initGalleryScroll() {
     const galleries = document.querySelectorAll<HTMLElement>('.project-gallery');
     galleries.forEach((gallery) => {
-      if ((gallery as any).dataset.swipeReady === '1') return;
-      (gallery as any).dataset.swipeReady = '1';
+      if ((gallery as any).dataset.scrollReady === '1') return;
+      (gallery as any).dataset.scrollReady = '1';
 
+      const track = gallery.querySelector<HTMLElement>('.gallery-track');
       const inputs = gallery.querySelectorAll<HTMLInputElement>('[data-gallery-input]');
-      if (inputs.length < 2) return;
+      if (!track || inputs.length < 2) return;
 
-      let startX = 0;
-      let startY = 0;
+      let isProgrammaticScroll = false;
 
-      gallery.addEventListener(
-        'touchstart',
-        (e) => {
-          startX = e.touches[0].clientX;
-          startY = e.touches[0].clientY;
-        },
-        { passive: true },
-      );
+      let wheelTimeout: ReturnType<typeof setTimeout> | null = null;
+      track.addEventListener('wheel', (e: WheelEvent) => {
+        e.preventDefault();
 
-      gallery.addEventListener(
-        'touchend',
-        (e) => {
-          const dx = startX - e.changedTouches[0].clientX;
-          const dy = startY - e.changedTouches[0].clientY;
-          if (Math.abs(dx) < 40 || Math.abs(dy) > Math.abs(dx)) return;
+        if (wheelTimeout) return;
+        wheelTimeout = setTimeout(() => {
+          wheelTimeout = null;
+        }, 350);
 
-          const current = Array.from(inputs).findIndex((i) => i.checked);
-          if (current === -1) return;
-          const next = dx > 0
-            ? Math.min(current + 1, inputs.length - 1)
-            : Math.max(current - 1, 0);
+        const dir = e.deltaY > 0 ? 1 : -1;
+        const size = isDesktop() ? track.clientHeight : track.clientWidth;
+        const key = isDesktop() ? 'top' : 'left';
+        track.scrollBy({ [key]: dir * size, behavior: 'smooth' } as ScrollToOptions);
+      }, { passive: false });
 
-          inputs[next].checked = true;
-          inputs[next].dispatchEvent(new Event('change', { bubbles: true }));
-        },
-        { passive: true },
-      );
+      let scrollTimeout: ReturnType<typeof setTimeout>;
+      track.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        if (isProgrammaticScroll) return;
+        scrollTimeout = setTimeout(() => {
+          const scrollPos = isDesktop() ? track.scrollTop : track.scrollLeft;
+          const itemSize = isDesktop() ? track.clientHeight : track.clientWidth;
+          const idx = Math.round(scrollPos / itemSize);
+          const clamped = Math.max(0, Math.min(idx, inputs.length - 1));
+          if (!inputs[clamped].checked) {
+            inputs[clamped].checked = true;
+          }
+        }, 80);
+      }, { passive: true });
+
+      inputs.forEach((input, i) => {
+        input.addEventListener('change', () => {
+          if (input.checked) {
+            isProgrammaticScroll = true;
+            const size = isDesktop() ? track.clientHeight : track.clientWidth;
+            const key = isDesktop() ? 'top' : 'left';
+            track.scrollTo({ [key]: i * size, behavior: 'smooth' } as ScrollToOptions);
+            setTimeout(() => {
+              isProgrammaticScroll = false;
+            }, 500);
+          }
+        });
+      });
     });
   }
 
-  document.addEventListener('astro:page-load', initSwipe);
+  function initReadMore() {
+    const toggles = document.querySelectorAll<HTMLElement>('[data-desc-toggle]');
+    toggles.forEach((toggle) => {
+      if (toggle.dataset.ready === '1') return;
+      toggle.dataset.ready = '1';
+
+      const desc = toggle.previousElementSibling as HTMLElement | null;
+      if (!desc) return;
+
+      const readMoreText = toggle.dataset.readMore ?? 'Leer más';
+      const readLessText = toggle.dataset.readLess ?? 'Leer menos';
+
+      toggle.addEventListener('click', () => {
+        const expanded = desc.classList.toggle('line-clamp-none');
+        toggle.textContent = expanded ? readLessText : readMoreText;
+        toggle.setAttribute('aria-expanded', String(expanded));
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    initGalleryScroll();
+    initReadMore();
+  });
 </script>

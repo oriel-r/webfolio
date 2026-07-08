@@ -56,6 +56,8 @@ export const ui = {
     'detail.frontend': 'Front-end',
     'detail.close': 'Cerrar',
     'detail.noDescription': 'Descripción no disponible.',
+    'detail.readMore': 'Leer más',
+    'detail.readLess': 'Leer menos',
   },
   en: {
     'nav.home': 'Home',
@@ -107,5 +109,7 @@ export const ui = {
     'detail.frontend': 'Front-end',
     'detail.close': 'Close',
     'detail.noDescription': 'Description unavailable.',
+    'detail.readMore': 'Read more',
+    'detail.readLess': 'Read less',
   },
 } as const

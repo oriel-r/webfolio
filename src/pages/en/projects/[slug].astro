@@ -1,7 +1,5 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import Navbar from '../../../components/layout/Navbar.astro';
-import UxControls from '../../../components/ui/UxControls.astro';
 import ProjectDetail from '../../../components/project/ProjectDetail.astro';
 import { getCollection } from 'astro:content';
 import type { Lang } from '../../../i18n/utils';
@@ -20,8 +18,6 @@ const data = entry.data[lang] ?? entry.data['es'];
 ---
 
 <Layout>
-  <Navbar />
-  <UxControls />
   <main class="flex flex-col md:flex-row w-full h-auto md:h-screen overflow-x-hidden">
     <ProjectDetail
       slug={entry.id}
