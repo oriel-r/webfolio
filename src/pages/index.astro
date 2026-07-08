@@ -54,20 +54,49 @@ import ProjectCard from "../components/ui/ProjectCard.astro";
 			);
 		}
 
-		function scrollToSection(index: number) {
+		function getIndexFromHash(): number {
+			const hash = window.location.hash.replace('#', '');
+			if (!hash) return 0;
+			const idx = sections.findIndex((s) => s.id === hash);
+			return idx >= 0 ? idx : 0;
+		}
+
+		function syncHash(index: number) {
+			const target = `#${sections[index].id}`;
+			if (window.location.hash !== target) {
+				history.replaceState(history.state, '', target);
+			}
+		}
+
+		function scrollToSection(index: number, animate = true) {
 			if (index < 0 || index >= sections.length) return;
 			if (isScrolling && index === currentIndex) return;
 			currentIndex = index;
 			isScrolling = true;
 			sections[index].scrollIntoView({
-				behavior: "smooth",
+				behavior: animate ? "smooth" : "auto",
 				inline: isDesktop() ? "start" : "nearest",
 				block: isDesktop() ? "nearest" : "start",
 			});
+			syncHash(currentIndex);
 			emitSectionChange(currentIndex);
 			setTimeout(() => {
 				isScrolling = false;
 			}, 800);
+		}
+
+		if ('scrollRestoration' in history) {
+			history.scrollRestoration = 'manual';
+		}
+
+		window.scrollTo(0, 0);
+		const initialIndex = getIndexFromHash();
+		if (initialIndex !== 0) {
+			requestAnimationFrame(() => {
+				scrollToSection(initialIndex, false);
+			});
+		} else {
+			emitSectionChange(0);
 		}
 
 		scrollContainer.addEventListener(
@@ -141,6 +170,7 @@ import ProjectCard from "../components/ui/ProjectCard.astro";
 
 				if (closest !== currentIndex) {
 					currentIndex = closest;
+					syncHash(currentIndex);
 					emitSectionChange(currentIndex);
 				}
 			},
@@ -150,6 +180,13 @@ import ProjectCard from "../components/ui/ProjectCard.astro";
 		window.addEventListener('navClick', ((e: CustomEvent) => {
 			scrollToSection(e.detail.index);
 		}) as EventListener);
+
+		window.addEventListener('popstate', () => {
+			const idx = getIndexFromHash();
+			if (idx !== currentIndex) {
+				scrollToSection(idx);
+			}
+		});
 	}
 
 	document.addEventListener("astro:after-swap", initScroll);

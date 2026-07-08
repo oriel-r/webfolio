@@ -48,6 +48,10 @@ const projects = defineCollection({
     technologies: z.array(langString),
     demo: z.string().url().optional(),
     repository: z.string().url(),
+    role: langString.optional(),
+    back_repo: z.string().url().optional(),
+    front_repo: z.string().url().optional(),
+    long_description: langString.optional(),
   }),
 });
 

@@ -1,0 +1,43 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/layout/Navbar.astro';
+import UxControls from '../../components/ui/UxControls.astro';
+import ProjectDetail from '../../components/project/ProjectDetail.astro';
+import { getCollection } from 'astro:content';
+import type { Lang } from '../../i18n/utils';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('projects');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const lang: Lang = 'es';
+const data = entry.data[lang] ?? entry.data['es'];
+---
+
+<Layout>
+  <Navbar />
+  <UxControls />
+  <main class="flex flex-col md:flex-row w-full h-auto md:h-screen overflow-x-hidden">
+    <ProjectDetail
+      slug={entry.id}
+      name={data.name}
+      type={data.type}
+      description={data.description}
+      long_description={data.long_description}
+      images={data.images ?? []}
+      colaborators={data.colaborators}
+      technologies={data.technologies}
+      role={data.role}
+      demo={data.demo}
+      repository={data.repository}
+      back_repo={data.back_repo}
+      front_repo={data.front_repo}
+      lang={lang}
+    />
+  </main>
+</Layout>

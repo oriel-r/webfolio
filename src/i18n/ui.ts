@@ -46,6 +46,16 @@ export const ui = {
 
     'ui.viewProject': 'Ver proyecto',
     'ui.downloadCV': 'Descargar CV',
+
+    'detail.imageCounter': 'Imagen {current} de {total}',
+    'detail.colaborators': 'Colaboradores',
+    'detail.noColaborators': '—',
+    'detail.technologies': 'Tecnologías',
+    'detail.demo': 'Demo',
+    'detail.backend': 'Back-end',
+    'detail.frontend': 'Front-end',
+    'detail.close': 'Cerrar',
+    'detail.noDescription': 'Descripción no disponible.',
   },
   en: {
     'nav.home': 'Home',
@@ -87,5 +97,15 @@ export const ui = {
 
     'ui.viewProject': 'View project',
     'ui.downloadCV': 'Download CV',
+
+    'detail.imageCounter': 'Image {current} of {total}',
+    'detail.colaborators': 'Colaborators',
+    'detail.noColaborators': '—',
+    'detail.technologies': 'Technologies',
+    'detail.demo': 'Demo',
+    'detail.backend': 'Back-end',
+    'detail.frontend': 'Front-end',
+    'detail.close': 'Close',
+    'detail.noDescription': 'Description unavailable.',
   },
 } as const

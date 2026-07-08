@@ -30,3 +30,20 @@ if (currentLang === 'es') {
     darkModeIconColor="text-brand-action-500"
   />
 </div>
+
+<script is:inline>
+  (function () {
+    const langBtn = document.getElementById('lang-toggle');
+    if (!langBtn) return;
+    const original = langBtn.getAttribute('onclick') || '';
+    const match = original.match(/window\.location\.href='([^']+)'/);
+    if (!match) return;
+    const originalPath = match[1];
+    function update() {
+      const hash = window.location.hash || '';
+      langBtn.setAttribute('onclick', `window.location.href='${originalPath}${hash}'`);
+    }
+    window.addEventListener('hashchange', update);
+    update();
+  })();
+</script>

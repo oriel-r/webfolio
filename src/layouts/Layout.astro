@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import { getLangFromUrl, useTranslations } from '../i18n/utils'
 import '../styles/global.css'
 
@@ -17,6 +18,7 @@ const t = useTranslations(lang)
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400&display=swap" rel="stylesheet">
 		<title>Oriel Romero</title>
+		<ClientRouter fallback="animate" />
 		<script is:inline>
 			(function () {
 				const saved = localStorage.getItem('theme');
@@ -55,5 +57,29 @@ const t = useTranslations(lang)
 	html::-webkit-scrollbar,
 	body::-webkit-scrollbar {
 		display: none;
+	}
+
+	/* View Transitions: el detalle cae como una capa desde arriba */
+	::view-transition-group(root) {
+		animation-duration: var(--duration-base);
+		animation-timing-function: var(--ease-spatial);
+	}
+
+	@keyframes layer-slide-down {
+		from { transform: translateY(-100%); }
+		to   { transform: translateY(0%); }
+	}
+
+	@keyframes layer-slide-up {
+		from { transform: translateY(0%); }
+		to   { transform: translateY(-100%); }
+	}
+
+	::view-transition-old(root) {
+		animation: var(--duration-base) var(--ease-spatial) both layer-slide-up;
+	}
+
+	::view-transition-new(root) {
+		animation: var(--duration-base) var(--ease-spatial) both layer-slide-down;
 	}
 </style>
