@@ -8,27 +8,27 @@ const columns = [
   {
     grow: 'md:flex-[2]',
     cards: [
-      { title: t('technologies.backend'), skills: ['Node.js', 'NestJS', 'Go', 'Python', 'Express', 'FastAPI'], cardGrow: 'flex-1', tagSize: 'lg', titleSize: 'lg' }
+      { title: t('technologies.backend'), skills: ['Node.js', 'NestJS', 'Express', 'JavaScript', 'TypeScript', 'Hono', 'Bull MQ', 'Multi Tenant'], cardGrow: 'flex-1', tagSize: 'lg', titleSize: 'lg' }
     ]
   },
   {
     grow: 'md:flex-[1.5]',
     cards: [
-      { title: t('technologies.devops'), skills: ['Docker', 'AWS', 'Linux', 'CI/CD', 'Nginx'], cardGrow: 'flex-[2]', tagSize: 'sm', titleSize: 'md' },
-      { title: t('technologies.ai'), skills: ['ChatGPT', 'Claude', 'Cursor', 'Copilot'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
+      { title: t('technologies.devops'), skills: ['Docker', 'AWS', 'Linux', 'CI/CD', 'GCP', 'AWS CCP', 'GitHub Actions'], cardGrow: 'flex-[2]', tagSize: 'sm', titleSize: 'md' },
+      { title: t('technologies.ai'), skills: ['Gemini API', 'Open Code', 'Antigravity', 'Crone Jobs'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
     ]
   },
   {
     grow: 'md:flex-[1]',
     cards: [
-      { title: t('technologies.frontend'), skills: ['React', 'Next.js', 'Astro', 'Tailwind', 'TypeScript'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' },
-      { title: t('technologies.databases'), skills: ['PostgreSQL', 'MongoDB', 'Redis', 'MySQL', 'Prisma'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
+      { title: t('technologies.frontend'), skills: ['React', 'Astro', 'Tailwind', 'Redux Tool Kit', 'Bootstrap', 'Figma'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' },
+      { title: t('technologies.databases'), skills: ['SQL', 'NoSQL', 'Redis', 'TypeORM', 'Mikro-orm', 'Prisma-ORM', 'Mongoose'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
     ]
   }
 ];
 ---
 
-<section id="technologies" class="w-full min-h-screen flex items-start justify-center shrink-0 snap-start px-4 md:px-8 lg:px-12 xl:px-24 pb-8 md:pb-28">
+<section id="technologies" class="w-full md:min-w-[100vw] min-h-screen flex items-start justify-center shrink-0 snap-start px-4 md:px-8 lg:px-12 xl:px-24 pb-8 md:pb-28">
   <div class="flex flex-col md:flex-row md:items-stretch gap-4 md:gap-4 lg:gap-6 xl:gap-8 w-full max-w-[1664px] mx-auto h-full md:min-h-[300px] lg:min-h-[400px] lg:aspect-[1664/760] pt-20 md:pt-24">
     {columns.map((col) => (
       <div class:list={[
