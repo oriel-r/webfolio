@@ -22,17 +22,17 @@ const projects = projectEntries.map((entry) => ({
         <!-- Carousel scroll container -->
         <div
           id="projects-carousel"
-          class="w-full h-full flex items-center md:items-stretch md:flex-col gap-4 overflow-x-auto md:overflow-x-hidden md:overflow-y-auto snap-x md:snap-y snap-mandatory scroll-smooth p-1 md:p-2"
+          class="projects-carousel w-full h-full flex items-center md:items-stretch md:flex-col gap-4 scroll-smooth p-1 md:p-2"
           style="-ms-overflow-style: none; scrollbar-width: none;"
         >
-          <!-- Spacer: allows first card to center -->
-          <div class="flex-shrink-0 w-0 h-[calc(50%-144px)]" aria-hidden="true" />
+          <!-- Spacer: allows first card to center (desktop: vertical, mobile: horizontal) -->
+          <div class="projects-spacer flex-shrink-0 w-[calc(50vw-144px)] h-0 md:w-0 md:h-[calc(50%-144px)]" aria-hidden="true" />
 
           {projects.map((project) => (
             <a
               href={translatePath(`/projects/${project.id}`)}
               aria-label={`Open project: ${project.name}`}
-              class="flex-shrink-0 w-[min(85vw,288px)] md:w-[clamp(288px,30vw,578px)] aspect-square snap-center rounded-[32px] overflow-hidden relative group cursor-pointer shadow-layer-2 hover:shadow-layer-2-hover transition-all duration-500 ease-spatial md:hover:scale-[1.02] will-change-transform isolate block"
+              class="projects-card flex-shrink-0 w-[min(85vw,288px)] md:w-[clamp(288px,30vw,578px)] aspect-square rounded-[32px] overflow-hidden relative group cursor-pointer shadow-layer-2 hover:shadow-layer-2-hover transition-all duration-500 ease-spatial md:hover:scale-[1.02] will-change-transform isolate block"
               style={`view-transition-name: project-card-${project.id};`}
             >
               {project.images?.[0] ? (
@@ -57,19 +57,19 @@ const projects = projectEntries.map((entry) => ({
           ))}
 
           <article
-            class="flex-shrink-0 w-[min(85vw,288px)] md:w-[clamp(288px,30vw,578px)] aspect-square snap-center rounded-[32px] overflow-hidden relative cursor-pointer bg-gradient-to-br from-orange-200 via-rose-200 to-indigo-200 shadow-layer-2 hover:shadow-layer-2-hover transition-all duration-500 ease-spatial md:hover:scale-[1.02] will-change-transform isolate"
+            class="projects-card flex-shrink-0 w-[min(85vw,288px)] md:w-[clamp(288px,30vw,578px)] aspect-square rounded-[32px] overflow-hidden relative cursor-pointer bg-gradient-to-br from-orange-200 via-rose-200 to-indigo-200 shadow-layer-2 hover:shadow-layer-2-hover transition-all duration-500 ease-spatial md:hover:scale-[1.02] will-change-transform isolate"
           >
             <div class="absolute inset-0 flex items-center justify-center">
               <h3 class="text-2xl md:text-4xl font-medium text-primary/60 font-display text-center px-4">Más proyectos</h3>
             </div>
           </article>
 
-        <!-- Spacer: allows last card to center -->
-        <div class="flex-shrink-0 w-0 h-[calc(50%-144px)]" aria-hidden="true" />
+          <!-- Spacer: allows last card to center (desktop: vertical, mobile: horizontal) -->
+          <div class="projects-spacer flex-shrink-0 w-[calc(50vw-144px)] h-0 md:w-0 md:h-[calc(50%-144px)]" aria-hidden="true" />
         </div>
 
-        <!-- Indicators: dots below carousel on mobile, right side on desktop -->
-        <div id="carousel-indicators" class="flex flex-row gap-2 justify-center mt-4 md:hidden">
+        <!-- Indicators: fixed dots below carousel on mobile (OUTSIDE scroll container) -->
+        <div id="carousel-indicators" class="flex flex-row gap-2 justify-center mt-4 md:hidden shrink-0">
           {projects.map((_: any, i: number) => (
             <div
               class:list={[
@@ -118,6 +118,41 @@ const projects = projectEntries.map((entry) => ({
   /* Enforce 1:1 aspect ratio on cards as a fallback */
   #projects-carousel a {
     aspect-ratio: 1 / 1;
+  }
+
+  /* ===== Mobile: horizontal snap, sin inercia, tarjeta-por-tarjeta ===== */
+  @media (max-width: 767px) {
+    #projects-carousel {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: auto; /* desactiva momentum/inercia iOS */
+      touch-action: pan-x;              /* solo swipe horizontal */
+      overscroll-behavior-x: contain;   /* no propagar scroll al body */
+      scrollbar-width: none;
+    }
+    #projects-carousel .projects-card {
+      scroll-snap-align: center;
+      scroll-snap-stop: always;         /* FUERZA detener en cada card */
+    }
+  }
+
+  /* ===== Desktop: scroll vertical con snap ===== */
+  @media (min-width: 768px) {
+    #projects-carousel {
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: auto;
+      touch-action: pan-y;
+      overscroll-behavior-y: contain;
+    }
+    #projects-carousel .projects-card {
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+    }
   }
 </style>
 
@@ -185,10 +220,10 @@ const projects = projectEntries.map((entry) => ({
       });
     }
 
-    // Wheel navigation
+    // Wheel navigation (desktop only — mobile uses native snap scroll)
     carousel.addEventListener('wheel', (e: WheelEvent) => {
-      const isDesktop = window.innerWidth >= 768;
-      const delta = isDesktop ? e.deltaY : e.deltaX;
+      if (window.innerWidth < 768) return;
+      const delta = e.deltaY;
 
       if (Math.abs(delta) > 5) {
         e.preventDefault();
@@ -202,36 +237,44 @@ const projects = projectEntries.map((entry) => ({
       }
     }, { passive: false });
 
-    // Track scroll position to update index
+    // Track scroll position to update index (CSS snap nativo hace el resto)
     let scrollTimeout: ReturnType<typeof setTimeout>;
+
+    function syncCurrentIndex() {
+      const isDesktop = window.innerWidth >= 768;
+      const scrollPos = isDesktop ? carousel.scrollTop : carousel.scrollLeft;
+      const containerCenter = isDesktop ? carousel.clientHeight / 2 : carousel.clientWidth / 2;
+
+      let closest = 0;
+      let minDist = Infinity;
+
+      cards.forEach((card, i) => {
+        const el = card as HTMLElement;
+        const cardPos = isDesktop
+          ? el.offsetTop + el.offsetHeight / 2
+          : el.offsetLeft + el.offsetWidth / 2;
+        const dist = Math.abs(cardPos - scrollPos - containerCenter);
+        if (dist < minDist) {
+          minDist = dist;
+          closest = i;
+        }
+      });
+
+      if (closest !== currentIndex) {
+        currentIndex = closest;
+        updateIndicators();
+      }
+    }
+
     carousel.addEventListener('scroll', () => {
       clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        const isDesktop = window.innerWidth >= 768;
-        const scrollPos = isDesktop ? carousel.scrollTop : carousel.scrollLeft;
-        const containerCenter = isDesktop ? carousel.clientHeight / 2 : carousel.clientWidth / 2;
-
-        let closest = 0;
-        let minDist = Infinity;
-
-        cards.forEach((card, i) => {
-          const el = card as HTMLElement;
-          const cardPos = isDesktop
-            ? el.offsetTop + el.offsetHeight / 2
-            : el.offsetLeft + el.offsetWidth / 2;
-          const dist = Math.abs(cardPos - scrollPos - containerCenter);
-          if (dist < minDist) {
-            minDist = dist;
-            closest = i;
-          }
-        });
-
-        if (closest !== currentIndex) {
-          currentIndex = closest;
-          updateIndicators();
-        }
-      }, 50);
+      scrollTimeout = setTimeout(syncCurrentIndex, 50);
     }, { passive: true });
+
+    // scrollend: sync más confiable donde esté disponible
+    if ('onscrollend' in carousel) {
+      carousel.addEventListener('scrollend', syncCurrentIndex, { passive: true });
+    }
 
     // Keyboard navigation
     carousel.setAttribute('tabindex', '0');
@@ -245,24 +288,8 @@ const projects = projectEntries.map((entry) => ({
       }
     });
 
-    // Touch swipe support for mobile
-    let touchStartX = 0;
-    carousel.addEventListener('touchstart', (e: TouchEvent) => {
-      touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-
-    carousel.addEventListener('touchend', (e: TouchEvent) => {
-      const touchEndX = e.changedTouches[0].clientX;
-      const diffX = touchStartX - touchEndX;
-
-      if (window.innerWidth < 768 && Math.abs(diffX) > 30) {
-        if (diffX > 0) {
-          scrollToCard(currentIndex + 1);
-        } else {
-          scrollToCard(currentIndex - 1);
-        }
-      }
-    }, { passive: true });
+    // Touch swipe: delegado al snap-scroll nativo de CSS (scroll-snap-stop: always)
+    // El navegador gestiona el desplazamiento una-tarjeta-por-gesto.
 
     updateIndicators();
   }
