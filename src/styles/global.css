@@ -109,6 +109,8 @@
 
 /* Smooth theme transition between light and dark modes */
 html {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
   transition:
     background-color var(--duration-base) var(--ease-spatial),
     color var(--duration-base) var(--ease-spatial);
