@@ -23,9 +23,9 @@ const experience = experienceEntries
 
 <section id="experience" class="w-full md:min-w-[100vw] min-h-screen flex items-center justify-center shrink-0 snap-start px-8 md:px-24 pt-16 pb-28">
   <!-- Desktop: Horizontal timeline -->
-  <div class="hidden md:flex relative w-full max-w-[1664px] mx-auto h-[500px] items-center">
+  <div class="hidden md:flex relative w-full max-w-[1664px] mx-auto h-[560px] items-center">
     <!-- Horizontal line -->
-    <div class="absolute left-0 right-0 h-0.5 bg-brand-dominant-300 dark:bg-brand-dominant-700/50 z-0"></div>
+    <div class="absolute left-0 right-0 h-0.5 bg-border z-0"></div>
 
     <!-- Timeline items -->
     <div class="relative z-10 w-full flex justify-between items-center px-12">
@@ -35,34 +35,26 @@ const experience = experienceEntries
             <>
               <span class="absolute bottom-4 text-sm font-medium text-secondary whitespace-nowrap mb-2">{exp.start_date}</span>
               <div class="w-2.5 h-2.5 bg-accent rounded-full ring-4 ring-canvas"></div>
-              <div class="absolute top-6 mt-4 w-56 h-40 bg-brand-dominant-200 dark:bg-brand-dominant-800/60 rounded-xl shadow-sm border border-brand-dominant-100 dark:border-brand-dominant-700/40 p-4 flex flex-col justify-between">
+              <div class="absolute top-6 mt-4 w-72 h-52 bg-surface rounded-2xl shadow-layer-2 border border-border p-5 flex flex-col">
                 <div>
-                  <p class="text-xs text-accent font-medium">{exp.position}</p>
-                  <p class="text-sm font-semibold text-brand-dominant-800 dark:text-brand-dominant-100 mt-1">{exp.company_name}</p>
+                  <p class="text-sm font-medium text-secondary">{exp.position}</p>
+                  <p class="text-base font-semibold text-primary mt-1">{exp.company_name}</p>
+                  {exp.short_description && (
+                    <p class="text-sm text-secondary leading-snug mt-2">{exp.short_description}</p>
+                  )}
                 </div>
-                {exp.tags && (
-                  <div class="flex flex-wrap gap-1 mt-auto">
-                    {exp.tags.slice(0, 3).map((tag: string) => (
-                      <span class="text-[10px] px-1.5 py-0.5 bg-white/50 dark:bg-black/20 rounded-full text-brand-dominant-700 dark:text-brand-dominant-200 font-code">{tag}</span>
-                    ))}
-                  </div>
-                )}
               </div>
             </>
           ) : (
             <>
-              <div class="absolute bottom-6 mb-4 w-56 h-40 bg-brand-dominant-200 dark:bg-brand-dominant-800/60 rounded-xl shadow-sm border border-brand-dominant-100 dark:border-brand-dominant-700/40 p-4 flex flex-col justify-between">
+              <div class="absolute bottom-6 mb-4 w-72 h-52 bg-surface rounded-2xl shadow-layer-2 border border-border p-5 flex flex-col">
                 <div>
-                  <p class="text-xs text-accent font-medium">{exp.position}</p>
-                  <p class="text-sm font-semibold text-brand-dominant-800 dark:text-brand-dominant-100 mt-1">{exp.company_name}</p>
+                  <p class="text-sm font-medium text-secondary">{exp.position}</p>
+                  <p class="text-base font-semibold text-primary mt-1">{exp.company_name}</p>
+                  {exp.short_description && (
+                    <p class="text-sm text-secondary leading-snug mt-2">{exp.short_description}</p>
+                  )}
                 </div>
-                {exp.tags && (
-                  <div class="flex flex-wrap gap-1 mt-auto">
-                    {exp.tags.slice(0, 3).map((tag: string) => (
-                      <span class="text-[10px] px-1.5 py-0.5 bg-white/50 dark:bg-black/20 rounded-full text-brand-dominant-700 dark:text-brand-dominant-200 font-code">{tag}</span>
-                    ))}
-                  </div>
-                )}
               </div>
               <div class="w-2.5 h-2.5 bg-accent rounded-full ring-4 ring-canvas"></div>
               <span class="absolute top-4 text-sm font-medium text-secondary whitespace-nowrap mt-2">{exp.start_date}</span>
@@ -76,7 +68,7 @@ const experience = experienceEntries
   <!-- Mobile: Vertical timeline -->
   <div class="md:hidden relative w-full max-w-[1664px] mx-auto">
     <!-- Vertical line -->
-    <div class="absolute left-[12px] top-0 bottom-0 w-0.5 bg-brand-dominant-300 dark:bg-brand-dominant-700/50 z-0"></div>
+    <div class="absolute left-[12px] top-0 bottom-0 w-0.5 bg-border z-0"></div>
 
     <!-- Timeline items -->
     <div class="relative z-10 flex flex-col gap-10">
@@ -88,19 +80,15 @@ const experience = experienceEntries
           </div>
 
           <!-- Card -->
-          <div class="flex-1 bg-brand-dominant-200 dark:bg-brand-dominant-800/60 rounded-xl shadow-sm border border-brand-dominant-100 dark:border-brand-dominant-700/40 p-4 flex flex-col justify-between">
+          <div class="flex-1 bg-surface rounded-2xl shadow-layer-2 border border-border p-5 flex flex-col">
             <div>
-              <span class="text-xs font-medium text-secondary">{exp.start_date}</span>
-              <p class="text-xs text-accent font-medium mt-2">{exp.position}</p>
-              <p class="text-sm font-semibold text-brand-dominant-800 dark:text-brand-dominant-100 mt-1">{exp.company_name}</p>
+              <span class="text-sm font-medium text-secondary">{exp.start_date}</span>
+              <p class="text-sm font-medium text-secondary mt-2">{exp.position}</p>
+              <p class="text-base font-semibold text-primary mt-1">{exp.company_name}</p>
+              {exp.short_description && (
+                <p class="text-sm text-secondary leading-snug mt-2">{exp.short_description}</p>
+              )}
             </div>
-            {exp.tags && (
-              <div class="flex flex-wrap gap-1 mt-3">
-                {exp.tags.slice(0, 3).map((tag: string) => (
-                  <span class="text-[10px] px-1.5 py-0.5 bg-white/50 dark:bg-black/20 rounded-full text-brand-dominant-700 dark:text-brand-dominant-200 font-code">{tag}</span>
-                ))}
-              </div>
-            )}
           </div>
         </div>
       ))}

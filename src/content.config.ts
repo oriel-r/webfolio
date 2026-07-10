@@ -25,7 +25,6 @@ const experience = defineCollection({
     company_name: langString,
     position: langString,
     short_description: langString.optional(),
-    tags: z.array(langString).optional(),
     start_date: langString.optional(),
   }),
 });

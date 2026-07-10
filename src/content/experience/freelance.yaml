@@ -2,19 +2,9 @@ es:
   company_name: "Freelance"
   position: "Desarrollador Back-end"
   short_description: "Desarrollo de APIs y microservicios para clientes independientes."
-  tags:
-    - "NestJS"
-    - "TypeScript"
-    - "AWS"
-    - "CI/CD"
   start_date: "Junio 2025"
 en:
   company_name: "Freelance"
   position: "Back-end Developer"
   short_description: "Development of APIs and microservices for independent clients."
-  tags:
-    - "NestJS"
-    - "TypeScript"
-    - "AWS"
-    - "CI/CD"
   start_date: "June 2025"

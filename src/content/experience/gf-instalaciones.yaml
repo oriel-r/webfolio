@@ -2,19 +2,9 @@ es:
   company_name: "GF Instalaciones"
   position: "Desarrollador Full Stack"
   short_description: "Desarrollo y mantenimiento de la plataforma web interna para gestión de instalaciones."
-  tags:
-    - "Node.js"
-    - "React"
-    - "PostgreSQL"
-    - "Docker"
   start_date: "Enero 2025"
 en:
   company_name: "GF Instalaciones"
   position: "Full Stack Developer"
   short_description: "Development and maintenance of the internal web platform for installation management."
-  tags:
-    - "Node.js"
-    - "React"
-    - "PostgreSQL"
-    - "Docker"
   start_date: "January 2025"
