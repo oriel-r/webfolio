@@ -93,7 +93,7 @@
   --shadow-interactive: 2px 2px 8px 0px rgba(12, 15, 16, 0.08);
   --shadow-interactive-hover: 4px 4px 16px 0px rgba(12, 15, 16, 0.14);
   --shadow-bento-base: 2px 2px 8px 0px rgba(12, 15, 16, 0.08);
-  --shadow-bento-hover: 4px 4px 16px 0px rgba(12, 15, 16, 0.14);
+  --shadow-bento-hover: var(--shadow-bento-base);
   --shadow-overlay: 2px 2px 14px 0px rgba(12, 15, 16, 0.10);
   --shadow-immersive: 2px 2px 24px 0px rgba(12, 15, 16, 0.12);
 }
