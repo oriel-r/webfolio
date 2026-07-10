@@ -58,9 +58,9 @@ const skills = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/skills' }),
   schema: z.object({
     name: langString,
-    icon: langString,
+    icon: langString.optional(),
     category: z.enum([
-      'Backend & Architechure',
+      'Backend & Architecture',
       'DevOps & Cloud',
       'Frontend',
       'DevTool',

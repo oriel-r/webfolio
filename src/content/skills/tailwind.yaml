@@ -1,5 +1,5 @@
 name: "Tailwind"
-icon: "tailwind"
+icon: "tailwindcss"
 category: "Frontend"
 projects:
   - "webfolio"

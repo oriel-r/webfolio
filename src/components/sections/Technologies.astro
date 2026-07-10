@@ -1,28 +1,33 @@
 ---
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getCollection } from 'astro:content';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const allSkills = await getCollection('skills');
+const skillsByCategory = (category) =>
+  allSkills.filter((entry) => entry.data.category === category).map((entry) => entry.data);
 
 const columns = [
   {
     grow: 'md:flex-[2]',
     cards: [
-      { title: t('technologies.backend'), skills: ['Node.js', 'NestJS', 'Express', 'JavaScript', 'TypeScript', 'Hono', 'Bull MQ', 'Multi Tenant'], cardGrow: 'flex-1', tagSize: 'lg', titleSize: 'lg' }
+      { titleKey: 'technologies.backend', category: 'Backend & Architecture', cardGrow: 'flex-1', tagSize: 'lg', titleSize: 'lg' }
     ]
   },
   {
     grow: 'md:flex-[1.5]',
     cards: [
-      { title: t('technologies.devops'), skills: ['Docker', 'AWS', 'Linux', 'CI/CD', 'GCP', 'AWS CCP', 'GitHub Actions'], cardGrow: 'flex-[2]', tagSize: 'sm', titleSize: 'md' },
-      { title: t('technologies.ai'), skills: ['Gemini API', 'Open Code', 'Antigravity', 'Crone Jobs'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
+      { titleKey: 'technologies.devops', category: 'DevOps & Cloud', cardGrow: 'flex-[2]', tagSize: 'sm', titleSize: 'md' },
+      { titleKey: 'technologies.ai', category: 'AI & Automations', cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
     ]
   },
   {
     grow: 'md:flex-[1]',
     cards: [
-      { title: t('technologies.frontend'), skills: ['React', 'Astro', 'Tailwind', 'Redux Tool Kit', 'Bootstrap', 'Figma'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' },
-      { title: t('technologies.databases'), skills: ['SQL', 'NoSQL', 'Redis', 'TypeORM', 'Mikro-orm', 'Prisma-ORM', 'Mongoose'], cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
+      { titleKey: 'technologies.frontend', category: 'Frontend', cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' },
+      { titleKey: 'technologies.databases', category: 'Databases', cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
     ]
   }
 ];
@@ -37,7 +42,7 @@ const columns = [
       ]}>
         {col.cards.map((card) => (
           <div class:list={[
-            'flex flex-col p-4 md:p-4 lg:p-5 xl:p-6 rounded-xl md:rounded-2xl lg:rounded-[32px] bg-elevated border border-border min-w-0 shadow-bento hover:shadow-bento-glow transition-all duration-500 ease-spatial md:hover:scale-[1.02] will-change-transform isolate',
+            'flex flex-col p-4 md:p-4 lg:p-5 xl:p-6 rounded-xl md:rounded-2xl lg:rounded-[32px] bg-elevated border border-border min-w-0 shadow-bento hover:shadow-bento-glow transition-all duration-500 ease-spatial will-change-transform isolate',
             card.cardGrow
           ]}>
             <h3 class:list={[
@@ -47,16 +52,19 @@ const columns = [
                 : card.titleSize === 'md'
                   ? 'text-base md:text-lg lg:text-2xl xl:text-3xl 2xl:text-4xl mb-2 md:mb-3 lg:mb-4'
                   : 'text-base md:text-base lg:text-lg xl:text-2xl mb-2 md:mb-2 lg:mb-3 xl:mb-4'
-            ]}>{card.title}</h3>
+            ]}>{t(card.titleKey)}</h3>
             <div class="flex flex-wrap gap-1 md:gap-1 lg:gap-1.5 xl:gap-2">
-              {card.skills.map(skill => (
+              {skillsByCategory(card.category).map((skill) => (
                 <span class:list={[
-                  'font-medium rounded-full bg-surface/50 text-primary border border-border-subtle font-code',
+                  'inline-flex items-center gap-[0.6em] font-medium rounded-full bg-surface/50 text-primary border border-border-subtle font-code',
                   card.tagSize === 'lg'
                     ? 'px-2 py-0.5 text-xs md:px-2.5 md:py-1 md:text-sm lg:px-3 lg:py-1.5 lg:text-base xl:px-5 xl:py-2.5 xl:text-lg'
                     : 'px-2 py-0.5 text-xs md:px-2 md:py-1 md:text-xs lg:px-3 lg:py-1.5 lg:text-sm xl:px-4 xl:py-2 xl:text-base'
                 ]}>
-                  {skill}
+                  {skill.icon && (
+                    <span class:list={[`icon-[simple-icons--${skill.icon}]`, 'inline-block text-[1em] shrink-0 text-muted opacity-70']} aria-hidden="true"></span>
+                  )}
+                  <span>{skill.name}</span>
                 </span>
               ))}
             </div>
@@ -66,6 +74,12 @@ const columns = [
     ))}
   </div>
 </section>
+
+<!-- Safelist for dynamically generated iconify classes used above -->
+<div
+  class="hidden icon-[simple-icons--nodedotjs] icon-[simple-icons--nestjs] icon-[simple-icons--express] icon-[simple-icons--javascript] icon-[simple-icons--typescript] icon-[simple-icons--hono] icon-[simple-icons--docker] icon-[simple-icons--amazonwebservices] icon-[simple-icons--linux] icon-[simple-icons--githubactions] icon-[simple-icons--googlegemini] icon-[simple-icons--react] icon-[simple-icons--astro] icon-[simple-icons--tailwindcss] icon-[simple-icons--redux] icon-[simple-icons--bootstrap] icon-[simple-icons--figma] icon-[simple-icons--redis] icon-[simple-icons--typeorm] icon-[simple-icons--prisma] icon-[simple-icons--mongoose]"
+  aria-hidden="true"
+></div>
 
 <script is:inline>
   (function () {

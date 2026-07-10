@@ -1,5 +1,5 @@
 name: "Node.js"
-icon: "nodejs"
-category: "Backend & Architechure"
+icon: "nodedotjs"
+category: "Backend & Architecture"
 projects:
   - "gf-instalaciones"
