@@ -35,6 +35,11 @@
   --color-brand-neutral-800: #242D31;
   --color-brand-neutral-900: #0C0F10;
 
+  /* --- Image Overlay Tokens (theme-independent) --- */
+  --color-overlay-strong: rgba(0, 0, 0, 0.80);
+  --color-overlay-soft: rgba(0, 0, 0, 0.20);
+  --color-on-image: #FFFFFF;
+
   /* --- Semantic Theme Tokens (resolve via CSS vars) --- */
   --color-canvas: var(--bg-canvas);
   --color-surface: var(--bg-surface);
