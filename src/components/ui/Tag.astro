@@ -1,21 +1,39 @@
 ---
 interface Props {
+  variant?: 'tech' | 'default' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  icon?: string;
   class?: string;
-  variant?: 'default' | 'outline';
 }
 
-const { class: className = '', variant = 'default', ...rest } = Astro.props;
+const {
+  variant = 'tech',
+  size = 'sm',
+  icon,
+  class: className = '',
+  ...rest
+} = Astro.props;
 
-const baseStyles = 'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
+const baseStyles = 'inline-flex items-center gap-[0.6em] tracking-[0.04em] font-medium rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 font-code';
 
 const variants = {
+  tech: 'bg-surface/50 text-primary border border-border-subtle',
   default: 'bg-elevated text-primary hover:bg-border',
   outline: 'text-primary border border-border',
 };
 
-const classes = [baseStyles, variants[variant], className].filter(Boolean).join(' ');
+const sizes = {
+  sm: 'px-2 py-0.5 text-xs',
+  md: 'px-2.5 py-1 text-sm',
+  lg: 'px-3 py-1.5 text-base',
+};
+
+const classes = [baseStyles, variants[variant], sizes[size], className].filter(Boolean).join(' ');
 ---
 
-<div class={classes} {...rest}>
+<span class={classes} {...rest}>
+  {icon && (
+    <span class={`icon-[simple-icons--${icon}] inline-block text-[1em] shrink-0 text-muted opacity-70`} aria-hidden="true"></span>
+  )}
   <slot />
-</div>
+</span>
