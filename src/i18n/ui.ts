@@ -11,22 +11,24 @@ export const ui = {
     'nav.experience': 'Experiencia',
     'nav.projects': 'Proyectos',
     'nav.about': 'Sobre mi',
-    'nav.technologies': 'Habilidades',
+    'nav.technologies': 'Tecnologías',
     'nav.contact': 'Contacto',
 
     'hero.name': 'Oriel Romero',
     'hero.subtitle': 'Desarrollador Back-end',
     'hero.title': 'Hago que la tecnologia compleja se sienta simple',
-    'hero.description': 'Traduzco ideas complejas en codigo que resulta en experiencias fluidas y eficientes para el usuario...',
+    'hero.description': 'Traduzco ideas complejas en código que resulta en experiencias fluidas y eficientes para el usuario...',
     'hero.cta': 'Descubre donde puse a prueba mis habilidades...',
 
     'section.experience': 'Experiencia',
     'section.projects': 'Proyectos',
-    'section.about': 'Mi porqure',
-    'section.technologies': 'Habilidades',
+    'projects.description': '[PLACEHOLDER] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'projects.cta': '[PLACEHOLDER] Lorem ipsum →',
+    'section.about': 'Mi porqué',
+    'section.technologies': 'Tecnologías',
     'section.contact': 'Contacto',
 
-    'about.title': 'Mi porqure',
+    'about.title': 'Mi porqué',
     'about.description': 'Cosas firmemente en la practica para crear soluciones efectivas y resultados concretos.',
     'about.body': 'Esta coleccion de proyectos es mi basado en ideas concretas y aplicar esos conocimientos.',
 
@@ -75,6 +77,8 @@ export const ui = {
 
     'section.experience': 'Experience',
     'section.projects': 'Projects',
+    'projects.description': '[PLACEHOLDER] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'projects.cta': '[PLACEHOLDER] Lorem ipsum →',
     'section.about': 'About me',
     'section.technologies': 'Technologies',
     'section.contact': 'Contact',
