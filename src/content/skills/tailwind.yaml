@@ -1,5 +1,3 @@
-name: "Tailwind"
+name: "Tailwind CSS"
 icon: "tailwindcss"
 category: "Frontend"
-projects:
-  - "webfolio"
