@@ -1,4 +1,4 @@
-# Home data
+# Home / Hero
 - hero_title:
     - type: string
     - required: true
@@ -8,9 +8,10 @@
 - hero_description:
     - type: string
     - required: true
+# Note: All text fields are wrapped in es/en language objects (langSchema).
 
 # Experience
-- company_name: 
+- company_name:
     - type: string
     - required: true
 - position:
@@ -19,17 +20,12 @@
 - short_description:
     - type: string
     - required: false
-- tags:
-    - type: list
-    - items:
-        - type: string
-    - required: false
 - start_date:
     - type: string
     - required: false
-z
+
 # Projects
-- name: 
+- name:
     - type: string
     - required: true
 - type:
@@ -65,6 +61,18 @@ z
 - repository:
     - type: url
     - required: true
+- role:
+    - type: string
+    - required: false
+- back_repo:
+    - type: url
+    - required: false
+- front_repo:
+    - type: url
+    - required: false
+- long_description:
+    - type: string
+    - required: false
 
 # Skills
 - name:
@@ -76,7 +84,7 @@ z
 - category:
     - type: string
     - required: true
-    - options: ["Backend & Architechure", "DevOps & Cloud", "Frontend", "DevTool", "Databases", "AI & Automations"]
+    - options: ["Backend & Architecture", "DevOps & Cloud", "Frontend", "DevTool", "Databases", "AI & Automations"]
 - projects:
     - type: list
     - items:
@@ -84,15 +92,16 @@ z
     - required: false
 
 # About me data
+- photo:
+    - type: string
+    - required: true
 - title:
     - type: string
     - required: true
+    - note: "Localized in es/en objects"
 - text:
     - type: list
     - items:
         - type: string
     - required: true
-- photo:
-    - type: string
-    - required: true
-    
+    - note: "Localized in es/en objects"

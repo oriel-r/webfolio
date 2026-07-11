@@ -73,8 +73,9 @@ radii:
   radius-lg: "32px"   # Core structural layout units, parent containers, bento cards
 
 icons:
-  library: "Google Material Icons"
-  style: "Outlined / Rounded variant"
+  primary-library: "Google Material Icons — UI controls, layout controls"
+  primary-style: "Outlined / Rounded variant"
+  brand-library: "simple-icons (via Iconify) — technology brand logos (Node.js, Docker, etc.)"
   scaling:
     default: "24px"
     dense: "18px"
@@ -102,7 +103,8 @@ The palette uses explicit nomenclature (`brand-dominant` and `brand-action`) to 
 - **IBM Plex Sans (Body):** The backbone of the content, delivering flawless technical rigor and readability.
 - **IBM Plex Mono (Technical/Tokens):** Used at a reduced size for technical metadata and tech tags (e.g., `NestJS`, `TypeORM`, `Next.js`). Injects code identity without cluttering the layout.
 - **Atkinson Hyperlegible (Accessibility):** Engineered for high-contrast modes and critical legibility.
-- **Google Material Icons (Controls):** Universal layout controls in Outlined/Rounded variations to match display geometry.
+- **Google Material Icons (Controls):** Universal layout controls in Outlined/Rounded variations to match display geometry. Used for theme toggles, navigation, and contact card icons (calendar, email, PDF).
+- **simple-icons via Iconify (Brand Logos):** Technology brand glyphs (Node.js, Docker, PostgreSQL, etc.) used exclusively in skill tags. No Material Icons equivalent exists for brand logos, so this is a justified exception.
 
 ## Corner Radii Standards
 
