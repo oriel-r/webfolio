@@ -17,7 +17,7 @@ const experience = experienceEntries
       'Junio 2025': 2, 'June 2025': 2,
       'Abril 2026': 3, 'April 2026': 3,
     };
-    return (dateOrder[a.start_date ?? ''] ?? 0) - (dateOrder[b.start_date ?? ''] ?? 0);
+    return (dateOrder[b.start_date ?? ''] ?? 0) - (dateOrder[a.start_date ?? ''] ?? 0);
   });
 ---
 

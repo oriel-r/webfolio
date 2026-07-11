@@ -1,0 +1,10 @@
+es:
+  company_name: "TiendaHub"
+  position: "Desarrollador backend"
+  short_description: "Diseño e implementación de una plataforma ecommerce SaaS multi-tenant."
+  start_date: "Junio 2025"
+en:
+  company_name: "TiendaHub"
+  position: "Backend Developer"
+  short_description: "Design and implementation of a multi-tenant SaaS ecommerce platform."
+  start_date: "June 2025"

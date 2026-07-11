@@ -1,0 +1,10 @@
+es:
+  company_name: "Menu Driver"
+  position: "Desarrollador backend"
+  short_description: "Diseño e implementación de API REST para plataforma de kioskos SaaS."
+  start_date: "Abril 2026"
+en:
+  company_name: "Menu Driver"
+  position: "Backend Developer"
+  short_description: "Design and implementation of a REST API for a SaaS kiosk platform."
+  start_date: "April 2026"
