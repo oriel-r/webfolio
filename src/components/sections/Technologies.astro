@@ -8,7 +8,10 @@ const t = useTranslations(lang);
 
 const allSkills = await getCollection('skills');
 const skillsByCategory = (category) =>
-  allSkills.filter((entry) => entry.data.category === category).map((entry) => entry.data);
+  allSkills
+    .filter((entry) => entry.data.category === category)
+    .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
+    .map((entry) => entry.data);
 
 const columns = [
   {
@@ -34,8 +37,8 @@ const columns = [
 ];
 ---
 
-<section id="technologies" class="w-full md:min-w-[100vw] min-h-screen flex items-start justify-center shrink-0 snap-start px-4 md:px-8 lg:px-12 xl:px-24 pt-20 pb-8 md:pb-28">
-  <div class="flex flex-col md:flex-row md:items-stretch gap-4 md:gap-4 lg:gap-6 xl:gap-8 w-full max-w-[1664px] mx-auto h-full md:min-h-[300px] lg:min-h-[400px] lg:aspect-[1664/760] md:pt-24">
+<section id="technologies" class="w-full md:min-w-[100vw] min-h-screen flex items-start justify-center shrink-0 snap-start px-4 md:px-8 lg:px-12 xl:px-24 pt-20 md:pt-24 pb-8 md:pb-28">
+  <div class="flex flex-col md:flex-row md:items-stretch gap-4 md:gap-4 lg:gap-6 xl:gap-8 w-full max-w-[1664px] mx-auto h-full md:min-h-[300px] lg:min-h-[400px] lg:aspect-[1664/760]">
     {columns.map((col) => (
       <div class:list={[
         'flex min-w-0 flex-col gap-4 md:gap-4 lg:gap-6 xl:gap-8',
