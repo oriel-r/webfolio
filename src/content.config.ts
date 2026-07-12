@@ -67,6 +67,7 @@ const skills = defineCollection({
       'Databases',
       'AI & Automations',
     ]),
+    order: z.number().int().default(999),
     projects: z.array(langString).optional(),
   }),
 });

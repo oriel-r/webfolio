@@ -1,3 +1,4 @@
 name: "Gemini API"
 icon: "googlegemini"
 category: "AI & Automations"
+order: 1

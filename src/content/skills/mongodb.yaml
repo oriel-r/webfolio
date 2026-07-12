@@ -1,3 +1,4 @@
 name: "MongoDB"
 icon: "mongodb"
 category: "Databases"
+order: 2

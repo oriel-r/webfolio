@@ -1,3 +1,4 @@
 name: "GCP"
 icon: "googlecloud"
 category: "DevOps & Cloud"
+order: 6

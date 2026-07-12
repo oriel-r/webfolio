@@ -1,3 +1,4 @@
 name: "Astro"
 icon: "astro"
 category: "Frontend"
+order: 2

@@ -1,3 +1,4 @@
 name: "Hono"
 icon: "hono"
 category: "Backend & Architecture"
+order: 5

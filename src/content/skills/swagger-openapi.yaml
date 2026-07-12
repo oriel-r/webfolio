@@ -1,3 +1,4 @@
 name: "Swagger/OpenAPI"
 icon: "swagger"
 category: "Backend & Architecture"
+order: 8

@@ -1,3 +1,4 @@
 name: "Tailwind CSS"
 icon: "tailwindcss"
 category: "Frontend"
+order: 3

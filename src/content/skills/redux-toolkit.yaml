@@ -1,3 +1,4 @@
 name: "Redux Toolkit"
 icon: "redux"
 category: "Frontend"
+order: 4
