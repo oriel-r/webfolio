@@ -30,6 +30,12 @@ const t = useTranslations(lang)
 					);
 				}
 				applyTheme();
+				window.matchMedia('(prefers-color-scheme: dark)')
+					.addEventListener('change', (e) => {
+						if (!localStorage.getItem('theme')) {
+							document.documentElement.classList.toggle('dark', e.matches);
+						}
+					});
 				document.addEventListener('astro:after-swap', applyTheme);
 			})();
 		</script>
