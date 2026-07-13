@@ -84,6 +84,21 @@ const columns = [
   aria-hidden="true"
 ></div>
 
+<style>
+  :global(.dark) #technologies > div:first-child {
+    position: relative;
+  }
+
+  :global(.dark) #technologies > div:first-child::before {
+    content: '';
+    position: absolute;
+    inset: -12%;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(255, 180, 110, 0.12), transparent 80%);
+  }
+</style>
+
 <script is:inline>
   (function () {
     function update() {
