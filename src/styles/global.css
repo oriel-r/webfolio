@@ -149,18 +149,18 @@ html *::after {
   --text-muted: #6C8793;
   --border-default: #3C4B52;
   --border-subtle: #242D31;
-  --accent: #39BFFF;
-  --accent-hover: #71D1FF;
-  --accent-text: #AAE4FF;
-  --cta: #FF7839;
-  --cta-hover: #FF9F71;
+  --accent: #4FC9FF;
+  --accent-hover: #7DD8FF;
+  --accent-text: #BFEBFF;
+  --cta: #FF8C54;
+  --cta-hover: #FFA875;
 
-  --shadow-interactive: 2px 2px 20px 0px rgba(0, 173, 255, 0.25);
-  --shadow-interactive-hover: 2px 2px 32px 0px rgba(0, 173, 255, 0.7);
-  --shadow-bento-base: 2px 2px 20px 0px rgba(0, 173, 255, 0.35);
-  --shadow-bento-hover: 2px 2px 32px 0px rgba(0, 173, 255, 0.8);
-  --shadow-overlay: 2px 2px 24px 0px rgba(0, 173, 255, 0.45);
-  --shadow-immersive: 2px 2px 30px 0px rgba(0, 173, 255, 0.55);
+  --shadow-interactive: 2px 2px 20px 0px rgba(255, 180, 110, 0.16);
+  --shadow-interactive-hover: 2px 2px 28px 0px rgba(255, 180, 110, 0.26);
+  --shadow-bento-base: 2px 2px 20px 0px rgba(255, 180, 110, 0.20);
+  --shadow-bento-hover: 2px 2px 28px 0px rgba(255, 180, 110, 0.32);
+  --shadow-overlay: 2px 2px 24px 0px rgba(255, 180, 110, 0.24);
+  --shadow-immersive: 2px 2px 30px 0px rgba(255, 180, 110, 0.28);
 }
 
 /* Portrait tablet mode: vertical layout like mobile */
