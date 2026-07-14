@@ -4,10 +4,8 @@ es:
   description: "Sitio web personal para mostrar proyectos y experiencia como desarrollador."
   long_description: "Webfolio one-page responsive: scroll horizontal en desktop, vertical en mobile. Bento de skills, timeline de experiencia y galería de proyectos agrupadas por capas con z-axis."
   images:
-    - "/images/projects/webfolio-hero.png"
-    - "/images/projects/webfolio-mobile.png"
-    - "/images/projects/placeholder.svg"
-    - "/images/projects/placeholder.svg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   technologies:
     - "Astro"
     - "TypeScript"
@@ -22,10 +20,8 @@ en:
   description: "Personal website to showcase projects and developer experience."
   long_description: "One-page responsive webfolio: horizontal scroll on desktop, vertical on mobile. Skill bento, experience timeline, and project gallery grouped by layers with z-axis orchestration."
   images:
-    - "/images/projects/webfolio-hero.png"
-    - "/images/projects/webfolio-mobile.png"
-    - "/images/projects/placeholder.svg"
-    - "/images/projects/placeholder.svg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   technologies:
     - "Astro"
     - "TypeScript"

@@ -4,10 +4,9 @@ es:
   description: "Plataforma web para la gestión y seguimiento de servicios de instalaciones eléctricas y sanitarias."
   long_description: "Sistema interno que centraliza el ciclo completo de un servicio: presupuestos, asignación de técnicos, materiales, certificaciones y reportes. Diseñado para reemplazar planillas dispersas y dar trazabilidad real por obra y cliente."
   images:
-    - "/images/projects/gf-instalaciones-hero.png"
-    - "/images/projects/placeholder.svg"
-    - "/images/projects/placeholder.svg"
-    - "/images/projects/placeholder.svg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   colaborators:
     - name: "Fulano de Tal"
       contact: "https://gfinstalaciones.com"
@@ -32,10 +31,9 @@ en:
   description: "Web platform for managing and tracking electrical and sanitary installation services."
   long_description: "Internal system that centralizes the full service lifecycle: budgets, technician assignment, materials, certifications, and reporting. Built to replace scattered spreadsheets and bring real traceability per job and client."
   images:
-    - "/images/projects/gf-instalaciones-hero.png"
-    - "/images/projects/placeholder.svg"
-    - "/images/projects/placeholder.svg"
-    - "/images/projects/placeholder.svg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   colaborators:
     - name: "John Doe"
       contact: "https://gfinstalaciones.com"

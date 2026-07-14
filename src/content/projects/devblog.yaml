@@ -4,10 +4,9 @@ es:
   description: "Plataforma de blogging para desarrolladores con editor Markdown, syntax highlighting, sistema de comentarios y soporte para series de artículos."
   long_description: "CMS ligero para escribir en Markdown con syntax highlighting nativo, sistema de comentarios anidado y publicación serializada bajo Mdx. Deploy en edge con Cloudflare Workers."
   images:
-    - "/images/projects/devblog-hero.png"
-    - "/images/projects/placeholder.svg"
-    - "/images/projects/placeholder.svg"
-    - "/images/projects/placeholder.svg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   technologies:
     - "Astro"
     - "MDX"
@@ -24,10 +23,9 @@ en:
   description: "Blogging platform for developers with Markdown editor, syntax highlighting, comment system, and article series support."
   long_description: "Lightweight CMS to write in Markdown with native syntax highlighting, nested comments, and serialization support via MDX. Deployed to the edge with Cloudflare Workers."
   images:
-    - "/images/projects/devblog-hero.png"
-    - "/images/projects/placeholder.svg"
-    - "/images/projects/placeholder.svg"
-    - "/images/projects/placeholder.svg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   technologies:
     - "Astro"
     - "MDX"
