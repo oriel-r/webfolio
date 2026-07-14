@@ -1,4 +1,4 @@
 name: "BullMQ"
 category: "Backend & Architecture"
 order: 14
-projects: ["taskflow"]
+projects: ["01-leads_insight_generator"]

@@ -2,4 +2,4 @@ name: "React"
 icon: "react"
 category: "Frontend"
 order: 1
-projects: ["chatapp"]
+projects: ["04-appointments_app", "02-elearning_platform"]

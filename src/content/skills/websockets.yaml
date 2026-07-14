@@ -1,4 +1,4 @@
 name: "WebSockets"
 category: "Backend & Architecture"
 order: 12
-projects: ["devblog"]
+projects: ["02-elearning_platform"]

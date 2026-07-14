@@ -1,4 +1,4 @@
 name: "REST APIs"
 category: "Backend & Architecture"
 order: 6
-projects: ["weather-dashboard"]
+projects: ["03-ecommerce_api", "02-elearning_platform", "04-appointments_app", "01-leads_insight_generator"]

@@ -1,5 +1,7 @@
 ---
 import { useTranslations } from '../../i18n/utils';
+import Tag from '../ui/Tag.astro';
+import type { SkillOverride } from '../../utils/techIcons';
 
 interface Props {
   slug: string;
@@ -10,6 +12,7 @@ interface Props {
   images: string[];
   colaborators?: { name?: string; contact: string }[];
   technologies: string[];
+  skillOverrides?: Record<string, SkillOverride>;
   role?: string;
   demo?: string;
   repository: string;
@@ -27,6 +30,7 @@ const {
   images,
   colaborators = [],
   technologies,
+  skillOverrides = {},
   role,
   demo,
   repository,
@@ -171,11 +175,14 @@ const collaboratorText =
         {t('detail.technologies')}
       </h2>
       <div class="flex flex-wrap gap-2">
-        {technologies.map((tech) => (
-          <span class="inline-flex items-center rounded-md px-2.5 py-1 bg-elevated text-primary font-code text-xs font-medium border border-border">
-            {tech}
-          </span>
-        ))}
+        {technologies.map((tech) => {
+          const override = skillOverrides[tech];
+          return (
+            <Tag icon={override?.icon} size="md">
+              {override?.name ?? tech}
+            </Tag>
+          );
+        })}
       </div>
 
       <!-- Action buttons (Demo / Back-end / Front-end) -->

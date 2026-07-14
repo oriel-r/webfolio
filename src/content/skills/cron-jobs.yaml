@@ -1,4 +1,4 @@
 name: "Cron Jobs"
 category: "AI & Automations"
 order: 3
-projects: ["devblog"]
+projects: ["02-elearning_platform", "01-leads_insight_generator"]

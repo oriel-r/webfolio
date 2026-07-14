@@ -2,4 +2,4 @@ name: "Tailwind CSS"
 icon: "tailwindcss"
 category: "Frontend"
 order: 3
-projects: ["gf-instalaciones"]
+projects: ["02-elearning_platform"]

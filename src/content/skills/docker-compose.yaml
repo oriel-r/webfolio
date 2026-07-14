@@ -1,4 +1,4 @@
 name: "Docker Compose"
 category: "DevOps & Cloud"
 order: 2
-projects: ["gf-instalaciones"]
+projects: ["03-ecommerce_api", "01-leads_insight_generator"]

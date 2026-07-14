@@ -2,4 +2,4 @@ name: "NestJS"
 icon: "nestjs"
 category: "Backend & Architecture"
 order: 3
-projects: ["gf-instalaciones"]
+projects: ["03-ecommerce_api", "02-elearning_platform", "01-leads_insight_generator"]

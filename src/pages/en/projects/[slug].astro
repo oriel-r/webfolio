@@ -3,6 +3,7 @@ import Layout from '../../../layouts/Layout.astro';
 import ProjectDetail from '../../../components/project/ProjectDetail.astro';
 import { getCollection } from 'astro:content';
 import type { Lang } from '../../../i18n/utils';
+import { getProjectSkillOverrides } from '../../../utils/techIcons';
 
 export async function getStaticPaths() {
   const entries = await getCollection('projects');
@@ -15,6 +16,8 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const lang: Lang = 'en';
 const data = entry.data[lang] ?? entry.data['es'];
+const allSkills = await getCollection('skills');
+const skillOverrides = getProjectSkillOverrides(allSkills, entry.id);
 ---
 
 <Layout>
@@ -28,6 +31,7 @@ const data = entry.data[lang] ?? entry.data['es'];
       images={data.images ?? []}
       colaborators={data.colaborators}
       technologies={data.technologies}
+      skillOverrides={skillOverrides}
       role={data.role}
       demo={data.demo}
       repository={data.repository}

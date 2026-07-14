@@ -2,4 +2,4 @@ name: "SQLite"
 icon: "sqlite"
 category: "Databases"
 order: 4
-projects: ["devblog"]
+projects: []

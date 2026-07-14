@@ -2,4 +2,4 @@ name: "Hono"
 icon: "hono"
 category: "Backend & Architecture"
 order: 5
-projects: ["webfolio"]
+projects: []

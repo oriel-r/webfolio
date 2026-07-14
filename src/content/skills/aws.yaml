@@ -2,4 +2,4 @@ name: "AWS"
 icon: "amazonwebservices"
 category: "DevOps & Cloud"
 order: 7
-projects: ["gf-instalaciones"]
+projects: []

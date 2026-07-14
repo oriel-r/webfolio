@@ -1,4 +1,4 @@
 name: "API Integrations"
 category: "Backend & Architecture"
 order: 7
-projects: ["devblog"]
+projects: ["03-ecommerce_api", "02-elearning_platform", "01-leads_insight_generator"]
