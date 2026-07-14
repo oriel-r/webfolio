@@ -27,23 +27,94 @@ const t = useTranslations(lang);
     <!-- Contact Cards -->
     <div class="w-full md:w-1/2 flex justify-center md:justify-end gap-4 md:gap-6">
       <!-- Calendar Card -->
-      <a href="#" class="w-28 h-28 md:w-36 md:h-36 bg-surface rounded-[32px] border border-border flex flex-col items-center justify-center gap-3 shadow-layer-2 hover:shadow-layer-2-hover transition-all duration-500 ease-spatial md:hover:scale-[1.02] will-change-transform isolate group">
-        <span class="icon-[ic--outline-calendar-month] text-[32px] text-accent group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+      <a href="#" class="w-28 h-28 md:w-36 md:h-36 bg-surface rounded-[32px] border border-border flex flex-col items-center justify-center gap-3 shadow-layer-2 hover:shadow-layer-2-hover transition duration-hover ease-hover md:hover:scale-[1.02] will-change-transform isolate group">
+        <span class="icon-[ic--outline-calendar-month] text-[32px] text-accent group-hover:scale-110 transition-transform duration-hover ease-hover" aria-hidden="true"></span>
         <span class="text-xs font-medium text-accent text-center px-2">{t('contact.call')}</span>
       </a>
 
       <!-- Email Card -->
-      <button class="w-28 h-28 md:w-36 md:h-36 bg-surface rounded-[32px] border border-border flex flex-col items-center justify-center gap-3 shadow-layer-2 hover:shadow-layer-2-hover transition-all duration-500 ease-spatial md:hover:scale-[1.02] will-change-transform isolate group">
-        <span class="icon-[ic--outline-mail] text-[32px] text-accent group-hover:scale-110 transition-transform" aria-hidden="true"></span>
-        <span class="text-xs font-medium text-accent text-center px-2">{t('contact.email')}</span>
+      <button
+        id="email-copy-btn"
+        type="button"
+        data-email="orielromero97@gmail.com"
+        data-copied-text={t('contact.copied')}
+        data-copy-success={t('contact.copySuccess')}
+        data-copy-error={t('contact.copyError')}
+        aria-label={t('contact.email')}
+        class="w-28 h-28 md:w-36 md:h-36 bg-surface rounded-[32px] border border-border flex flex-col items-center justify-center gap-3 shadow-layer-2 hover:shadow-layer-2-hover transition duration-hover ease-hover md:hover:scale-[1.02] will-change-transform isolate group cursor-pointer"
+      >
+        <span class="icon-[ic--outline-mail] text-[32px] text-accent group-hover:scale-110 transition-transform duration-hover ease-hover" aria-hidden="true"></span>
+        <span class="text-xs font-medium text-accent text-center px-2" aria-live="polite">{t('contact.email')}</span>
       </button>
 
       <!-- PDF Card -->
-      <a href="/resume.pdf" class="w-28 h-28 md:w-36 md:h-36 bg-surface rounded-[32px] border border-border flex flex-col items-center justify-center gap-3 shadow-layer-2 hover:shadow-layer-2-hover transition-all duration-500 ease-spatial md:hover:scale-[1.02] will-change-transform isolate group">
-        <span class="icon-[ic--outline-file-download] text-[32px] text-accent group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+      <a href="/resume.pdf" class="w-28 h-28 md:w-36 md:h-36 bg-surface rounded-[32px] border border-border flex flex-col items-center justify-center gap-3 shadow-layer-2 hover:shadow-layer-2-hover transition duration-hover ease-hover md:hover:scale-[1.02] will-change-transform isolate group">
+        <span class="icon-[ic--outline-file-download] text-[32px] text-accent group-hover:scale-110 transition-transform duration-hover ease-hover" aria-hidden="true"></span>
         <span class="text-xs font-medium text-accent text-center px-2">{t('contact.download')}</span>
       </a>
     </div>
 
   </div>
+
+  <!-- Copy Toast -->
+  <div
+    id="email-copy-toast"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    class="fixed bottom-24 md:bottom-16 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 bg-surface border border-border rounded-[32px] shadow-layer-2 opacity-0 translate-y-5 pointer-events-none transition-all duration-base ease-spatial"
+  >
+    <span class="icon-[ic--outline-check-circle] text-2xl text-accent" aria-hidden="true"></span>
+    <span class="text-sm font-medium text-primary font-body" data-toast-message></span>
+  </div>
 </section>
+
+<script is:inline>
+  (function () {
+    const btn = document.getElementById('email-copy-btn');
+    const toast = document.getElementById('email-copy-toast');
+    const toastMessage = toast && toast.querySelector('[data-toast-message]');
+    if (!btn || !toast || !toastMessage) return;
+
+    const email = btn.dataset.email;
+    const copiedText = btn.dataset.copiedText;
+    const successText = btn.dataset.copySuccess;
+    const errorText = btn.dataset.copyError;
+    const labelSpan = btn.querySelector('span[aria-live="polite"]');
+    const originalText = labelSpan ? labelSpan.textContent : '';
+    let toastTimeout = null;
+
+    function showToast(message) {
+      if (!message) return;
+      toastMessage.textContent = message;
+      toast.classList.remove('opacity-0', 'translate-y-5', 'pointer-events-none');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      if (toastTimeout) {
+        clearTimeout(toastTimeout);
+      }
+
+      toastTimeout = setTimeout(function () {
+        toast.classList.add('opacity-0', 'translate-y-5', 'pointer-events-none');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2500);
+    }
+
+    btn.addEventListener('click', async function () {
+      if (!email || !labelSpan) return;
+
+      try {
+        await navigator.clipboard.writeText(email);
+        labelSpan.textContent = copiedText || '¡Copiado!';
+        showToast(successText || 'Email copiado al portapapeles');
+
+        setTimeout(function () {
+          labelSpan.textContent = originalText;
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy email:', err);
+        showToast(errorText || 'No se pudo copiar el email');
+      }
+    });
+  })();
+</script>

@@ -45,6 +45,9 @@ export const ui = {
     'contact.call': 'Agenda una llamada',
     'contact.email': 'Escribeme',
     'contact.download': 'Descargar CV',
+    'contact.copied': '¡Copiado!',
+    'contact.copySuccess': 'Email copiado al portapapeles',
+    'contact.copyError': 'No se pudo copiar el email',
 
     'ui.viewProject': 'Ver proyecto',
     'ui.downloadCV': 'Descargar CV',
@@ -100,6 +103,9 @@ export const ui = {
     'contact.call': 'Schedule a call',
     'contact.email': 'Email me',
     'contact.download': 'Download CV',
+    'contact.copied': 'Copied!',
+    'contact.copySuccess': 'Email copied to clipboard',
+    'contact.copyError': 'Could not copy email',
 
     'ui.viewProject': 'View project',
     'ui.downloadCV': 'Download CV',
