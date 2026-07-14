@@ -84,7 +84,15 @@ const t = useTranslations(lang)
 		-webkit-overflow-scrolling: auto;          /* desactiva momentum/inercia iOS */
 		overscroll-behavior: contain;              /* no propaga el swipe al body */
 		touch-action: pan-y;                       /* móvil: solo swipe vertical */
+		-ms-overflow-style: none;                  /* IE/Edge: hide scrollbar */
+		scrollbar-width: none;                     /* Firefox: hide scrollbar */
 	}
+
+	/* Hide scrollbar for Chrome/Safari/Opera (pseudo-element, can't merge above) */
+	#scroll-container::-webkit-scrollbar {
+		display: none;
+	}
+
 	@media (min-width: 768px) {
 		#scroll-container {
 			touch-action: pan-x;                    /* desktop: solo swipe horizontal */
@@ -96,8 +104,8 @@ const t = useTranslations(lang)
 
 	/* View Transitions: el detalle cae como una capa desde arriba */
 	::view-transition-group(root) {
-		animation-duration: var(--duration-base);
-		animation-timing-function: var(--ease-spatial);
+		animation-duration: var(--duration-page);
+		animation-timing-function: var(--ease-page);
 		overflow: clip;
 	}
 
@@ -121,11 +129,11 @@ const t = useTranslations(lang)
 	}
 
 	::view-transition-old(root) {
-		animation: var(--duration-base) var(--ease-spatial) both layer-slide-up;
+		animation: var(--duration-page) var(--ease-page) both layer-slide-up;
 	}
 
 	::view-transition-new(root) {
-		animation: var(--duration-base) var(--ease-spatial) both layer-slide-down;
+		animation: var(--duration-page) var(--ease-page) both layer-slide-down;
 	}
 
 	@media (prefers-reduced-motion: reduce) {

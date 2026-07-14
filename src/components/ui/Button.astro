@@ -20,13 +20,13 @@ const {
   ...rest
 } = Astro.props;
 
-const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-500 ease-spatial focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg shadow-layer-2 hover:shadow-layer-2-hover md:hover:scale-[1.02] will-change-transform';
+const baseStyles = 'inline-flex items-center justify-center font-medium transition duration-hover ease-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded-lg shadow-layer-2 hover:shadow-layer-2-hover md:hover:scale-[1.02] will-change-transform';
 
 const variants = {
-  primary: 'bg-primary text-canvas hover:bg-elevated focus:ring-accent',
-  secondary: 'bg-elevated text-primary hover:bg-border focus:ring-accent',
-  outline: 'border-2 border-border text-primary hover:bg-surface focus:ring-accent',
-  ghost: 'text-secondary hover:bg-elevated hover:text-primary focus:ring-accent',
+  primary: 'bg-primary text-canvas hover:bg-elevated focus-visible:ring-focus-ring',
+  secondary: 'bg-elevated text-primary hover:bg-border focus-visible:ring-focus-ring',
+  outline: 'border-2 border-border text-primary hover:bg-surface focus-visible:ring-focus-ring',
+  ghost: 'text-secondary hover:bg-elevated hover:text-primary focus-visible:ring-focus-ring',
 };
 
 const sizes = {

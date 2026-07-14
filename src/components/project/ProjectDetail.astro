@@ -92,7 +92,7 @@ const collaboratorText =
     <div class="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-auto md:right-4 md:left-auto md:top-1/2 md:-translate-y-1/2 md:translate-x-0 z-20 flex md:flex-col gap-2" aria-label="Image indicators">
       {Array.from({ length: totalImages }).map((_, i) => (
         <div
-          class="gallery-dot w-2 h-2 rounded-2xl bg-white/40 transition-colors duration-300"
+          class="gallery-dot w-2 h-2 rounded-2xl bg-white/40 transition-colors duration-base ease-spatial"
           data-dot-index={i}
         />
       ))}
@@ -185,7 +185,7 @@ const collaboratorText =
             href={demo}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-canvas text-primary border border-border hover:bg-elevated focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-500 ease-spatial text-sm"
+            class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-canvas text-primary border border-border hover:bg-elevated focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus-ring transition duration-hover ease-hover text-sm"
           >
             <span class="icon-[ic--outline-play-circle] text-lg" aria-hidden="true"></span>
             <span>{t('detail.demo')}</span>
@@ -196,7 +196,7 @@ const collaboratorText =
             href={back_repo}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-canvas text-primary border border-border hover:bg-elevated focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-500 ease-spatial text-sm"
+            class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-canvas text-primary border border-border hover:bg-elevated focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus-ring transition duration-hover ease-hover text-sm"
           >
             <span class="icon-[ic--outline-code] text-lg" aria-hidden="true"></span>
             <span>{t('detail.backend')}</span>
@@ -207,7 +207,7 @@ const collaboratorText =
             href={front_repo}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-canvas text-primary border border-border hover:bg-elevated focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-500 ease-spatial text-sm"
+            class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-canvas text-primary border border-border hover:bg-elevated focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus-ring transition duration-hover ease-hover text-sm"
           >
             <span class="icon-[ic--outline-code] text-lg" aria-hidden="true"></span>
             <span>{t('detail.frontend')}</span>
@@ -218,7 +218,7 @@ const collaboratorText =
             href={repository}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-canvas text-primary border border-border hover:bg-elevated focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-500 ease-spatial text-sm"
+            class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-canvas text-primary border border-border hover:bg-elevated focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus-ring transition duration-hover ease-hover text-sm"
           >
             <span class="icon-[ic--outline-code] text-lg" aria-hidden="true"></span>
             <span>Repository</span>

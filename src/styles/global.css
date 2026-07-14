@@ -54,6 +54,7 @@
   --color-accent-text: var(--accent-text);
   --color-cta: var(--cta);
   --color-cta-hover: var(--cta-hover);
+  --color-focus-ring: var(--focus-ring);
 
   /* --- Typography --- */
   --font-display: "Plus Jakarta Sans", sans-serif;
@@ -67,8 +68,26 @@
   --radius-lg: 32px;
 
   /* --- Motion --- */
-  --ease-spatial: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-base: 300ms;
+  --ease-spatial: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-hover: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-glow: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-page: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-page: 600ms;
+  --duration-base: 480ms;
+  --duration-hover: 1200ms;
+  --duration-slow: 1600ms;
+  --duration-glow: 1400ms;
+  --duration-pill: 800ms;
+
+  --transition-duration-page: 600ms;
+  --transition-duration-base: 480ms;
+  --transition-duration-hover: 1200ms;
+  --transition-duration-slow: 1600ms;
+  --transition-duration-glow: 1400ms;
+  --transition-duration-pill: 800ms;
+  --transition-timing-function-spatial: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-timing-function-hover: cubic-bezier(0.33, 1, 0.68, 1);
+  --transition-timing-function-glow: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* --- Elevation / Shadows (Layer-respecting, mode-switched) --- */
   --shadow-layer-2: var(--shadow-interactive);
@@ -94,6 +113,7 @@
   --accent-text: #003A55;
   --cta: #FF5200;
   --cta-hover: #C64000;
+  --focus-ring: #FF5200;
 
   --shadow-interactive: 2px 2px 8px 0px rgba(12, 15, 16, 0.08);
   --shadow-interactive-hover: 4px 4px 16px 0px rgba(12, 15, 16, 0.14);
@@ -112,24 +132,31 @@
   display: none;
 }
 
-/* Smooth theme transition between light and dark modes */
-html {
-  background-color: var(--bg-canvas);
-  color: var(--text-primary);
-  transition:
-    background-color var(--duration-base) var(--ease-spatial),
-    color var(--duration-base) var(--ease-spatial);
+/* Smooth theme transition between light and dark modes.
+   En @layer base para que las utilities de Tailwind (capa utilities, posterior)
+   puedan sobreescribir transition-property/duration/timing-function. Sin esto,
+   esta regla global (unlayered) ganaría siempre y anularía .duration-slow,
+   .ease-hover, .transition-transform, etc. */
+@layer base {
+  html {
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+    transition:
+      background-color var(--duration-base) var(--ease-spatial),
+      color var(--duration-base) var(--ease-spatial);
+  }
+
+  html,
+  html *,
+  html *::before,
+  html *::after {
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+    transition-duration: var(--duration-base);
+    transition-timing-function: var(--ease-spatial);
+  }
 }
 
-html,
-html *,
-html *::before,
-html *::after {
-  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
-  transition-duration: var(--duration-base);
-  transition-timing-function: var(--ease-spatial);
-}
-
+/* Sin capa: el !important garantiza que siempre gane incluso sobre utilities. */
 @media (prefers-reduced-motion: reduce) {
   html,
   html *,
@@ -154,6 +181,7 @@ html *::after {
   --accent-text: #BFEBFF;
   --cta: #FF8C54;
   --cta-hover: #FFA875;
+  --focus-ring: #FF7839;
 
   --shadow-interactive: 2px 2px 20px 0px rgba(255, 180, 110, 0.16);
   --shadow-interactive-hover: 2px 2px 28px 0px rgba(255, 180, 110, 0.26);
