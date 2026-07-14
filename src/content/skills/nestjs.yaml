@@ -2,3 +2,4 @@ name: "NestJS"
 icon: "nestjs"
 category: "Backend & Architecture"
 order: 3
+projects: ["gf-instalaciones"]

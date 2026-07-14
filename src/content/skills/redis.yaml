@@ -2,3 +2,4 @@ name: "Redis"
 icon: "redis"
 category: "Databases"
 order: 3
+projects: ["gf-instalaciones"]

@@ -11,7 +11,14 @@ const skillsByCategory = (category) =>
   allSkills
     .filter((entry) => entry.data.category === category)
     .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
-    .map((entry) => entry.data);
+    .map((entry) => ({
+      name: entry.data.name,
+      icon: entry.data.icon,
+      category: entry.data.category,
+      order: entry.data.order,
+      projects: entry.data.projects,
+      id: entry.id,
+    }));
 
 const columns = [
   {
@@ -61,6 +68,8 @@ const columns = [
               {skillsByCategory(card.category).map((skill) => (
                 <Tag
                   icon={skill.icon}
+                  linkToProjects={skill.projects}
+                  ariaLabel={skill.projects?.length ? `Ver proyecto ${skill.projects[0]} en Projects` : undefined}
                   class:list={[
                     card.tagSize === 'lg'
                       ? 'md:px-3 md:py-1.5 md:text-base lg:px-3.5 lg:py-2 lg:text-lg xl:px-6 xl:py-3 xl:text-xl'
@@ -112,4 +121,65 @@ const columns = [
     window.addEventListener('resize', update);
     window.addEventListener('orientationchange', update);
   })();
+</script>
+
+<script>
+  function getProjectsSectionIndex(): number {
+    const container = document.getElementById('scroll-container');
+    if (!container) return 2;
+    const sections = Array.from(container.querySelectorAll('section'));
+    const idx = sections.findIndex((s) => s.id === 'projects');
+    return idx >= 0 ? idx : 2;
+  }
+
+  function isOnProjects(): boolean {
+    return window.location.hash.replace('#', '') === 'projects';
+  }
+
+  function focusCard(slug: string) {
+    window.dispatchEvent(
+      new CustomEvent('projects:focusCard', { detail: { slug } }),
+    );
+  }
+
+  function onTechClick(e: Event) {
+    const el = e.currentTarget as HTMLElement;
+    const raw = el.getAttribute('data-tech-projects');
+    if (!raw) return;
+    const slugs = raw
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const slug = slugs[0];
+    if (!slug) return;
+
+    const projectsIndex = getProjectsSectionIndex();
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Ya estamos en Projects: ir directo a centrar la card + abrir.
+    if (isOnProjects()) {
+      focusCard(slug);
+      return;
+    }
+
+    // 1. Scroll animado a la sección Projects (scroll.ts escucha `navClick`).
+    window.dispatchEvent(
+      new CustomEvent('navClick', { detail: { index: projectsIndex } }),
+    );
+
+    // 2. Tras el asentamiento del snap de sección (lock ~800ms en scroll.ts),
+    //    centrar la card en el carrusel y abrirla.
+    window.setTimeout(() => focusCard(slug), reduced ? 60 : 480);
+  }
+
+  function initTechLinks() {
+    const tags = document.querySelectorAll('[data-tech-projects]');
+    if (!tags.length) return;
+    tags.forEach((tag) => {
+      tag.addEventListener('click', onTechClick);
+    });
+  }
+
+  initTechLinks();
+  document.addEventListener('astro:after-swap', initTechLinks);
 </script>

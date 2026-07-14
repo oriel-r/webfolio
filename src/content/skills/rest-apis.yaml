@@ -1,3 +1,4 @@
 name: "REST APIs"
 category: "Backend & Architecture"
 order: 6
+projects: ["weather-dashboard"]

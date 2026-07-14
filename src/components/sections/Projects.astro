@@ -31,8 +31,9 @@ const projects = projectEntries.map((entry) => ({
           {projects.map((project) => (
             <a
               href={translatePath(`/projects/${project.id}`)}
+              data-project-slug={project.id}
               aria-label={`Open project: ${project.name}`}
-              class="projects-card flex-shrink-0 w-[min(85vw,288px)] md:w-[clamp(288px,30vw,578px)] aspect-square rounded-[32px] overflow-hidden relative group cursor-pointer shadow-layer-2 hover:shadow-layer-2-hover transition-all duration-500 ease-spatial md:hover:scale-[1.02] will-change-transform isolate block"
+              class="projects-card flex-shrink-0 w-[min(85vw,288px)] md:w-[clamp(288px,30vw,578px)] aspect-square rounded-[32px] overflow-hidden relative group cursor-pointer shadow-layer-2 hover:shadow-layer-2-hover transition duration-slow ease-hover md:hover:scale-[1.02] will-change-transform isolate block"
               style={`view-transition-name: project-card-${project.id};`}
             >
               {project.images?.[0] ? (
@@ -40,7 +41,7 @@ const projects = projectEntries.map((entry) => ({
                   src={project.images[0]}
                   alt={project.name}
                   style={`view-transition-name: project-${project.id}-gallery;`}
-                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-slow ease-hover group-hover:scale-105"
                   loading="lazy"
                 />
               ) : (
@@ -122,6 +123,33 @@ const projects = projectEntries.map((entry) => ({
     aspect-ratio: 1 / 1;
   }
 
+  /* Highlight temporal al enlazar desde Tecnologías — pulse suave estilo pill */
+  @keyframes tech-link-pulse {
+    0% {
+      box-shadow: var(--shadow-layer-2);
+      border-color: transparent;
+      transform: scale(1);
+    }
+    45% {
+      box-shadow:
+        var(--shadow-layer-2-hover),
+        0 0 0 2px var(--accent),
+        0 12px 36px -8px rgba(0, 173, 255, 0.38);
+      border-color: var(--accent);
+      transform: scale(1.03);
+    }
+    100% {
+      box-shadow: var(--shadow-layer-2);
+      border-color: transparent;
+      transform: scale(1);
+    }
+  }
+
+  #projects-carousel .projects-card.tech-link-highlight {
+    animation: tech-link-pulse 720ms var(--ease-hover);
+    z-index: 5;
+  }
+
   /* ===== Mobile: horizontal snap, sin inercia, tarjeta-por-tarjeta ===== */
   @media (max-width: 767px) {
     #projects-carousel {
@@ -159,6 +187,19 @@ const projects = projectEntries.map((entry) => ({
 </style>
 
 <script>
+  let focusCardBySlugRef: ((slug: string) => void) | null = null;
+
+  window.addEventListener(
+    'projects:focusCard',
+    ((e: CustomEvent) => {
+      if (e.detail?.slug) focusCardBySlugRef?.(e.detail.slug);
+    }) as EventListener,
+  );
+
+  function cssEscape(value: string): string {
+    return window.CSS ? window.CSS.escape(value) : value;
+  }
+
   function initCarousel() {
     const carousel = document.getElementById('projects-carousel');
     if (!carousel) return;
@@ -170,7 +211,7 @@ const projects = projectEntries.map((entry) => ({
     let currentIndex = 0;
     let isAnimating = false;
 
-    function getCardOffset(index: number): number {
+function getCardOffset(index: number): number {
       const card = cards[index] as HTMLElement;
       if (!card) return 0;
       const isDesktop = window.innerWidth >= 768;
@@ -188,25 +229,62 @@ const projects = projectEntries.map((entry) => ({
       }
     }
 
+    function centerCardByIndex(
+      index: number,
+      behavior: ScrollBehavior = 'smooth',
+    ) {
+      if (index < 0 || index >= totalCards) return;
+      currentIndex = index;
+      const offset = getCardOffset(index);
+      const isDesktop = window.innerWidth >= 768;
+      carousel.scrollTo({
+        [isDesktop ? 'top' : 'left']: offset,
+        behavior,
+      });
+      updateIndicators();
+    }
+
     function scrollToCard(index: number) {
       if (index < 0 || index >= totalCards || isAnimating) return;
       isAnimating = true;
-      currentIndex = index;
 
-      const offset = getCardOffset(index);
-      const isDesktop = window.innerWidth >= 768;
-
-      carousel.scrollTo({
-        [isDesktop ? 'top' : 'left']: offset,
-        behavior: 'smooth'
-      });
-
-      updateIndicators();
+      centerCardByIndex(index, 'smooth');
 
       setTimeout(() => {
         isAnimating = false;
       }, 600);
     }
+
+    // Enlace desde Tecnologías: centra la card del slug, resalta y abre el detail.
+    // Cuando `open` es false (p. ej. al volver desde el detalle) solo centra,
+    // sin disparar highlight ni click (evita reabrir el detalle en bucle).
+    function focusCardBySlug(slug: string, open = true) {
+      const card = carousel.querySelector<HTMLAnchorElement>(
+        `a[data-project-slug="${cssEscape(slug)}"]`,
+      );
+      if (!card) return;
+      const index = Array.from(cards).indexOf(card);
+      if (index < 0) return;
+
+      centerCardByIndex(index, 'smooth');
+
+      if (!open) return;
+
+      const reduced = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+      const settleMs = reduced ? 0 : 300;
+      const holdMs = reduced ? 0 : 720;
+
+      window.setTimeout(() => {
+        card.classList.add('tech-link-highlight');
+        window.setTimeout(() => {
+          card.classList.remove('tech-link-highlight');
+          card.click();
+        }, holdMs);
+      }, settleMs);
+    }
+    focusCardBySlugRef = focusCardBySlug;
 
     function updateIndicators() {
       const allIndicators = [...mobileIndicators, ...desktopIndicators];
@@ -294,6 +372,26 @@ const projects = projectEntries.map((entry) => ({
     // El navegador gestiona el desplazamiento una-tarjeta-por-gesto.
 
     updateIndicators();
+
+    // Restaurar el centro del carrusel al volver desde el detalle de un proyecto.
+    // astro:after-swap se dispara dentro del callback de startViewTransition,
+    // ANTES de capturar el snapshot: centrar con behavior:'auto' (instant) logra que
+    // el morph de la imagen compartida aterrice justo sobre la card ya centrada,
+    // sin salto posterior. Se consume una sola vez (no debe reaparecer en futuras
+    // visitas directas a Projects).
+    try {
+      const lastSlug = sessionStorage.getItem('lastProjectSlug');
+      if (lastSlug) {
+        sessionStorage.removeItem('lastProjectSlug');
+        const card = carousel.querySelector<HTMLAnchorElement>(
+          `a[data-project-slug="${cssEscape(lastSlug)}"]`,
+        );
+        if (card) {
+          const i = Array.from(cards).indexOf(card);
+          if (i >= 0) centerCardByIndex(i, 'auto');
+        }
+      }
+    } catch {}
   }
 
   document.addEventListener('astro:after-swap', initCarousel);

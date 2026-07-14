@@ -2,3 +2,4 @@ name: "PostgreSQL"
 icon: "postgresql"
 category: "Databases"
 order: 1
+projects: ["weather-dashboard"]

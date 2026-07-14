@@ -2,3 +2,4 @@ name: "GitHub Actions"
 icon: "githubactions"
 category: "DevOps & Cloud"
 order: 4
+projects: ["gf-instalaciones"]

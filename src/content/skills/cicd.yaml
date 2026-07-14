@@ -1,3 +1,4 @@
 name: "CI/CD"
 category: "DevOps & Cloud"
 order: 5
+projects: ["weather-dashboard"]

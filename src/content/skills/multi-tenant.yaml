@@ -1,3 +1,4 @@
 name: "Multi-Tenant"
 category: "Backend & Architecture"
 order: 15
+projects: ["chatapp"]

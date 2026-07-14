@@ -2,3 +2,4 @@ name: "Linux"
 icon: "linux"
 category: "DevOps & Cloud"
 order: 3
+projects: ["weather-dashboard"]

@@ -2,3 +2,4 @@ name: "Astro"
 icon: "astro"
 category: "Frontend"
 order: 2
+projects: ["chatapp"]

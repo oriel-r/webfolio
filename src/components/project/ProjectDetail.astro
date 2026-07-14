@@ -45,13 +45,13 @@ const collaboratorText =
     : '';
 ---
 
-<div class="project-detail relative w-full min-h-screen md:h-screen flex flex-col md:flex-row bg-canvas text-primary overflow-hidden project-detail-page">
+<div class="project-detail relative w-full min-h-screen md:h-screen flex flex-col md:flex-row bg-canvas text-primary overflow-hidden project-detail-page" data-project-slug={slug}>
 
   <!-- Close button (top-right) -->
   <a
     href={lang === 'en' ? '/en/#projects' : '/#projects'}
     aria-label={t('detail.close')}
-    class="close-btn absolute top-4 right-4 md:top-6 md:right-6 z-30 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-2xl bg-canvas/80 backdrop-blur-sm hover:bg-elevated border border-border text-primary focus:outline-none transition-colors duration-500 ease-spatial"
+    class="close-btn absolute top-4 right-4 md:top-6 md:right-6 z-30 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-2xl bg-canvas/80 backdrop-blur-sm hover:bg-elevated border border-border text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus-ring transition duration-hover ease-hover"
   >
     <span class="icon-[ic--outline-close] text-2xl block" aria-hidden="true"></span>
   </a>
@@ -380,5 +380,21 @@ const collaboratorText =
   document.addEventListener('astro:page-load', () => {
     initGalleryScroll();
     initReadMore();
+  });
+
+  document.addEventListener('astro:before-swap', () => {
+    const detail = document.querySelector<HTMLElement>('.project-detail-page[data-project-slug]');
+    const slug = detail?.dataset.projectSlug;
+    if (slug) {
+      try { sessionStorage.setItem('lastProjectSlug', slug); } catch {}
+    }
+  });
+
+  window.addEventListener('pagehide', () => {
+    const detail = document.querySelector<HTMLElement>('.project-detail-page[data-project-slug]');
+    const slug = detail?.dataset.projectSlug;
+    if (slug) {
+      try { sessionStorage.setItem('lastProjectSlug', slug); } catch {}
+    }
   });
 </script>

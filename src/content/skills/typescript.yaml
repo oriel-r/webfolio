@@ -2,3 +2,4 @@ name: "TypeScript"
 icon: "typescript"
 category: "Backend & Architecture"
 order: 1
+projects: ["taskflow"]

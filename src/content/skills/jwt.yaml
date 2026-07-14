@@ -2,3 +2,4 @@ name: "JWT"
 icon: "jsonwebtokens"
 category: "Backend & Architecture"
 order: 9
+projects: ["taskflow"]

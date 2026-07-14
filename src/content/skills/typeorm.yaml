@@ -2,3 +2,4 @@ name: "TypeORM"
 icon: "typeorm"
 category: "Databases"
 order: 6
+projects: ["webfolio"]
