@@ -63,6 +63,11 @@ export const ui = {
     'detail.noDescription': 'Descripción no disponible.',
     'detail.readMore': 'Leer más',
     'detail.readLess': 'Leer menos',
+
+    '404.tag': 'error: ruta no encontrada',
+    '404.title': 'Página no encontrada',
+    '404.description': 'La página que buscas no existe o fue movida. Volvamos a un lugar seguro.',
+    '404.cta': 'Volver al inicio',
   },
   en: {
     'nav.home': 'Home',
@@ -121,5 +126,10 @@ export const ui = {
     'detail.noDescription': 'Description unavailable.',
     'detail.readMore': 'Read more',
     'detail.readLess': 'Read less',
+
+    '404.tag': 'error: route not found',
+    '404.title': 'Page not found',
+    '404.description': "The page you are looking for doesn't exist or was moved. Let's get back to safety.",
+    '404.cta': 'Back to home',
   },
 } as const
