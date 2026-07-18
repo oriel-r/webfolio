@@ -21,7 +21,7 @@ const {
 
 const isLink = Array.isArray(linkToProjects) && linkToProjects.length > 0;
 
-const baseStyles = 'inline-flex items-center gap-[0.6em] tracking-[0.04em] font-medium rounded-full transition duration-pill ease-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 font-code';
+const baseStyles = 'group inline-flex items-center gap-[0.6em] tracking-[0.04em] font-medium rounded-full transition duration-pill ease-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 font-code';
 
 const variants = {
   tech: isLink
@@ -50,7 +50,7 @@ const extraAttrs = isLink
 
 <Tag class={classes} {...extraAttrs} {...rest}>
   {icon && (
-    <span class={`icon-[simple-icons--${icon}] inline-block text-[1em] shrink-0 text-muted opacity-70`} aria-hidden="true"></span>
+    <span class={`icon-[simple-icons--${icon}] inline-block text-[1em] shrink-0 text-muted opacity-70 transition-colors duration-pill ease-hover group-hover:text-accent group-hover:opacity-100`} aria-hidden="true"></span>
   )}
   <slot />
 </Tag>

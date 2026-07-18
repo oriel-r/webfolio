@@ -38,3 +38,20 @@ const hero = heroEntry.data[lang] || heroEntry.data['es'];
 
   </div>
 </section>
+
+<style>
+  #hero {
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* Ambient sky glow: vida sutil sin alterar layout (usa token de marca) */
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(ellipse 60% 55% at 72% 45%, var(--glow-dominant), transparent 72%);
+  }
+</style>

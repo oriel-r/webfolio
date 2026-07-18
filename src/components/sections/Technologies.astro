@@ -53,7 +53,8 @@ const columns = [
       ]}>
         {col.cards.map((card) => (
           <div class:list={[
-            'flex flex-col p-4 md:p-4 lg:p-5 xl:p-6 rounded-2xl lg:rounded-[32px] bg-elevated border border-border min-w-0 shadow-bento hover:shadow-bento-glow transition duration-glow ease-glow will-change-transform isolate',
+            'flex flex-col p-4 md:p-4 lg:p-5 xl:p-6 rounded-2xl lg:rounded-[32px] border border-border min-w-0 shadow-bento hover:shadow-bento-glow transition duration-glow ease-glow will-change-transform isolate',
+            card.titleSize === 'lg' ? 'bg-tint' : 'bg-elevated',
             card.cardGrow
           ]}>
             <h3 class:list={[
@@ -94,17 +95,24 @@ const columns = [
 ></div>
 
 <style>
-  :global(.dark) #technologies > div:first-child {
+  #technologies > div:first-child {
     position: relative;
   }
 
-  :global(.dark) #technologies > div:first-child::before {
+  /* Ambient glow: sky en light, cálido en dark (tokens de marca) */
+  #technologies > div:first-child::before {
     content: '';
     position: absolute;
     inset: -12%;
     z-index: -1;
     pointer-events: none;
-    background: radial-gradient(ellipse at center, rgba(255, 180, 110, 0.12), transparent 80%);
+    background: radial-gradient(ellipse at center, var(--glow-dominant), transparent 80%);
+    opacity: 0.7;
+  }
+
+  :global(.dark) #technologies > div:first-child::before {
+    background: radial-gradient(ellipse at center, var(--glow-action), transparent 80%);
+    opacity: 1;
   }
 </style>
 
