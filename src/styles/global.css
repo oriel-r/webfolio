@@ -78,6 +78,7 @@
   --duration-slow: 1600ms;
   --duration-glow: 1400ms;
   --duration-pill: 800ms;
+  --duration-nav: 800ms;
 
   --transition-duration-page: 600ms;
   --transition-duration-base: 480ms;
@@ -85,6 +86,7 @@
   --transition-duration-slow: 1600ms;
   --transition-duration-glow: 1400ms;
   --transition-duration-pill: 800ms;
+  --transition-duration-nav: 800ms;
   --transition-timing-function-spatial: cubic-bezier(0.22, 1, 0.36, 1);
   --transition-timing-function-hover: cubic-bezier(0.33, 1, 0.68, 1);
   --transition-timing-function-glow: cubic-bezier(0.4, 0, 0.2, 1);
