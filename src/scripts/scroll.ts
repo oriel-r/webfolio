@@ -52,7 +52,7 @@ export function initScroll() {
 		emitSectionChange(currentIndex);
 		setTimeout(() => {
 			isScrolling = false;
-		}, 800);
+		}, 400);
 	}
 
 	if ("scrollRestoration" in history) {
