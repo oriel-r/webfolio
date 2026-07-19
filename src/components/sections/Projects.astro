@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
 import { getCollection } from 'astro:content';
+import { getMediaThumbnails } from '../../utils/youtube';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -11,6 +12,10 @@ const projects = projectEntries.map((entry) => ({
   id: entry.id,
   ...entry.data[lang] || entry.data['es'],
 }));
+
+const thumbnails: Record<string, string | null> = Object.fromEntries(
+  projects.map((p) => [p.id, getMediaThumbnails(p.media)]),
+);
 ---
 
 <section id="projects" class="w-full md:min-w-[100vw] min-h-screen h-auto md:h-screen flex items-start md:items-center justify-center shrink-0 snap-start px-0 pt-20 md:pt-0 py-0">
@@ -36,9 +41,9 @@ const projects = projectEntries.map((entry) => ({
               class="projects-card flex-shrink-0 w-[min(85vw,288px)] md:w-[clamp(288px,30vw,578px)] aspect-square rounded-[32px] overflow-hidden relative group cursor-pointer shadow-layer-2 hover:shadow-layer-2-hover transition duration-slow ease-hover md:hover:scale-[1.02] will-change-transform isolate block"
               style={`view-transition-name: project-card-${project.id};`}
             >
-              {project.images?.[0] ? (
+              {thumbnails[project.id] ? (
                 <img
-                  src={project.images[0]}
+                  src={thumbnails[project.id]!}
                   alt={project.name}
                   style={`view-transition-name: project-${project.id}-gallery;`}
                   class="absolute inset-0 w-full h-full object-cover transition-transform duration-slow ease-hover group-hover:scale-105"

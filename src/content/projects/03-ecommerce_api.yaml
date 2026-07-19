@@ -3,10 +3,13 @@ es:
   type: "API"
   description: "API RESTful de comercio electrónico con autenticación JWT, gestión de productos, pedidos, categorías y carga de archivos a Cloudinary."
   long_description: "Backend construido con NestJS que expone endpoints para gestionar usuarios (registro, autenticación JWT, roles), productos (CRUD completo), pedidos, categorías y carga de imágenes a Cloudinary. Documentado con Swagger, utiliza TypeORM con PostgreSQL y sigue una arquitectura modular con guards de autorización."
-  images:
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+  media:
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   technologies:
     - "NestJS"
     - "TypeScript"
@@ -26,10 +29,13 @@ en:
   type: "API"
   description: "RESTful e-commerce API with JWT authentication, product management, orders, categories, and file uploads to Cloudinary."
   long_description: "NestJS backend exposing endpoints for user management (registration, JWT auth, roles), products (full CRUD), orders, categories, and image upload to Cloudinary. Documented with Swagger, uses TypeORM with PostgreSQL, and follows a modular architecture with authorization guards."
-  images:
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+  media:
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   technologies:
     - "NestJS"
     - "TypeScript"

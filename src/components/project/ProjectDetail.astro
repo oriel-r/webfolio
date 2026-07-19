@@ -2,6 +2,12 @@
 import { useTranslations } from '../../i18n/utils';
 import Tag from '../ui/Tag.astro';
 import type { SkillOverride } from '../../utils/techIcons';
+import {
+  youTubeFacadeImg,
+  youTubeFacadeFallbackImg,
+  youTubeEmbedUrl,
+  type MediaItem,
+} from '../../utils/youtube';
 
 interface Props {
   slug: string;
@@ -9,7 +15,7 @@ interface Props {
   type: string;
   description: string;
   long_description?: string;
-  images: string[];
+  media: MediaItem[];
   colaborators?: { name?: string; contact: string }[];
   technologies: string[];
   skillOverrides?: Record<string, SkillOverride>;
@@ -27,7 +33,7 @@ const {
   type,
   description,
   long_description,
-  images,
+  media,
   colaborators = [],
   technologies,
   skillOverrides = {},
@@ -40,7 +46,7 @@ const {
 } = Astro.props;
 
 const t = useTranslations(lang);
-const totalImages = images.length;
+const totalMedia = media.length;
 const galleryId = `gallery-${slug}`;
 
 const collaboratorText =
@@ -67,7 +73,7 @@ const collaboratorText =
   >
     <!-- Radios (driven by labels & swipe) -->
     <div class="sr-only" data-radios>
-      {Array.from({ length: totalImages }).map((_, i) => (
+      {Array.from({ length: totalMedia }).map((_, i) => (
         <input
           type="radio"
           name={galleryId}
@@ -79,22 +85,50 @@ const collaboratorText =
       ))}
     </div>
 
-    <!-- Scrollable image track -->
+    <!-- Scrollable media track -->
     <div class="gallery-track absolute inset-0 flex md:flex-col overflow-x-auto md:overflow-x-hidden md:overflow-y-auto snap-x md:snap-y snap-mandatory scrollbar-hide overscroll-x-contain md:overscroll-y-contain md:overscroll-x-auto">
-      {images.map((src, i) => (
-        <img
-          src={src}
-          alt={`${name} - ${i + 1}`}
-          class="gallery-slide flex-none w-full md:w-auto md:h-full object-cover"
-          loading={i === 0 ? 'eager' : 'lazy'}
+      {media.map((item, i) => (
+        <div
+          class="gallery-slide flex flex-none w-full md:w-auto md:h-full items-center justify-center bg-elevated"
           data-slide={i}
-        />
+        >
+          {item.type === 'image' && (
+            <img
+              src={item.src}
+              alt={`${name} - ${i + 1}`}
+              class="max-w-full max-h-full object-contain"
+              loading={i === 0 ? 'eager' : 'lazy'}
+            />
+          )}
+          {item.type === 'youtube' && (
+            <div
+              class="youtube-facade relative aspect-video max-w-full max-h-full cursor-pointer"
+              data-yt-id={item.id}
+              data-yt-fallback={youTubeFacadeFallbackImg(item.id)}
+            >
+              <img
+                src={youTubeFacadeImg(item.id)}
+                alt={`${name} - ${i + 1}`}
+                class="w-full h-full object-contain"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                data-yt-thumb
+              />
+              <button
+                type="button"
+                class="absolute inset-0 flex items-center justify-center text-white/90 hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                aria-label="Play video"
+              >
+                <span class="icon-[ic--outline-play-circle] text-6xl drop-shadow-lg" aria-hidden="true"></span>
+              </button>
+            </div>
+          )}
+        </div>
       ))}
     </div>
 
     <!-- Dot indicators -->
-    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-auto md:right-4 md:left-auto md:top-1/2 md:-translate-y-1/2 md:translate-x-0 z-20 flex md:flex-col gap-2" aria-label="Image indicators">
-      {Array.from({ length: totalImages }).map((_, i) => (
+    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-auto md:right-4 md:left-auto md:top-1/2 md:-translate-y-1/2 md:translate-x-0 z-20 flex md:flex-col gap-2" aria-label="Media indicators">
+      {Array.from({ length: totalMedia }).map((_, i) => (
         <div
           class="gallery-dot w-2 h-2 rounded-2xl bg-white/40 transition-colors duration-base ease-spatial"
           data-dot-index={i}
@@ -103,7 +137,7 @@ const collaboratorText =
     </div>
 
     <!-- Prev / Next navigation (CSS-only via labels + :has) -->
-    {totalImages > 1 && Array.from({ length: totalImages }).map((_, i) => (
+    {totalMedia > 1 && Array.from({ length: totalMedia }).map((_, i) => (
       <div
         class="gallery-nav-group absolute inset-0 flex items-center justify-between md:flex-col md:justify-between px-3 md:px-0 md:py-4 z-20 pointer-events-none"
         data-nav-for={i}
@@ -112,17 +146,17 @@ const collaboratorText =
           <label
             for={`${galleryId}-${i - 1}`}
             class="gallery-nav-btn pointer-events-auto p-3 md:p-2 flex items-center justify-center text-white cursor-pointer"
-            aria-label="Previous image"
+            aria-label="Previous media"
           >
             <span class="icon-[ic--outline-chevron-left] md:hidden text-2xl" aria-hidden="true"></span>
             <span class="icon-[ic--outline-expand-less] hidden md:block text-6xl" aria-hidden="true"></span>
           </label>
         )}
-        {i < totalImages - 1 && (
+        {i < totalMedia - 1 && (
           <label
             for={`${galleryId}-${i + 1}`}
             class="gallery-nav-btn pointer-events-auto p-3 md:p-2 flex items-center justify-center text-white cursor-pointer ml-auto md:ml-0 md:mt-auto"
-            aria-label="Next image"
+            aria-label="Next media"
           >
             <span class="icon-[ic--outline-chevron-right] md:hidden text-2xl" aria-hidden="true"></span>
             <span class="icon-[ic--outline-expand-more] hidden md:block text-6xl" aria-hidden="true"></span>
@@ -293,7 +327,7 @@ const collaboratorText =
   .overscroll-y-contain {
     overscroll-behavior-y: contain;
   }
-  ${images.map((_, i) => `
+  ${media.map((_, i) => `
     .project-gallery:has([data-gallery-input][data-index='${i}']:checked) [data-dot-index='${i}'] {
       background-color: white;
     }
@@ -304,6 +338,8 @@ const collaboratorText =
 `} />
 
 <script>
+  import { youTubeEmbedUrl } from '../../utils/youtube';
+
   const isDesktop = () => window.innerWidth >= 768;
 
   function initGalleryScroll() {
@@ -364,6 +400,45 @@ const collaboratorText =
     });
   }
 
+  function initYoutubeFacades() {
+    const facades = document.querySelectorAll<HTMLElement>('.youtube-facade');
+    facades.forEach((facade) => {
+      if (facade.dataset.ready === '1') return;
+      facade.dataset.ready = '1';
+
+      const id = facade.dataset.ytId;
+      if (!id) return;
+
+      const thumb = facade.querySelector<HTMLImageElement>('[data-yt-thumb]');
+      const fallback = facade.dataset.ytFallback;
+      if (thumb && fallback) {
+        thumb.addEventListener('error', () => {
+          if (thumb.dataset.fallbackApplied === '1') return;
+          thumb.dataset.fallbackApplied = '1';
+          thumb.src = fallback;
+        });
+      }
+
+      facade.addEventListener('click', () => {
+        if (facade.dataset.loaded === '1') return;
+        facade.dataset.loaded = '1';
+
+        const iframe = document.createElement('iframe');
+        iframe.src = youTubeEmbedUrl(id);
+        iframe.title = 'YouTube video';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+        iframe.loading = 'lazy';
+        iframe.className = 'w-full h-full border-0';
+        iframe.style.aspectRatio = '16 / 9';
+        iframe.style.maxWidth = '100%';
+        iframe.style.maxHeight = '100%';
+
+        facade.replaceWith(iframe);
+      });
+    });
+  }
+
   function initReadMore() {
     const toggles = document.querySelectorAll<HTMLElement>('[data-desc-toggle]');
     toggles.forEach((toggle) => {
@@ -387,6 +462,7 @@ const collaboratorText =
   document.addEventListener('astro:page-load', () => {
     initGalleryScroll();
     initReadMore();
+    initYoutubeFacades();
   });
 
   document.addEventListener('astro:before-swap', () => {

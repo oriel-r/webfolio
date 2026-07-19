@@ -3,10 +3,11 @@ es:
   type: "API"
   description: "Servicio backend para gestión de leads de ventas con procesamiento asíncrono y resúmenes impulsados por IA con Google Gemini."
   long_description: "Backend modular con NestJS que gestiona leads de ventas, procesa trabajos asíncronos mediante BullMQ/Redis y genera resúmenes con IA usando Google Gemini. Obtiene leads periódicamente desde randomuser.me, los almacena en PostgreSQL y permite análisis impulsados por IA. Arquitectura escalable basada en colas con Redis, Docker y migraciones de base de datos."
-  images:
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+  media:
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - type: youtube
+      id: "https://www.youtube.com/watch?v=XyuR-x5PMcU"
   technologies:
     - "NestJS"
     - "TypeScript"
@@ -26,10 +27,11 @@ en:
   type: "API"
   description: "Backend service for sales lead management with async job processing and AI-powered summaries using Google Gemini."
   long_description: "Modular NestJS backend that manages sales leads, processes async jobs via BullMQ/Redis, and generates AI-powered summaries using Google Gemini. Periodically fetches leads from randomuser.me, stores them in PostgreSQL, and enables AI-driven analysis. Queue-based scalable architecture with Redis, Docker, and database migrations."
-  images:
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+  media:
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - type: youtube
+      id: "https://www.youtube.com/watch?v=XyuR-x5PMcU"
   technologies:
     - "NestJS"
     - "TypeScript"

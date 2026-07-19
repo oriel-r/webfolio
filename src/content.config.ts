@@ -1,6 +1,9 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { parseYouTubeId, type MediaItem } from './utils/youtube';
+
+export type { MediaItem };
 
 const langString = z.string();
 
@@ -9,6 +12,17 @@ const langSchema = <T extends z.ZodRawShape>(shape: T) =>
     es: z.object(shape),
     en: z.object(shape),
   });
+
+const mediaItemSchema = z.union([
+  z.object({
+    type: z.literal('image'),
+    src: langString,
+  }),
+  z.object({
+    type: z.literal('youtube'),
+    id: langString.transform(parseYouTubeId),
+  }),
+]);
 
 const hero = defineCollection({
   loader: glob({ pattern: 'index.yaml', base: './src/content/hero' }),
@@ -35,7 +49,7 @@ const projects = defineCollection({
     name: langString,
     type: langString,
     description: langString,
-    images: z.array(langString).optional(),
+    media: z.array(mediaItemSchema).optional(),
     colaborators: z
       .array(
         z.object({

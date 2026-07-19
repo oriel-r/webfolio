@@ -3,10 +3,13 @@ es:
   type: "SaaS"
   description: "Plataforma de cursos online con suscripciones, pagos por Mercado Pago, chatbot con IA, roles de usuario y código de referidos."
   long_description: "Plataforma completa de aprendizaje con backend en NestJS y frontend en Next.js. Incluye registro y autenticación (JWT + Auth0), suscripciones (Básica/Premium/Pro), inscripción a cursos, pagos con Mercado Pago, chatbot con Google Gemini, carga de archivos a Cloudinary, notificaciones por email y paneles por rol (Admin, Profesor, Estudiante). Comunicación en tiempo real con Socket.io."
-  images:
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+  media:
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   technologies:
     - "NestJS"
     - "Next.js"
@@ -33,10 +36,13 @@ en:
   type: "SaaS"
   description: "Online course platform with subscriptions, Mercado Pago payments, AI chatbot, user roles, and referral codes."
   long_description: "Full learning platform with NestJS backend and Next.js frontend. Includes registration and authentication (JWT + Auth0), subscriptions (Basic/Premium/Pro), course enrollment, Mercado Pago payments, Google Gemini chatbot, Cloudinary file uploads, email notifications, and role-based dashboards (Admin, Teacher, Student). Real-time communication via Socket.io."
-  images:
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+  media:
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+    - type: image
+      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   technologies:
     - "NestJS"
     - "Next.js"
