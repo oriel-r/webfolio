@@ -5,7 +5,7 @@ es:
   long_description: "App de gestión de turnos con backend en Express + TypeScript y frontend en React + Vite. Los usuarios pueden registrarse, reservar y cancelar turnos, editar su perfil. Los administradores pueden ver todos los turnos, cancelarlos y gestionar usuarios. Base de datos PostgreSQL con TypeORM, estado global con Redux Toolkit y estilos con CSS Modules."
   media:
     - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+      src: "/turnera_cover.png"
     - type: image
       src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
     - type: image
@@ -30,7 +30,7 @@ en:
   long_description: "Appointment management app with Express + TypeScript backend and React + Vite frontend. Users can register, book and cancel appointments, edit their profile. Admins can view all appointments, cancel them, and manage users. PostgreSQL database with TypeORM, global state with Redux Toolkit, and CSS Modules for styling."
   media:
     - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+      src: "/turnera_cover.png"
     - type: image
       src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
     - type: image
