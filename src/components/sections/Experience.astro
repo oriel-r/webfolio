@@ -25,7 +25,7 @@ const experience = experienceEntries
   <!-- Desktop: Horizontal timeline -->
   <div class="hidden md:flex relative w-full max-w-[1664px] mx-auto h-[560px] items-center">
     <!-- Horizontal line -->
-    <div class="timeline-spine absolute left-0 right-0 h-0.5 bg-border z-0"></div>
+    <div class="absolute left-0 right-0 h-0.5 bg-border z-0"></div>
 
     <!-- Timeline items -->
     <div class="relative z-10 w-full flex justify-between items-center px-12">
@@ -34,7 +34,7 @@ const experience = experienceEntries
           {i % 2 === 0 ? (
             <>
               <span class="absolute bottom-4 text-sm font-medium text-secondary whitespace-nowrap mb-2">{exp.start_date}</span>
-              <div class="timeline-dot w-2.5 h-2.5 bg-accent rounded-full ring-4 ring-canvas"></div>
+              <div class="w-2.5 h-2.5 bg-accent rounded-full ring-4 ring-canvas"></div>
               <div class="absolute top-6 mt-4 w-72 h-52 bg-surface rounded-[32px] shadow-layer-2 border border-border p-5 flex flex-col">
                 <div>
                   <p class="text-sm font-medium text-secondary">{exp.position}</p>
@@ -56,7 +56,7 @@ const experience = experienceEntries
                   )}
                 </div>
               </div>
-              <div class="timeline-dot w-2.5 h-2.5 bg-accent rounded-full ring-4 ring-canvas"></div>
+              <div class="w-2.5 h-2.5 bg-accent rounded-full ring-4 ring-canvas"></div>
               <span class="absolute top-4 text-sm font-medium text-secondary whitespace-nowrap mt-2">{exp.start_date}</span>
             </>
           )}
@@ -68,7 +68,7 @@ const experience = experienceEntries
   <!-- Mobile: Vertical timeline -->
   <div class="md:hidden relative w-full max-w-[1664px] mx-auto">
     <!-- Vertical line -->
-    <div class="timeline-spine-y absolute left-[12px] top-0 bottom-0 w-0.5 bg-border z-0"></div>
+    <div class="absolute left-[12px] top-0 bottom-0 w-0.5 bg-border z-0"></div>
 
     <!-- Timeline items -->
     <div class="relative z-10 flex flex-col gap-10">
@@ -76,7 +76,7 @@ const experience = experienceEntries
         <div class="flex items-start">
           <!-- Dot area -->
           <div class="w-6 shrink-0 flex justify-center pt-1.5">
-            <div class="timeline-dot w-2.5 h-2.5 bg-accent rounded-full ring-4 ring-canvas z-10"></div>
+            <div class="w-2.5 h-2.5 bg-accent rounded-full ring-4 ring-canvas z-10"></div>
           </div>
 
           <!-- Card -->
@@ -95,36 +95,3 @@ const experience = experienceEntries
     </div>
   </div>
 </section>
-
-<style>
-  #experience {
-    position: relative;
-    isolation: isolate;
-  }
-
-  /* Ambient sky glow centrado en la espina */
-  #experience::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background: radial-gradient(ellipse 55% 45% at 50% 50%, var(--glow-dominant), transparent 75%);
-  }
-
-  /* Espina con gradiente sutil hacia el accent de marca */
-  .timeline-spine {
-    background: linear-gradient(90deg, transparent, var(--border-default) 12%, var(--accent) 50%, var(--border-default) 88%, transparent);
-    opacity: 0.55;
-  }
-
-  .timeline-spine-y {
-    background: linear-gradient(180deg, transparent, var(--border-default) 12%, var(--accent) 50%, var(--border-default) 88%, transparent);
-    opacity: 0.55;
-  }
-
-  /* Micro-glow en los nodos */
-  .timeline-dot {
-    box-shadow: 0 0 10px 2px var(--glow-dominant);
-  }
-</style>

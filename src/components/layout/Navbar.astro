@@ -68,24 +68,6 @@ const navItems = [
     scroll-snap-align: center;
     scroll-snap-stop: always;                /* FUERZA detener en cada tab */
   }
-
-  /* Dot indicador de marca bajo el link activo */
-  .nav-desktop-link,
-  .nav-mobile-link {
-    position: relative;
-  }
-  .nav-desktop-link.text-accent::after,
-  .nav-mobile-link.text-accent::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: -8px;
-    width: 4px;
-    height: 4px;
-    border-radius: 9999px;
-    background: var(--accent);
-    transform: translateX(-50%);
-  }
 </style>
 
 <script>
