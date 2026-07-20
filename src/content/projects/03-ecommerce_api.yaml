@@ -5,11 +5,11 @@ es:
   long_description: "Backend construido con NestJS que expone endpoints para gestionar usuarios (registro, autenticación JWT, roles), productos (CRUD completo), pedidos, categorías y carga de imágenes a Cloudinary. Documentado con Swagger, utiliza TypeORM con PostgreSQL y sigue una arquitectura modular con guards de autorización."
   media:
     - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+      src: "/ecomerce_api_oriel_romero_cover.png"
     - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+      src: "/ecomerce_api_oriel_romero_cover.png"
     - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+      src: "/ecomerce_api_oriel_romero_cover.png"
   technologies:
     - "NestJS"
     - "TypeScript"
@@ -31,11 +31,11 @@ en:
   long_description: "NestJS backend exposing endpoints for user management (registration, JWT auth, roles), products (full CRUD), orders, categories, and image upload to Cloudinary. Documented with Swagger, uses TypeORM with PostgreSQL, and follows a modular architecture with authorization guards."
   media:
     - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+      src: "/ecomerce_api_oriel_romero_cover.png"
     - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+      src: "/ecomerce_api_oriel_romero_cover.png"
     - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
+      src: "/ecomerce_api_oriel_romero_cover.png"
   technologies:
     - "NestJS"
     - "TypeScript"
