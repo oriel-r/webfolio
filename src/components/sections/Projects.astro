@@ -31,7 +31,7 @@ const thumbnails: Record<string, string | null> = Object.fromEntries(
           style="-ms-overflow-style: none; scrollbar-width: none;"
         >
           <!-- Spacer: allows first card to center (desktop: vertical, mobile: horizontal) -->
-          <div class="projects-spacer flex-shrink-0 w-[calc(50vw-144px)] h-0 md:w-0 md:h-[calc(50%-144px)]" aria-hidden="true" />
+          <div class="projects-spacer" aria-hidden="true" />
 
           {projects.map((project) => (
             <a
@@ -63,7 +63,7 @@ const thumbnails: Record<string, string | null> = Object.fromEntries(
           ))}
 
           <!-- Spacer: allows last card to center (desktop: vertical, mobile: horizontal) -->
-          <div class="projects-spacer flex-shrink-0 w-[calc(50vw-144px)] h-0 md:w-0 md:h-[calc(50%-144px)]" aria-hidden="true" />
+          <div class="projects-spacer" aria-hidden="true" />
         </div>
 
         <!-- Indicators: fixed dots below carousel on mobile (OUTSIDE scroll container) -->
@@ -179,6 +179,44 @@ const thumbnails: Record<string, string | null> = Object.fromEntries(
     #projects-carousel .projects-card {
       scroll-snap-align: center;
       scroll-snap-stop: always;
+    }
+  }
+
+  /* ===== Dynamic spacers: mirror first-card offset on the last card ===== */
+  .projects-spacer {
+    flex-shrink: 0;
+  }
+
+  /* Mobile: horizontal spacers */
+  .projects-spacer:first-child {
+    width: calc(50vw - min(42.5vw, 144px));
+    height: 0;
+  }
+  .projects-spacer:last-child {
+    width: max(0px, calc(50vw - min(42.5vw, 144px) - 4rem));
+    height: 0;
+  }
+
+  /* Desktop: vertical spacers */
+  @media (min-width: 768px) {
+    .projects-spacer:first-child {
+      width: 0;
+      height: calc(50% - clamp(144px, 15vw, 289px));
+    }
+    .projects-spacer:last-child {
+      width: 0;
+      height: max(0px, calc(50% - clamp(144px, 15vw, 289px) - 4rem));
+    }
+  }
+
+  /* ===== Desktop: wheel/touch hit area reduced to cards only ===== */
+  @media (min-width: 768px) {
+    #projects-carousel {
+      pointer-events: none;
+    }
+    #projects-carousel .projects-card,
+    #projects-carousel .projects-card * {
+      pointer-events: auto;
     }
   }
 </style>
