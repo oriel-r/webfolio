@@ -93,28 +93,6 @@ const columns = [
   aria-hidden="true"
 ></div>
 
-<style>
-  #technologies > div:first-child {
-    position: relative;
-  }
-
-  /* Ambient glow: sky en light, cálido en dark (tokens de marca) */
-  #technologies > div:first-child::before {
-    content: '';
-    position: absolute;
-    inset: -12%;
-    z-index: -1;
-    pointer-events: none;
-    background: radial-gradient(ellipse at center, var(--glow-dominant), transparent 80%);
-    opacity: 0.7;
-  }
-
-  :global(.dark) #technologies > div:first-child::before {
-    background: radial-gradient(ellipse at center, var(--glow-action), transparent 80%);
-    opacity: 1;
-  }
-</style>
-
 <script is:inline>
   (function () {
     function update() {

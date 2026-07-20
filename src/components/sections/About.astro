@@ -40,20 +40,3 @@ const photo = aboutEntry.data.photo;
 
   </div>
 </section>
-
-<style>
-  #about {
-    position: relative;
-    isolation: isolate;
-  }
-
-  /* Ambient sky glow detrás de la foto */
-  #about::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background: radial-gradient(ellipse 50% 55% at 72% 50%, var(--glow-dominant), transparent 72%);
-  }
-</style>

@@ -40,8 +40,51 @@ const t = useTranslations(lang)
 			})();
 		</script>
 	</head>
-	<body class="bg-canvas text-primary font-body antialiased">
+	<body class="text-primary font-body antialiased">
+		<!-- Ambient glow: capa fija global con una sub-capa por sección.
+		     #ambient-glow[data-active="..."] revela la capa correspondiente
+		     vía cross-fade de opacity, sincronizado con el evento `sectionChange`
+		     emitido por scroll.ts. Evita el "corte" entre glows por-sección. -->
+		<div id="ambient-glow" aria-hidden="true" data-active="hero">
+			<div data-glow="hero"></div>
+			<div data-glow="experience"></div>
+			<div data-glow="projects"></div>
+			<div data-glow="technologies"></div>
+			<div data-glow="about"></div>
+			<div data-glow="contact"></div>
+			<div data-glow="contact-action"></div>
+		</div>
 		<slot />
+		<script>
+			function setupAmbientGlow() {
+				const glow = document.getElementById('ambient-glow');
+				if (!glow || glow.dataset.bound === '1') return;
+				glow.dataset.bound = '1';
+				const order = ['hero', 'experience', 'projects', 'technologies', 'about', 'contact'];
+				const setActive = (id) => {
+					if (order.indexOf(id) >= 0) glow.dataset.active = id;
+				};
+				// Estado inicial desde el hash (covers primeros ms antes de que scroll.ts emita).
+				const hash = window.location.hash.replace('#', '');
+				setActive(hash && order.indexOf(hash) >= 0 ? hash : 'hero');
+				window.addEventListener('sectionChange', ((e) => {
+					const idx = e && e.detail && typeof e.detail.index === 'number' ? e.detail.index : 0;
+					setActive(order[idx] || 'hero');
+				}));
+
+				/* Pulse de action al activar un botón de contacto */
+				let actionTimeout: number | undefined;
+				window.addEventListener('contact:actionGlow', () => {
+					glow.classList.add('glow-action-pulse');
+					if (actionTimeout) window.clearTimeout(actionTimeout);
+					actionTimeout = window.setTimeout(() => {
+						glow.classList.remove('glow-action-pulse');
+					}, 2500);
+				});
+			}
+			setupAmbientGlow();
+			document.addEventListener('astro:after-swap', setupAmbientGlow);
+		</script>
 		<script>
 			function setupThemeToggle() {
 				const btn = document.getElementById('theme-toggle');
@@ -102,6 +145,128 @@ const t = useTranslations(lang)
 		scroll-snap-stop: always;                  /* FUERZA detener en cada sección */
 	}
 
+	/* ===== Ambient glow global (cross-fade entre secciones) =====
+	   Capa fija con una sub-capa por sección. Recetas migradas 1:1 desde los
+	   antiguos ::before por-sección (mismos tokens, focos y opacidades).
+	   z-index: -1 + position: fixed la mantienen detrás del contenido pero
+	   por encima del bg del body; pointer-events: none la hace no-interactiva. */
+	#ambient-glow {
+		position: fixed;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+	}
+	#ambient-glow > div {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		/* Fallback A: cross-fade drivado por JS (sectionChange).
+		   Duración bumped a --duration-glow (1400ms) con --ease-glow
+		   para no anticiparse al asentamiento del scroll smooth.
+		   En browsers con `animation-timeline: view()` (bloque @supports
+		   más abajo) esta transition queda anulada por la animation. */
+		transition: opacity var(--duration-glow) var(--ease-glow);
+	}
+	#ambient-glow > [data-glow="hero"] {
+		background: radial-gradient(ellipse 60% 55% at 72% 45%, var(--glow-dominant), transparent 72%);
+	}
+	#ambient-glow > [data-glow="experience"],
+	#ambient-glow > [data-glow="projects"] {
+		/* secciones sin glow: capa transparente (el cross-fade disuelve el glow saliente) */
+		background: none;
+	}
+	#ambient-glow > [data-glow="technologies"] {
+		inset: -12%;
+		background: radial-gradient(ellipse at center, var(--glow-dominant), transparent 80%);
+	}
+	:global(.dark) #ambient-glow > [data-glow="technologies"] {
+		background: radial-gradient(ellipse at center, var(--glow-dominant), transparent 80%);
+	}
+	#ambient-glow > [data-glow="about"] {
+		background: radial-gradient(ellipse 50% 55% at 72% 50%, var(--glow-dominant), transparent 72%);
+	}
+	#ambient-glow > [data-glow="contact"] {
+		background: radial-gradient(ellipse 55% 50% at 72% 50%, var(--glow-dominant), transparent 72%);
+	}
+	#ambient-glow > [data-glow="contact-action"] {
+		background: radial-gradient(ellipse 55% 50% at 72% 50%, var(--glow-action), transparent 72%);
+	}
+	/* Pulse de action al presionar un botón de contacto (contact.ts dispara
+	   `contact:actionGlow`). Time-based: no tiene animation-timeline. */
+	#ambient-glow.glow-action-pulse > [data-glow="contact-action"] {
+		animation: glow-action-pulse 2500ms var(--ease-glow);
+	}
+	@keyframes glow-action-pulse {
+		0%   { opacity: 0; }
+		25%  { opacity: 1; }
+		75%  { opacity: 1; }
+		100% { opacity: 0; }
+	}
+	/* Capa activa por sección */
+	#ambient-glow[data-active="hero"] > [data-glow="hero"],
+	#ambient-glow[data-active="experience"] > [data-glow="experience"],
+	#ambient-glow[data-active="projects"] > [data-glow="projects"],
+	#ambient-glow[data-active="about"] > [data-glow="about"],
+	#ambient-glow[data-active="contact"] > [data-glow="contact"] {
+		opacity: 1;
+	}
+	#ambient-glow[data-active="technologies"] > [data-glow="technologies"] {
+		opacity: 1;
+	}
+
+	/* ===== Scroll-driven upgrade (Option B) =====
+	   En browsers que soportan `animation-timeline: view()`, el glow
+	   se conduce por el progreso de visibilidad de cada <section> en
+	   #scroll-container. Elimina la asincronía con el scroll smooth:
+	   el cross-fade ocurre frame-a-frame con el desplazamiento real.
+	   En browsers sin soporte (Firefox, Safari<26), las reglas
+	   `data-active` + transition (fallback A) siguen funcionando. */
+	@supports (animation-timeline: view()) {
+		/* Exponer las timelines nombradas (definidas dentro de
+		   #scroll-container) a #ambient-glow, que es un sibling. */
+		body {
+			timeline-scope: --sec-hero, --sec-experience, --sec-projects,
+			                 --sec-technologies, --sec-about, --sec-contact;
+		}
+
+		#scroll-container > section {
+			view-timeline-axis: block;                  /* mobile: vertical */
+		}
+		@media (min-width: 768px) {
+			#scroll-container > section {
+				view-timeline-axis: inline;              /* desktop: horizontal */
+			}
+		}
+		#hero         { view-timeline-name: --sec-hero; }
+		#experience   { view-timeline-name: --sec-experience; }
+		#projects     { view-timeline-name: --sec-projects; }
+		#technologies { view-timeline-name: --sec-technologies; }
+		#about        { view-timeline-name: --sec-about; }
+		#contact      { view-timeline-name: --sec-contact; }
+
+		/* Keyframe universal: pico de opacity al 50% (= sección centrada en el viewport) */
+		@keyframes ambient-glow-fade {
+			0%, 100% { opacity: 0; }
+			50%      { opacity: 1; }
+		}
+
+		/* Capas con glow: animadas por la timeline de SU sección */
+		#ambient-glow > [data-glow="hero"],
+		#ambient-glow > [data-glow="technologies"],
+		#ambient-glow > [data-glow="about"],
+		#ambient-glow > [data-glow="contact"] {
+			/* duration 1ms es el estándar para scroll-driven animations
+			   (el progreso lo controla el timeline, no el reloj). */
+			animation: ambient-glow-fade 1ms linear;
+		}
+		#ambient-glow > [data-glow="hero"]         { animation-timeline: --sec-hero; }
+		#ambient-glow > [data-glow="technologies"] { animation-timeline: --sec-technologies; }
+		#ambient-glow > [data-glow="about"]        { animation-timeline: --sec-about; }
+		#ambient-glow > [data-glow="contact"]      { animation-timeline: --sec-contact; }
+
+		/* Experience y Projects: sin glow → sin animation → opacity 0 (base). */
+	}
+
 	/* View Transitions: el detalle cae como una capa desde arriba */
 	::view-transition-group(root) {
 		animation-duration: var(--duration-page);
@@ -139,6 +304,16 @@ const t = useTranslations(lang)
 	@media (prefers-reduced-motion: reduce) {
 		::view-transition-old(root),
 		::view-transition-new(root) {
+			animation: none;
+		}
+		#ambient-glow > div {
+			transition: none;
+		}
+		#ambient-glow > [data-glow="hero"],
+		#ambient-glow > [data-glow="technologies"],
+		#ambient-glow > [data-glow="about"],
+		#ambient-glow > [data-glow="contact"],
+		#ambient-glow.glow-action-pulse > [data-glow="contact-action"] {
 			animation: none;
 		}
 	}
