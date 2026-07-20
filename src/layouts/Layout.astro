@@ -194,12 +194,12 @@ const t = useTranslations(lang)
 	/* Pulse de action al presionar un botón de contacto (contact.ts dispara
 	   `contact:actionGlow`). Time-based: no tiene animation-timeline. */
 	#ambient-glow.glow-action-pulse > [data-glow="contact-action"] {
-		animation: glow-action-pulse 2500ms var(--ease-glow);
+		animation: glow-action-pulse 2500ms var(--ease-hover);
 	}
 	@keyframes glow-action-pulse {
 		0%   { opacity: 0; }
-		25%  { opacity: 1; }
-		75%  { opacity: 1; }
+		25%  { opacity: 0.75; }
+		75%  { opacity: 0.75; }
 		100% { opacity: 0; }
 	}
 	/* Capa activa por sección */
