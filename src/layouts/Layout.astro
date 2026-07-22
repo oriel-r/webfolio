@@ -168,7 +168,7 @@ const t = useTranslations(lang)
 		transition: opacity var(--duration-glow) var(--ease-glow);
 	}
 	#ambient-glow > [data-glow="hero"] {
-		background: radial-gradient(ellipse 60% 55% at 72% 45%, var(--glow-dominant), transparent 72%);
+		background: radial-gradient(ellipse 68% 60% at 72% 45%, var(--glow-dominant), transparent 76%);
 	}
 	#ambient-glow > [data-glow="experience"],
 	#ambient-glow > [data-glow="projects"] {
@@ -181,6 +181,11 @@ const t = useTranslations(lang)
 	}
 	:global(.dark) #ambient-glow > [data-glow="technologies"] {
 		background: radial-gradient(ellipse at center, var(--glow-dominant), transparent 80%);
+	}
+	/* Glow Hero boosteado ×1.35 en dark (0.18 × 1.35 ≈ 0.24).
+	   Mismo foco/size que light, solo subimos opacidad para más presencia. */
+	:global(.dark) #ambient-glow > [data-glow="hero"] {
+		background: radial-gradient(ellipse 68% 60% at 72% 45%, rgba(113, 209, 255, 0.24), transparent 76%);
 	}
 	#ambient-glow > [data-glow="about"] {
 		background: radial-gradient(ellipse 50% 55% at 72% 50%, var(--glow-dominant), transparent 72%);
@@ -212,6 +217,35 @@ const t = useTranslations(lang)
 	}
 	#ambient-glow[data-active="technologies"] > [data-glow="technologies"] {
 		opacity: 1;
+	}
+
+	/* ===== Mobile: reposiciona los focos del glow =====
+	   En mobile el contenido fluye verticalmente (flex-col, items-start + pt-20),
+	   centrado horizontal. Los focos calibrados para desktop (72% horizontal, 45-50%
+	   vertical) caen sobre bordes vacíos. Aquí se recalibran por sección. */
+	@media (max-width: 767px) {
+		#ambient-glow > [data-glow="hero"] {
+			background: radial-gradient(ellipse 110% 45% at 50% 78%, var(--glow-dominant), transparent 76%);
+		}
+		:global(.dark) #ambient-glow > [data-glow="hero"] {
+			background: radial-gradient(ellipse 110% 45% at 50% 78%, rgba(113, 209, 255, 0.24), transparent 76%);
+		}
+		#ambient-glow > [data-glow="technologies"] {
+			inset: 0;
+			background: radial-gradient(ellipse 85% 38% at 50% 72%, var(--glow-dominant), transparent 80%);
+		}
+		:global(.dark) #ambient-glow > [data-glow="technologies"] {
+			background: radial-gradient(ellipse 85% 38% at 50% 72%, var(--glow-dominant), transparent 80%);
+		}
+		#ambient-glow > [data-glow="about"] {
+			background: radial-gradient(ellipse 85% 35% at 50% 50%, var(--glow-dominant), transparent 72%);
+		}
+		#ambient-glow > [data-glow="contact"] {
+			background: radial-gradient(ellipse 80% 35% at 50% 40%, var(--glow-dominant), transparent 72%);
+		}
+		#ambient-glow > [data-glow="contact-action"] {
+			background: radial-gradient(ellipse 80% 35% at 50% 40%, var(--glow-action), transparent 72%);
+		}
 	}
 
 	/* ===== Scroll-driven upgrade (Option B) =====

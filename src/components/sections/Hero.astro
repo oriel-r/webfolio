@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { getEntry } from 'astro:content';
+import HeroPet from '../ui/HeroPet.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -34,7 +35,7 @@ const hero = heroEntry.data[lang] || heroEntry.data['es'];
     </div>
 
     <!-- Hero Image -->
-    <img src="/hero_pet.svg" alt="Capybara developer illustration" class="w-full max-w-sm self-start md:flex-none md:max-w-sm md:ml-auto" />
+    <HeroPet class="w-full max-w-3xl self-start md:flex-none md:max-w-[38.4rem] md:ml-auto text-muted dark:text-brand-dominant-900" />
 
   </div>
 </section>

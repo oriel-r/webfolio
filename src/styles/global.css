@@ -119,7 +119,8 @@
   --focus-ring: #FF5200;
 
   /* --- Ambient glows & tinted surface (brand-derived) --- */
-  --glow-dominant: rgba(0, 173, 255, 0.10);
+  --glow-dominant: rgba(0, 173, 255, 0.15);
+  --glow-strong: rgba(0, 173, 255, 0.20);
   --glow-action: rgba(255, 82, 0, 0.08);
   --bg-tint: #E3F6FF;
 
@@ -197,7 +198,8 @@
   --focus-ring: #FF7839;
 
   /* --- Ambient glows & tinted surface (brand-derived) --- */
-  --glow-dominant: rgba(113, 209, 255, 0.12);
+  --glow-dominant: rgba(113, 209, 255, 0.18);
+  --glow-strong: rgba(113, 209, 255, 0.24);
   --glow-action: rgba(255, 159, 113, 0.14);
   --bg-tint: #003A55;
 
