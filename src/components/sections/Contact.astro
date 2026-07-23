@@ -11,7 +11,7 @@ const t = useTranslations(lang);
   <!-- Capa 2+3: Glow + ContactPet, esquina inferior derecha (mitad fuera del viewport en desktop).
        Wrapper externo hace el posicionamiento absoluto (evita conflicto con el `relative`
        interno de .contact-pet-wrap, que es contexto del glow ::after). -->
-  <div class="absolute bottom-0 right-0 z-0 w-[22rem] md:w-[34.656rem] translate-x-[35%] md:translate-x-[20%] md:translate-y-1/4 pointer-events-none">
+  <div class="absolute bottom-0 right-0 z-0 w-[18rem] md:w-[34.656rem] -translate-y-12 md:translate-y-0 translate-x-[28%] md:translate-x-[25%] md:translate-y-1/4 pointer-events-none">
     <ContactPet class="w-full h-auto text-muted dark:text-brand-dominant-900" />
   </div>
 
