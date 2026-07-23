@@ -1,0 +1,39 @@
+---
+import ContactPetSvg from '../../assets/contact_pet_v2.svg';
+
+export interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class={`contact-pet-wrap relative ${className ?? ''}`}>
+	<ContactPetSvg class="block w-full h-auto" fill="currentColor" />
+</div>
+
+<style is:global>
+	:global(.contact-pet-wrap) {
+		isolation: isolate;
+		overflow: visible;
+	}
+
+	:global(.dark .contact-pet-wrap)::after {
+		content: "";
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 160%;
+		height: 135%;
+		transform: translate(-50%, -50%);
+		background: radial-gradient(ellipse 75% 70% at 50% 50%, #00ADFF 0%, #00ADFF 40%, rgba(0,173,255,0.4) 75%, transparent 100%);
+		opacity: 0;
+		filter: blur(2px);
+		pointer-events: none;
+		z-index: -1;
+		transition: opacity var(--duration-base) var(--ease-spatial);
+	}
+	:global(.dark) :global(.contact-pet-wrap)::after {
+		opacity: 1;
+	}
+</style>

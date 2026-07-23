@@ -1,13 +1,22 @@
 ---
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import ContactPet from '../ui/ContactPet.astro';
 
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<section id="contact" class="w-full md:min-w-[100vw] min-h-screen flex items-start md:items-center justify-center shrink-0 snap-start px-8 md:px-24 pt-20 md:pt-0">
-  <div class="flex flex-col md:flex-row items-center justify-between w-full max-w-7xl mx-auto gap-12">
+<section id="contact" class="relative overflow-hidden w-full md:min-w-[100vw] min-h-screen flex items-start md:items-center justify-center shrink-0 snap-start px-8 md:px-24 pt-20 md:pt-0">
+  <!-- Capa 2+3: Glow + ContactPet, esquina inferior derecha (mitad fuera del viewport en desktop).
+       Wrapper externo hace el posicionamiento absoluto (evita conflicto con el `relative`
+       interno de .contact-pet-wrap, que es contexto del glow ::after). -->
+  <div class="absolute bottom-0 right-0 z-0 w-[22rem] md:w-[34.656rem] translate-x-[35%] md:translate-x-[20%] md:translate-y-1/4 pointer-events-none">
+    <ContactPet class="w-full h-auto text-muted dark:text-brand-dominant-900" />
+  </div>
+
+  <!-- Capa 4: Contenido de la pagina (mantiene su posicion original) -->
+  <div class="relative z-10 flex flex-col md:flex-row items-center justify-between w-full max-w-7xl mx-auto gap-12">
 
     <!-- Text Content -->
     <div class="w-full md:w-1/2 space-y-6">
