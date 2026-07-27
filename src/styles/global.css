@@ -244,3 +244,114 @@
   font-size: 0.75rem;
   padding: 0.125rem 0.5rem;
 }
+
+/* =====================================================================
+   Móvil estándar (ancho < 768px)
+   ---------------------------------------------------------------------
+   Estandariza los titulares de sección en móvil a text-2xl (24px):
+   diferenciable del cuerpo (text-base = 16px) pero menor al text-4xl
+   (36px) de los breakpoints desktop. Unifica h1 de Hero + h2 de
+   secciones (About, Contact, Projects) + h3 de card de Projects.
+   Solo font-size + line-height: no toca aspect ratios ni snap. */
+@media (max-width: 767px) {
+  #hero h1,
+  #about h2,
+  #contact h2,
+  #projects h2 {
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+  }
+  /* h3 de card de Projects — alineado con el titular estándar móvil */
+  #projects h3 {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* =====================================================================
+   Móviles muy bajos/estrechos (alt < 800 ∧ ancho < 400)
+   ---------------------------------------------------------------------
+   Define en global.css (un-scoped) para que los selectores que cruzan
+   componentes (HeroPet, ContactPet) matcheen sin data-astro-cid-XXX.
+
+   Preserva el snap una-sección-por-swipe: NO toca #scroll-container,
+   scroll-snap ni scroll.ts. Solo compacta tipografía, paddings e
+   imágenes que actualmente desbordan contra el viewport h-screen.
+
+   !important sobrevive a utilities Tailwind por defecto (text-4xl, h-28,
+   pt-20, aspect-square) y al `aspect-ratio: 1/1` hardcoded de Projects.
+   ===================================================================== */
+@media (max-width: 400px) and (max-height: 800px) {
+  /* Navbar móvil: text-xl (20px) → 16px. Sigue en carrusel horizontal.
+     centerMobileLink (en Navbar.astro) usa getBoundingClientRect, que es
+     dimensional: no requiere tocar JS. */
+  .nav-mobile-link {
+    font-size: 1rem !important;
+  }
+
+  /* Liberar 16px de top: pt-20 (5rem) → pt-16 (4rem) en cada sección.
+     Aplana un poco el respiro bajo el navbar fijo del móvil. */
+  #scroll-container > section {
+    padding-top: 4rem !important;
+  }
+
+  /* HERO — compaginar texto + HeroPet PRESERVANDO aspect 1:1.
+     SVG tiene viewBox 1000×1000: limitar `height` deja que `width`
+     derive del aspect ratio natural, sin recortar ni estirar.
+     (#hero h1 ya cubierto por la media query móvil estándar de arriba.) */
+  #hero .hero-pet-wrap {
+    width: auto !important;
+    max-width: 100% !important;
+    /* Cap por altura: 30vh en pantalla baja ≈ 200px (ancho derivará por 1:1).
+       Fallback 70vw si la altura proporcionalmente fuera mayor que el ancho. */
+    height: min(30vh, 70vw) !important;
+  }
+  #hero .hero-pet-wrap img,
+  #hero .hero-pet-wrap svg {
+    /* Hereda el ancho del wrap (capped por height+viewBox); width:100%/height:auto
+       respeta el aspect 1:1 del SVG sin recorte. */
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    display: block;
+  }
+
+  /* ABOUT — foto 1:1 preservado; reducido de ancho (height deriva por ratio).
+     (#about h2 ya cubierto por la media query móvil estándar.) */
+  #about .aspect-square {
+    aspect-ratio: 1 / 1 !important;
+    max-width: min(60vw, 200px) !important;
+  }
+
+  /* CONTACT — cards 1:1 PRESERVADO; reducidas a 4rem × 4rem (64px) ya que
+     en móvil solo muestran el icono (el label queda sr-only → ver
+     Contact.astro). 3 cards × 64px + 2 gaps × 16px = 224px en fila,
+     holgado en viewport de 360px y deja respirar a ContactPet. */
+  #contact [data-contact-card] {
+    width: 4rem !important;
+    height: 4rem !important;
+  }
+  #contact [data-contact-card] span[class*="icon-["] {
+    /* Material Icons por font-size del span: 32px → 24px en consonancia
+       con card de 64px (icono sigue siendo el foco visual de la card). */
+    font-size: 1.5rem !important;
+  }
+  /* ContactPet: ancho ligeramente reducido + reposicionado para que no
+     monte las cards en fila ni la primera línea de texto. */
+  #contact .contact-pet-anchor {
+    width: 16rem !important;
+    transform: translate(35%, -10%) !important;
+  }
+
+  /* PROJECTS — card 1:1 PRESERVADO; solo reducir ancho (height deriva por
+     ratio). El aspect-square original (Tailwind + fallback CSS) se
+     mantiene 1:1. (#projects h3 ya cubierto por la media query móvil.) */
+  #projects .projects-card {
+    aspect-ratio: 1 / 1 !important;
+    width: min(85vw, 200px) !important;
+  }
+
+  /* TECHNOLOGIES — gap menos denso entre cards del bento (no toca aspect). */
+  #technologies {
+    gap: 0.75rem !important;
+  }
+}
