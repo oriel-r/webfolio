@@ -9,31 +9,27 @@ const { class: className } = Astro.props;
 ---
 
 <div class={`contact-pet-wrap relative ${className ?? ''}`}>
-	<ContactPetSvg class="block w-full h-auto" fill="currentColor" />
+	<ContactPetSvg class="contact-pet-svg block w-full h-auto" fill="currentColor" />
 </div>
 
 <style is:global>
-	:global(.contact-pet-wrap) {
+	.contact-pet-wrap {
 		isolation: isolate;
 		overflow: visible;
+		filter: none;
 	}
 
-	:global(.dark .contact-pet-wrap)::after {
-		content: "";
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		width: 160%;
-		height: 135%;
-		transform: translate(-50%, -50%);
-		background: radial-gradient(ellipse 75% 70% at 50% 50%, #00ADFF 0%, #00ADFF 40%, rgba(0,173,255,0.4) 75%, transparent 100%);
-		opacity: 0;
-		filter: blur(2px);
-		pointer-events: none;
-		z-index: -1;
-		transition: opacity var(--duration-base) var(--ease-spatial);
-	}
-	:global(.dark) :global(.contact-pet-wrap)::after {
-		opacity: 1;
+	/* Halo envolvente que contornea la silueta del carpincho (solo dark).
+	   drop-shadow() usa el canal alpha del contenido renderizado, así el glow
+	   sigue EXACTAMENTE la forma del animal (no el viewBox cuadrado del SVG).
+	   Dos capas balancean efecto vs. rendimiento: una exterior amplia y suave
+	   (96px, halo de fondo) + una interior más intensa (28px, silueta definida).
+	   Se eliminó la cadena de 5 sombras con blur de hasta 560px, que forzaba
+	   superficies de rasterizado enormes al hacer scroll. No altera posiciones
+	   ni dimensiones. */
+	.dark.theme-glow-ready .contact-pet-svg {
+		filter:
+			drop-shadow(0 0 370px rgba(0, 173, 255, 0.30))
+			drop-shadow(0 0 32px rgba(0, 173, 255, 0.75));
 	}
 </style>

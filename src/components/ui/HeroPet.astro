@@ -9,17 +9,22 @@ const { class: className } = Astro.props;
 ---
 
 <div class={`hero-pet-wrap relative ${className ?? ''}`}>
-	<HeroPetSvg class="block w-full h-auto" fill="currentColor" />
+	<HeroPetSvg class="hero-pet-svg block w-full h-auto relative z-[1]" fill="currentColor" />
 </div>
 
 <style is:global>
-	/* Stack context del wrap: confina el z-index:-1 del ::after DENTRO
-	   del wrap (detrás del SVG, pero delante del bg opaco del body).
-	   overflow: visible garantiza que el halo extendido del ::after
-	   pueda pintar fuera de los bordes del wrap. */
-	:global(.hero-pet-wrap) {
+	/* Stack context del wrap: mantiene el glow drop-shadow del wrapper
+	   (aplicado sobre el contenido renderizado) y el z-index del SVG
+	   dentro de un contexto estable. overflow: visible no es estrictamente
+	   necesario para drop-shadow (el halo se pinta sobre el canvas de la
+	   capa), pero se conserva por seguridad.
+   El halo no se anima mediante `filter`: los blur grandes se recalculan
+   en cada frame y provocaban tirones. El estado `.theme-glow-ready` se
+   añade por JS después de que terminan las transiciones de la página. */
+	.hero-pet-wrap {
 		isolation: isolate;
 		overflow: visible;
+		filter: none;
 	}
 
 	/* Color de la sombra de contacto del HeroPet, por tema.
@@ -27,41 +32,32 @@ const { class: className } = Astro.props;
 	   aquí se sobreescribe. Light: oclusión oscura legible sobre canvas claro.
 	   Dark: sobre canvas casi-negro una sombra oscura no se ve, así que usamos
 	   glow dominante más opaco para dar la misma lectura de "posado". */
-	:global(#hero-shadow-flood) {
+	#hero-shadow-flood {
 		flood-color: #0C0F10;
 		flood-opacity: 0.32;
 		transition:
 			flood-color var(--duration-base) var(--ease-spatial),
 			flood-opacity var(--duration-base) var(--ease-spatial);
 	}
-	:global(.dark) :global(#hero-shadow-flood) {
-		flood-color: #71D1FF;
+	.dark #hero-shadow-flood {
+		flood-color: #00ADFF;
 		flood-opacity: 0.55;
 	}
 
-	/* Glow "blass light" envolvente detrás del carpincho, solo dark.
-	   Backdrop azul casi opaco: núcleo saturado (dominant500) que cubre
-	   toda la silueta y se desvanece solo en los bordes extremos, para
-	   que el carpincho (dominant900 #00131C) se recorte contra él como
-	   un punch-out. El ::after se extiende más allá del wrap (160%×135%)
-	   para garantizar cobertura total del área del SVG + halo envolvente.
-	   Sin blur → color saturado, no lavado. */
-	:global(.dark .hero-pet-wrap)::after {
-		content: "";
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		width: 160%;
-		height: 135%;
-		transform: translate(-50%, -50%);
-		background: radial-gradient(ellipse 75% 70% at 50% 50%, #00ADFF 0%, #00ADFF 40%, rgba(0,173,255,0.4) 75%, transparent 100%);
-		opacity: 0;
-		filter: blur(2px);
-		pointer-events: none;
-		z-index: -1;
-		transition: opacity var(--duration-base) var(--ease-spatial);
-	}
-	:global(.dark) :global(.hero-pet-wrap)::after {
-		opacity: 1;
+	/* Halo envolvente que contornea la silueta del carpincho (solo dark).
+	   drop-shadow() usa el canal alpha del contenido renderizado, así el glow
+	   sigue EXACTAMENTE la forma del animal (no el viewBox cuadrado del SVG).
+	   Dos capas balancean efecto vs. rendimiento: una exterior amplia y suave
+	   (96px, halo de fondo) + una interior más intensa (28px, silueta definida).
+	   Se eliminó la cadena de 5 sombras con blur de hasta 560px, que forzaba
+	   superficies de rasterizado enormes al hacer scroll. No altera posiciones
+	   ni dimensiones; conserva la sombra interna del HeroPet (filter
+	   url(#hero-ground-shadow) se evalúa como parte del contenido). */
+	.dark.theme-glow-ready .hero-pet-wrap {
+		filter:
+			drop-shadow(0 0 370px rgba(0, 173, 255, 0.30))
+			drop-shadow(0 0 32px rgba(0, 173, 255, 0.75));
+		/* Se aplica una sola vez, ya con la página estable, en lugar de
+		   interpolar un blur de 370px durante cientos de frames. */
 	}
 </style>

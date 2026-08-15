@@ -159,11 +159,26 @@
       color var(--duration-base) var(--ease-spatial);
   }
 
+  /* Contexto de posicionamiento estable para #hero: la sección Hero no traía
+     `position: relative` (solo flex), lo que hacía que el stack context del
+     .hero-pet-wrap (isolation: isolate) no tuviera un ancestro posicionado
+     predecible y el halo z-index:0 del ::after quedaba a merced del orden de
+     paint del body/section opacos. Contact ya traía `relative` en su clase.
+     Aquí lo forzamos en base layer para que no compita con utilities; no toca
+     layout, transform ni dimensions de la sección. */
+  #hero {
+    position: relative;
+  }
+
   html,
   html *,
   html *::before,
   html *::after {
-    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+    /* opacity incluido para que el fade de los halos glow de las mascotas
+       (HeroPet/ContactPet ::after) acompañe el cambio de tema con suavidad,
+       sin "pop" duro al alternar light/dark. No afecta a capas que no usen
+       opacity (transition-property solo anima propiedades declaradas). */
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity;
     transition-duration: var(--duration-base);
     transition-timing-function: var(--ease-spatial);
   }
@@ -198,18 +213,18 @@
   --focus-ring: #FF7839;
 
   /* --- Ambient glows & tinted surface (brand-derived) --- */
-  --glow-dominant: rgba(113, 209, 255, 0.18);
-  --glow-strong: rgba(113, 209, 255, 0.24);
+  --glow-dominant: rgba(0, 173, 255, 0.18);
+  --glow-strong: rgba(0, 173, 255, 0.24);
   --glow-action: rgba(255, 159, 113, 0.14);
   --bg-tint: #003A55;
 
   /* Bias lights en reposo: azul dominante. Solo en hover se activa naranja action. */
-  --shadow-interactive: 2px 2px 20px 0px rgba(113, 209, 255, 0.16);
+  --shadow-interactive: 2px 2px 20px 0px rgba(0, 173, 255, 0.16);
   --shadow-interactive-hover: 2px 2px 28px 0px rgba(255, 159, 113, 0.26);
-  --shadow-bento-base: 2px 2px 20px 0px rgba(113, 209, 255, 0.20);
+  --shadow-bento-base: 2px 2px 20px 0px rgba(0, 173, 255, 0.20);
   --shadow-bento-hover: 2px 2px 28px 0px rgba(255, 159, 113, 0.32);
-  --shadow-overlay: 2px 2px 24px 0px rgba(113, 209, 255, 0.24);
-  --shadow-immersive: 2px 2px 30px 0px rgba(113, 209, 255, 0.28);
+  --shadow-overlay: 2px 2px 24px 0px rgba(0, 173, 255, 0.24);
+  --shadow-immersive: 2px 2px 30px 0px rgba(0, 173, 255, 0.28);
 }
 
 .dark ::selection {

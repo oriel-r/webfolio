@@ -21,19 +21,47 @@ const t = useTranslations(lang)
 		<ClientRouter fallback="animate" />
 		<script is:inline>
 			(function () {
+				let glowTimeout;
+
+				function scheduleThemeGlow(delay) {
+					const root = document.documentElement;
+					if (glowTimeout) window.clearTimeout(glowTimeout);
+					root.classList.remove('theme-glow-ready');
+
+					if (!root.classList.contains('dark')) return;
+					if (!delay) {
+						root.classList.add('theme-glow-ready');
+						return;
+					}
+
+					const glowDuration = parseFloat(
+						getComputedStyle(root).getPropertyValue('--duration-glow')
+					) || 1400;
+					glowTimeout = window.setTimeout(() => {
+						if (root.classList.contains('dark')) {
+							root.classList.add('theme-glow-ready');
+						}
+					}, glowDuration);
+				}
+
+				window.__scheduleThemeGlow = scheduleThemeGlow;
+
 				function applyTheme() {
 					const saved = localStorage.getItem('theme');
 					const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+					const isDark = saved === 'dark' || (!saved && prefersDark);
 					document.documentElement.classList.toggle(
 						'dark',
-						saved === 'dark' || (!saved && prefersDark)
+						isDark
 					);
+					scheduleThemeGlow(false);
 				}
 				applyTheme();
 				window.matchMedia('(prefers-color-scheme: dark)')
 					.addEventListener('change', (e) => {
 						if (!localStorage.getItem('theme')) {
 							document.documentElement.classList.toggle('dark', e.matches);
+							scheduleThemeGlow(true);
 						}
 					});
 				document.addEventListener('astro:after-swap', applyTheme);
@@ -52,9 +80,9 @@ const t = useTranslations(lang)
 			<div data-glow="technologies"></div>
 			<div data-glow="about"></div>
 			<div data-glow="contact"></div>
-			<div data-glow="contact-action"></div>
 		</div>
 		<slot />
+
 		<script>
 			function setupAmbientGlow() {
 				const glow = document.getElementById('ambient-glow');
@@ -72,15 +100,6 @@ const t = useTranslations(lang)
 					setActive(order[idx] || 'hero');
 				}));
 
-				/* Pulse de action al activar un botón de contacto */
-				let actionTimeout: number | undefined;
-				window.addEventListener('contact:actionGlow', () => {
-					glow.classList.add('glow-action-pulse');
-					if (actionTimeout) window.clearTimeout(actionTimeout);
-					actionTimeout = window.setTimeout(() => {
-						glow.classList.remove('glow-action-pulse');
-					}, 2500);
-				});
 			}
 			setupAmbientGlow();
 			document.addEventListener('astro:after-swap', setupAmbientGlow);
@@ -93,6 +112,7 @@ const t = useTranslations(lang)
 				btn.addEventListener('click', () => {
 					const isDark = document.documentElement.classList.toggle('dark');
 					localStorage.setItem('theme', isDark ? 'dark' : 'light');
+					window.__scheduleThemeGlow(isDark);
 				});
 			}
 			setupThemeToggle();
@@ -185,27 +205,13 @@ const t = useTranslations(lang)
 	/* Glow Hero boosteado ×1.35 en dark (0.18 × 1.35 ≈ 0.24).
 	   Mismo foco/size que light, solo subimos opacidad para más presencia. */
 	:global(.dark) #ambient-glow > [data-glow="hero"] {
-		background: radial-gradient(ellipse 68% 60% at 72% 45%, rgba(113, 209, 255, 0.24), transparent 76%);
+		background: radial-gradient(ellipse 68% 60% at 72% 45%, rgba(0, 173, 255, 0.24), transparent 76%);
 	}
 	#ambient-glow > [data-glow="about"] {
 		background: radial-gradient(ellipse 50% 55% at 72% 50%, var(--glow-dominant), transparent 72%);
 	}
 	#ambient-glow > [data-glow="contact"] {
 		background: radial-gradient(ellipse 55% 50% at 72% 50%, var(--glow-dominant), transparent 72%);
-	}
-	#ambient-glow > [data-glow="contact-action"] {
-		background: radial-gradient(ellipse 55% 50% at 72% 50%, var(--glow-action), transparent 72%);
-	}
-	/* Pulse de action al presionar un botón de contacto (contact.ts dispara
-	   `contact:actionGlow`). Time-based: no tiene animation-timeline. */
-	#ambient-glow.glow-action-pulse > [data-glow="contact-action"] {
-		animation: glow-action-pulse 2500ms var(--ease-hover);
-	}
-	@keyframes glow-action-pulse {
-		0%   { opacity: 0; }
-		25%  { opacity: 0.75; }
-		75%  { opacity: 0.75; }
-		100% { opacity: 0; }
 	}
 	/* Capa activa por sección */
 	#ambient-glow[data-active="hero"] > [data-glow="hero"],
@@ -228,7 +234,7 @@ const t = useTranslations(lang)
 			background: radial-gradient(ellipse 110% 45% at 50% 78%, var(--glow-dominant), transparent 76%);
 		}
 		:global(.dark) #ambient-glow > [data-glow="hero"] {
-			background: radial-gradient(ellipse 110% 45% at 50% 78%, rgba(113, 209, 255, 0.24), transparent 76%);
+			background: radial-gradient(ellipse 110% 45% at 50% 78%, rgba(0, 173, 255, 0.24), transparent 76%);
 		}
 		#ambient-glow > [data-glow="technologies"] {
 			inset: 0;
@@ -242,9 +248,6 @@ const t = useTranslations(lang)
 		}
 		#ambient-glow > [data-glow="contact"] {
 			background: radial-gradient(ellipse 80% 35% at 50% 40%, var(--glow-dominant), transparent 72%);
-		}
-		#ambient-glow > [data-glow="contact-action"] {
-			background: radial-gradient(ellipse 80% 35% at 50% 40%, var(--glow-action), transparent 72%);
 		}
 	}
 
@@ -346,9 +349,20 @@ const t = useTranslations(lang)
 		#ambient-glow > [data-glow="hero"],
 		#ambient-glow > [data-glow="technologies"],
 		#ambient-glow > [data-glow="about"],
-		#ambient-glow > [data-glow="contact"],
-		#ambient-glow.glow-action-pulse > [data-glow="contact-action"] {
+		#ambient-glow > [data-glow="contact"] {
 			animation: none;
 		}
+	}
+
+	/* Dark: hero y contact ya traen el glow de su mascota, así que el bias
+	   light ambiental se apaga (opacity 0) para no duplicar halo. La capa
+	   sigue en el DOM y conserva la transición de opacity (--duration-glow),
+	   por lo que al alternar tema el glow se desvanece suavemente en vez de
+	   cortarse. `animation: none` anula el fade scroll-driven para que la
+	   transición controle el estado. Light queda intacto. */
+	:global(.dark) #ambient-glow > [data-glow="hero"],
+	:global(.dark) #ambient-glow > [data-glow="contact"] {
+		opacity: 0;
+		animation: none;
 	}
 </style>
