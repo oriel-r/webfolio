@@ -9,7 +9,12 @@ const { class: className } = Astro.props;
 ---
 
 <div class={`contact-pet-wrap relative ${className ?? ''}`}>
-	<ContactPetSvg class="contact-pet-svg block w-full h-auto" fill="currentColor" />
+	<ContactPetSvg class="contact-pet-svg block w-full h-auto relative z-[1]" fill="currentColor" />
+	<ContactPetSvg
+		class="contact-pet-action-svg absolute top-0 left-0 block w-full h-auto z-[2] pointer-events-none opacity-0"
+		fill="currentColor"
+		aria-hidden="true"
+	/>
 </div>
 
 <style is:global>
@@ -32,4 +37,80 @@ const { class: className } = Astro.props;
 			drop-shadow(0 0 370px rgba(0, 173, 255, 0.30))
 			drop-shadow(0 0 32px rgba(0, 173, 255, 0.75));
 	}
+
+	/* Las dos mascotas comparten la misma silueta: el azul permanece debajo y
+	   el naranja se hace visible solo durante el crossfade de acción. */
+	.contact-pet-action-svg {
+		opacity: 0;
+	}
+	.dark .contact-pet-action-svg {
+		filter:
+			drop-shadow(0 0 370px color-mix(in srgb, var(--color-brand-action-500) 50%, transparent))
+			drop-shadow(0 0 32px color-mix(in srgb, var(--color-brand-action-500) 90%, transparent))
+			drop-shadow(0 0 4px var(--color-brand-action-300));
+	}
+	.dark .contact-pet-wrap.contact-pet-action-glow .contact-pet-svg {
+		animation: contact-pet-base-crossfade 3000ms linear both;
+	}
+	.dark .contact-pet-wrap.contact-pet-action-glow .contact-pet-action-svg {
+		animation: contact-pet-action-crossfade 3000ms linear both;
+	}
+
+	@keyframes contact-pet-base-crossfade {
+		0% {
+			opacity: 1;
+			animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+		}
+		42% {
+			opacity: 0;
+			animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+		}
+		58% { opacity: 0; }
+		100% { opacity: 1; }
+	}
+
+	@keyframes contact-pet-action-crossfade {
+		0% {
+			opacity: 0;
+			animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+		}
+		42% {
+			opacity: 1;
+			animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+		}
+		58% { opacity: 1; }
+		100% { opacity: 0; }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.dark .contact-pet-wrap.contact-pet-action-glow .contact-pet-svg {
+			animation: none;
+			opacity: 0;
+		}
+		.dark .contact-pet-wrap.contact-pet-action-glow .contact-pet-action-svg {
+			animation: none;
+			opacity: 1;
+		}
+	}
 </style>
+
+<script is:inline>
+(function () {
+  if (window.__contactPetGlowBound) return;
+  window.__contactPetGlowBound = true;
+
+  var actionTimeout;
+  window.addEventListener('contact:actionGlow', function () {
+    var el = document.querySelector('.contact-pet-wrap');
+    if (!el) return;
+
+    el.classList.remove('contact-pet-action-glow');
+    void el.offsetWidth;
+    el.classList.add('contact-pet-action-glow');
+    if (actionTimeout) window.clearTimeout(actionTimeout);
+    actionTimeout = window.setTimeout(function () {
+      el.classList.remove('contact-pet-action-glow');
+    }, 3100);
+  });
+})();
+</script>
