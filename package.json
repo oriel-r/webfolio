@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@iconify-json/ic": "^1.2.4",
-    "@iconify-json/simple-icons": "^1.2.89"
+    "@iconify-json/simple-icons": "^1.2.89",
+    "agent-browser": "^0.34.0"
   }
 }
