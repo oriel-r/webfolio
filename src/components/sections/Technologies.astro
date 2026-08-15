@@ -46,8 +46,8 @@ const columns = [
 let cardCounter = 0;
 ---
 
-<section id="technologies" class="w-full md:min-w-[100vw] min-h-screen flex items-start justify-center shrink-0 snap-start px-4 md:px-8 lg:px-12 xl:px-24 pt-20 md:pt-24 pb-8 md:pb-28">
-  <div class="flex flex-col md:flex-row md:items-stretch gap-4 md:gap-4 lg:gap-6 xl:gap-8 w-full max-w-[1664px] mx-auto h-full md:min-h-[300px] lg:min-h-[400px] lg:aspect-[1664/760]">
+<section id="technologies" class="w-full md:min-w-[100vw] min-h-screen h-auto flex items-start justify-center shrink-0 snap-start px-4 md:px-8 lg:px-12 xl:px-24 pt-20 md:pt-24 pb-8 md:pb-28">
+  <div class="flex flex-col md:flex-row md:items-stretch gap-4 md:gap-4 lg:gap-6 xl:gap-8 w-full max-w-[1664px] mx-auto h-auto md:h-full md:min-h-[300px] lg:min-h-[400px] lg:aspect-[1664/760]">
     {columns.map((col) => (
       <div class:list={[
         'flex min-w-0 flex-col gap-4 md:gap-4 lg:gap-6 xl:gap-8',
@@ -143,7 +143,14 @@ let cardCounter = 0;
     }
   }
 
-  /* Suavizar la duración y la curva de aceleración de las View Transitions de las cards y pills */
+  /* Una sección expandida necesita scroll libre hasta su final. */
+  @media (max-width: 767px) {
+    :global(#scroll-container.has-expanded-technologies) {
+      scroll-snap-type: y proximity;
+    }
+  }
+
+  /* Mantener suaves las transiciones visuales de las cards y pills */
   ::view-transition-group(*) {
     animation-duration: 300ms;
     animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
@@ -227,12 +234,20 @@ let cardCounter = 0;
 </script>
 
 <script>
-  // Colapso de pills en mobile utilizando la View Transitions API.
-  // Al alternar la clase .is-expanded dentro de document.startViewTransition(),
-  // el navegador calcula automáticamente el cambio de layout en el flex-wrap y
-  // traslada suavemente la tarjeta, las pills y el botón "Ver más".
+  // Colapso de pills en mobile sin navegación ni transición de documento.
+  // El cambio directo de clase permite que el layout de la sección crezca
+  // naturalmente sin animar ni reemplazar el documento completo.
   function initSkillCollapse() {
-    const reduces = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function syncExpandedSnap() {
+      const scrollContainer = document.getElementById('scroll-container');
+      const hasExpandedSkills = Boolean(
+        document.querySelector('#technologies .skills-list.is-expanded'),
+      );
+      scrollContainer?.classList.toggle(
+        'has-expanded-technologies',
+        hasExpandedSkills,
+      );
+    }
 
     document.querySelectorAll<HTMLElement>('.skills-list').forEach((list) => {
       if (list.dataset.ready === '1') return;
@@ -242,31 +257,27 @@ let cardCounter = 0;
       const label = toggle?.querySelector<HTMLElement>('.skills-toggle-label');
       if (!toggle || !label) return;
 
-      toggle.addEventListener('click', () => {
+      toggle.addEventListener('click', (event) => {
+        event.preventDefault();
         const isExpanded = list.classList.contains('is-expanded');
 
-        const updateState = () => {
-          if (isExpanded) {
-            list.classList.remove('is-expanded');
-            toggle.setAttribute('aria-expanded', 'false');
-            if (label) label.textContent = toggle.dataset.seeMore ?? '…Ver más';
-          } else {
-            list.classList.add('is-expanded');
-            toggle.setAttribute('aria-expanded', 'true');
-            if (label) label.textContent = toggle.dataset.seeLess ?? '…Ver menos';
-          }
-        };
-
-        if ('startViewTransition' in document && !reduces) {
-          (document as any).startViewTransition(updateState);
+        if (isExpanded) {
+          list.classList.remove('is-expanded');
+          toggle.setAttribute('aria-expanded', 'false');
+          if (label) label.textContent = toggle.dataset.seeMore ?? '…Ver más';
         } else {
-          updateState();
+          list.classList.add('is-expanded');
+          toggle.setAttribute('aria-expanded', 'true');
+          if (label) label.textContent = toggle.dataset.seeLess ?? '…Ver menos';
         }
+
+        syncExpandedSnap();
       });
     });
+
+    syncExpandedSnap();
   }
 
   document.addEventListener('astro:after-swap', initSkillCollapse);
   initSkillCollapse();
 </script>
-

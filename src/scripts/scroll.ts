@@ -18,6 +18,39 @@ export function initScroll() {
 		return scrollContainer;
 	}
 
+	function getMobileSectionIndex(): number {
+		const scrollTop = scrollContainer.scrollTop;
+		let activeIndex = 0;
+
+		// Una sección expandida puede ser más alta que el viewport. En ese caso
+		// debe seguir activa hasta que el inicio de la siguiente sección entre
+		// en el scroll, no hasta que su inicio sea el punto más cercano.
+		sections.forEach((section, index) => {
+			if (section.offsetTop <= scrollTop + 1) {
+				activeIndex = index;
+			}
+		});
+
+		return activeIndex;
+	}
+
+	function isInsideScrollableSection(direction: 1 | -1): boolean {
+		const section = sections[currentIndex];
+		if (!section || section.offsetHeight <= scrollContainer.clientHeight) {
+			return false;
+		}
+
+		const scrollTop = scrollContainer.scrollTop;
+		const sectionStart = section.offsetTop;
+		const sectionEnd = sectionStart + section.offsetHeight;
+
+		if (direction > 0) {
+			return scrollTop + scrollContainer.clientHeight < sectionEnd - 1;
+		}
+
+		return scrollTop > sectionStart + 1;
+	}
+
 	function emitSectionChange(index: number) {
 		window.dispatchEvent(
 			new CustomEvent("sectionChange", { detail: { index } }),
@@ -103,11 +136,13 @@ export function initScroll() {
 			}
 		} else {
 			if (evt.key === "ArrowDown") {
+				if (isInsideScrollableSection(1)) return;
 				evt.preventDefault();
 				scrollToSection(
 					Math.min(currentIndex + 1, sections.length - 1),
 				);
 			} else if (evt.key === "ArrowUp") {
+				if (isInsideScrollableSection(-1)) return;
 				evt.preventDefault();
 				scrollToSection(Math.max(currentIndex - 1, 0));
 			}
@@ -136,14 +171,7 @@ export function initScroll() {
 					}
 				});
 			} else {
-				const scrollTop = scroller.scrollTop;
-				sections.forEach((section, i) => {
-					const dist = Math.abs(section.offsetTop - scrollTop);
-					if (dist < minDist) {
-						minDist = dist;
-						closest = i;
-					}
-				});
+				closest = getMobileSectionIndex();
 			}
 
 			if (closest !== currentIndex) {
