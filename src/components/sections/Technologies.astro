@@ -42,6 +42,8 @@ const columns = [
     ]
   }
 ];
+
+let cardCounter = 0;
 ---
 
 <section id="technologies" class="w-full md:min-w-[100vw] min-h-screen flex items-start justify-center shrink-0 snap-start px-4 md:px-8 lg:px-12 xl:px-24 pt-20 md:pt-24 pb-8 md:pb-28">
@@ -51,11 +53,20 @@ const columns = [
         'flex min-w-0 flex-col gap-4 md:gap-4 lg:gap-6 xl:gap-8',
         col.grow
       ]}>
-        {col.cards.map((card) => (
-          <div class:list={[
-            'flex flex-col p-4 md:p-4 lg:p-5 xl:p-6 rounded-2xl lg:rounded-[32px] bg-elevated border border-border min-w-0 shadow-bento hover:shadow-bento-glow transition duration-glow ease-glow will-change-transform isolate',
-            card.cardGrow
-          ]}>
+        {col.cards.map((card) => {
+          const cardId = `tech-card-${cardCounter++}`;
+          const skills = skillsByCategory(card.category);
+          const sizeClasses = card.tagSize === 'lg'
+            ? 'md:px-3 md:py-1.5 md:text-base lg:px-3.5 lg:py-2 lg:text-lg xl:px-6 xl:py-3 xl:text-xl'
+            : 'md:px-2.5 md:py-1.5 md:text-sm lg:px-3.5 lg:py-2 lg:text-base xl:px-5 xl:py-2.5 xl:text-lg';
+          return (
+          <div
+            class:list={[
+              'flex flex-col p-4 md:p-4 lg:p-5 xl:p-6 rounded-2xl lg:rounded-[32px] bg-elevated border border-border min-w-0 shadow-bento hover:shadow-bento-glow transition duration-glow ease-glow will-change-transform isolate',
+              card.cardGrow
+            ]}
+            style={`view-transition-name: card-${cardId};`}
+          >
             <h3 class:list={[
               'font-semibold text-primary font-display',
               card.titleSize === 'lg'
@@ -64,24 +75,45 @@ const columns = [
                   ? 'text-base md:text-xl lg:text-3xl xl:text-4xl 2xl:text-4xl mb-3 md:mb-5 lg:mb-7'
                   : 'text-base md:text-lg lg:text-xl xl:text-3xl mb-3 md:mb-4 lg:mb-5 xl:mb-6'
             ]}>{t(card.titleKey)}</h3>
-            <div class="flex flex-wrap gap-1 md:gap-1 lg:gap-1.5 xl:gap-2">
-              {skillsByCategory(card.category).map((skill) => (
+            <div
+              class="skills-list flex flex-wrap gap-1 md:gap-1 lg:gap-1.5 xl:gap-2"
+              id={cardId}
+              data-skills-list
+              data-skill-count={skills.length}
+            >
+              {skills.map((skill, i) => (
                 <Tag
                   icon={skill.icon}
                   linkToProjects={skill.projects}
                   ariaLabel={skill.projects?.length ? `Ver proyecto ${skill.projects[0]} en Projects` : undefined}
+                  data-skill-index={i}
+                  style={`view-transition-name: skill-${cardId}-${i};`}
                   class:list={[
-                    card.tagSize === 'lg'
-                      ? 'md:px-3 md:py-1.5 md:text-base lg:px-3.5 lg:py-2 lg:text-lg xl:px-6 xl:py-3 xl:text-xl'
-                      : 'md:px-2.5 md:py-1.5 md:text-sm lg:px-3.5 lg:py-2 lg:text-base xl:px-5 xl:py-2.5 xl:text-lg'
+                    sizeClasses,
+                    i >= 3 ? 'skills-extra' : ''
                   ]}
                 >
                   {skill.name}
                 </Tag>
               ))}
+              {skills.length > 3 && (
+                <Tag
+                  interactive
+                  class:list={['skills-toggle md:hidden', sizeClasses]}
+                  data-skills-toggle
+                  aria-expanded="false"
+                  aria-controls={cardId}
+                  style={`view-transition-name: toggle-${cardId};`}
+                  data-see-more={'\u2026' + t('technologies.seeMore')}
+                  data-see-less={'\u2026' + t('technologies.seeLess')}
+                >
+                  <span class="skills-toggle-label">{'\u2026' + t('technologies.seeMore')}</span>
+                </Tag>
+              )}
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     ))}
   </div>
@@ -92,6 +124,31 @@ const columns = [
   class="hidden icon-[simple-icons--nodedotjs] icon-[simple-icons--typescript] icon-[simple-icons--nestjs] icon-[simple-icons--express] icon-[simple-icons--hono] icon-[simple-icons--swagger] icon-[simple-icons--jsonwebtokens] icon-[simple-icons--betterauth] icon-[simple-icons--docker] icon-[simple-icons--linux] icon-[simple-icons--googlecloud] icon-[simple-icons--amazonwebservices] icon-[simple-icons--githubactions] icon-[simple-icons--render] icon-[simple-icons--react] icon-[simple-icons--astro] icon-[simple-icons--tailwindcss] icon-[simple-icons--redux] icon-[simple-icons--postgresql] icon-[simple-icons--redis] icon-[simple-icons--sqlite] icon-[simple-icons--typeorm] icon-[simple-icons--prisma] icon-[simple-icons--mongodb] icon-[simple-icons--googlegemini]"
   aria-hidden="true"
 ></div>
+
+<style>
+  /* Mobile colapsado: oculta pills 3+ con display:none !important
+     (necesario para pisar .inline-flex del baseStyles de Tag, que
+     por cascada gana sobre .hidden de Tailwind). */
+  .skills-list:not(.is-expanded) > :global([data-skill-index].skills-extra) {
+    display: none !important;
+  }
+
+  /* En desktop, las pills 3+ siempre visibles */
+  @media (min-width: 768px) {
+    .skills-list > :global([data-skill-index].skills-extra) {
+      display: inline-flex !important;
+    }
+    .skills-toggle {
+      display: none !important;
+    }
+  }
+
+  /* Suavizar la duración y la curva de aceleración de las View Transitions de las cards y pills */
+  ::view-transition-group(*) {
+    animation-duration: 300ms;
+    animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+</style>
 
 <script is:inline>
   (function () {
@@ -168,3 +225,48 @@ const columns = [
   initTechLinks();
   document.addEventListener('astro:after-swap', initTechLinks);
 </script>
+
+<script>
+  // Colapso de pills en mobile utilizando la View Transitions API.
+  // Al alternar la clase .is-expanded dentro de document.startViewTransition(),
+  // el navegador calcula automáticamente el cambio de layout en el flex-wrap y
+  // traslada suavemente la tarjeta, las pills y el botón "Ver más".
+  function initSkillCollapse() {
+    const reduces = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.querySelectorAll<HTMLElement>('.skills-list').forEach((list) => {
+      if (list.dataset.ready === '1') return;
+      list.dataset.ready = '1';
+
+      const toggle = list.querySelector<HTMLButtonElement>('[data-skills-toggle]');
+      const label = toggle?.querySelector<HTMLElement>('.skills-toggle-label');
+      if (!toggle || !label) return;
+
+      toggle.addEventListener('click', () => {
+        const isExpanded = list.classList.contains('is-expanded');
+
+        const updateState = () => {
+          if (isExpanded) {
+            list.classList.remove('is-expanded');
+            toggle.setAttribute('aria-expanded', 'false');
+            if (label) label.textContent = toggle.dataset.seeMore ?? '…Ver más';
+          } else {
+            list.classList.add('is-expanded');
+            toggle.setAttribute('aria-expanded', 'true');
+            if (label) label.textContent = toggle.dataset.seeLess ?? '…Ver menos';
+          }
+        };
+
+        if ('startViewTransition' in document && !reduces) {
+          (document as any).startViewTransition(updateState);
+        } else {
+          updateState();
+        }
+      });
+    });
+  }
+
+  document.addEventListener('astro:after-swap', initSkillCollapse);
+  initSkillCollapse();
+</script>
+

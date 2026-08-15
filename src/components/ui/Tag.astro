@@ -7,6 +7,8 @@ interface Props {
   /** Slugs de proyectos a los que enlaza. Si se pasa, el tag se vuelve un <button> clicable. */
   linkToProjects?: string[];
   ariaLabel?: string;
+  /** Renderiza el Tag como <button type="button"> sin link, para usar como toggle interactivo. */
+  interactive?: boolean;
 }
 
 const {
@@ -16,10 +18,12 @@ const {
   class: className = '',
   linkToProjects,
   ariaLabel,
+  interactive = false,
   ...rest
 } = Astro.props;
 
 const isLink = Array.isArray(linkToProjects) && linkToProjects.length > 0;
+const isInteractive = interactive || isLink;
 
 const baseStyles = 'group inline-flex items-center gap-[0.6em] tracking-[0.04em] font-medium rounded-full transition duration-pill ease-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 font-code';
 
@@ -38,14 +42,16 @@ const sizes = {
 };
 
 const classes = [baseStyles, variants[variant], sizes[size], className].filter(Boolean).join(' ');
-const Tag = isLink ? 'button' : 'span';
+const Tag = isInteractive ? 'button' : 'span';
 const extraAttrs = isLink
   ? {
       type: 'button',
       'data-tech-projects': linkToProjects!.join(','),
       'aria-label': ariaLabel,
     }
-  : {};
+  : interactive
+    ? { type: 'button', 'aria-label': ariaLabel }
+    : {};
 ---
 
 <Tag class={classes} {...extraAttrs} {...rest}>

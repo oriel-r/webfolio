@@ -38,6 +38,8 @@ export const ui = {
     'technologies.devtool': 'DevTool',
     'technologies.databases': 'Databases',
     'technologies.ai': 'AI & Automations',
+    'technologies.seeMore': 'Ver más',
+    'technologies.seeLess': 'Ver menos',
 
     'contact.title': 'Buscas un dev que marque la diferencia?',
     'contact.body': 'Estoy listo para ayudarte a convertir tus ideas en soluciones y resultados concretos.',
@@ -103,6 +105,8 @@ export const ui = {
     'technologies.devtool': 'DevTool',
     'technologies.databases': 'Databases',
     'technologies.ai': 'AI & Automations',
+    'technologies.seeMore': 'See more',
+    'technologies.seeLess': 'See less',
 
     'contact.title': 'Looking for a dev who makes a difference?',
     'contact.body': 'I am ready to help you turn your ideas into solutions and concrete results.',
