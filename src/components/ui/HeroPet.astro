@@ -13,11 +13,10 @@ const { class: className } = Astro.props;
 </div>
 
 <style is:global>
-	/* Stack context del wrap: mantiene el glow drop-shadow del wrapper
-	   (aplicado sobre el contenido renderizado) y el z-index del SVG
-	   dentro de un contexto estable. overflow: visible no es estrictamente
-	   necesario para drop-shadow (el halo se pinta sobre el canvas de la
-	   capa), pero se conserva por seguridad.
+	/* Stack context del wrap: confina el z-index del SVG dentro de un
+	   contexto estable. overflow: visible no es estrictamente necesario
+	   para drop-shadow (el halo se pinta sobre el canvas de la capa),
+	   pero se conserva por seguridad.
    El halo no se anima mediante `filter`: los blur grandes se recalculan
    en cada frame y provocaban tirones. El estado `.theme-glow-ready` se
    añade por JS después de que terminan las transiciones de la página. */
@@ -45,18 +44,18 @@ const { class: className } = Astro.props;
 	}
 
 	/* Halo envolvente que contornea la silueta del carpincho (solo dark).
-	   drop-shadow() usa el canal alpha del contenido renderizado, así el glow
-	   sigue EXACTAMENTE la forma del animal (no el viewBox cuadrado del SVG).
-	   Dos capas balancean efecto vs. rendimiento: una exterior amplia y suave
-	   (96px, halo de fondo) + una interior más intensa (28px, silueta definida).
-	   Se eliminó la cadena de 5 sombras con blur de hasta 560px, que forzaba
-	   superficies de rasterizado enormes al hacer scroll. No altera posiciones
-	   ni dimensiones; conserva la sombra interna del HeroPet (filter
-	   url(#hero-ground-shadow) se evalúa como parte del contenido). */
-	.dark.theme-glow-ready .hero-pet-wrap {
+	   Se aplica SOLO a la base (.hero-pet-svg), no al wrap (consistencia
+	   con ContactPet: el halo vive en la base y no envuelve a otras capas).
+	   drop-shadow() usa el canal alpha del contenido renderizado, así el
+	   glow sigue EXACTAMENTE la forma del animal (no el viewBox cuadrado
+	   del SVG); conserva la sombra interna del HeroPet (filter
+	   url(#hero-ground-shadow) se evalúa como parte del contenido).
+	   Halo exterior amplio en dominant-500 + halo interno fino en
+	   dominant-400 para contornear la silueta dominant-900 (punch-out). */
+	.dark.theme-glow-ready .hero-pet-svg {
 		filter:
-			drop-shadow(0 0 370px rgba(0, 173, 255, 0.30))
-			drop-shadow(0 0 32px rgba(0, 173, 255, 0.75));
+			drop-shadow(0 0 370px color-mix(in srgb, var(--color-brand-dominant-500) 30%, transparent))
+			drop-shadow(0 0 64px color-mix(in srgb, var(--color-brand-dominant-400) 75%, transparent));
 		/* Se aplica una sola vez, ya con la página estable, en lugar de
 		   interpolar un blur de 370px durante cientos de frames. */
 	}

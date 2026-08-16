@@ -25,17 +25,19 @@ const { class: className } = Astro.props;
 	}
 
 	/* Halo envolvente que contornea la silueta del carpincho (solo dark).
-	   drop-shadow() usa el canal alpha del contenido renderizado, así el glow
-	   sigue EXACTAMENTE la forma del animal (no el viewBox cuadrado del SVG).
-	   Dos capas balancean efecto vs. rendimiento: una exterior amplia y suave
-	   (96px, halo de fondo) + una interior más intensa (28px, silueta definida).
-	   Se eliminó la cadena de 5 sombras con blur de hasta 560px, que forzaba
-	   superficies de rasterizado enormes al hacer scroll. No altera posiciones
-	   ni dimensiones. */
+	   Se aplica SOLO a la base (.contact-pet-svg), no al wrap: así el halo
+	   azul se DESVANECE con la base durante el crossfade de acción y no
+	   ensucia la capa de acción (que tiene su propio halo naranja).
+	   Aplicarlo al wrap envolvía a base+action durante toda la animación
+	   y dejaba un residuo dominant-400 visible al dispararse la acción.
+	   drop-shadow() usa el canal alpha del contenido renderizado, así el
+	   glow sigue la forma del animal (no el viewBox cuadrado del SVG).
+	   Halo exterior amplio en dominant-500 + halo interno fino en
+	   dominant-400 para la silueta dominant-900 (efecto punch-out). */
 	.dark.theme-glow-ready .contact-pet-svg {
 		filter:
-			drop-shadow(0 0 370px rgba(0, 173, 255, 0.30))
-			drop-shadow(0 0 32px rgba(0, 173, 255, 0.75));
+			drop-shadow(0 0 370px color-mix(in srgb, var(--color-brand-dominant-500) 30%, transparent))
+			drop-shadow(0 0 64px color-mix(in srgb, var(--color-brand-dominant-400) 75%, transparent));
 	}
 
 	/* Las dos mascotas comparten la misma silueta: el azul permanece debajo y
