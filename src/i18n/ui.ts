@@ -54,6 +54,7 @@ export const ui = {
     'contact.copyError': 'No se pudo copiar el email',
 
     'ui.viewProject': 'Ver proyecto',
+    'ui.inSection': 'en',
     'ui.downloadCV': 'Descargar CV',
 
     'detail.imageCounter': 'Imagen {current} de {total}',
@@ -121,6 +122,7 @@ export const ui = {
     'contact.copyError': 'Could not copy email',
 
     'ui.viewProject': 'View project',
+    'ui.inSection': 'in',
     'ui.downloadCV': 'Download CV',
 
     'detail.imageCounter': 'Image {current} of {total}',
