@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { getEntry } from 'astro:content';
+import { resolvePublicUrl } from '../../utils/paths';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -31,7 +32,7 @@ const photo = aboutEntry.data.photo;
     <div class="w-full md:w-1/2 flex justify-center md:justify-end">
       <div class="w-[min(85vw,288px)] md:w-[clamp(288px,30vw,578px)] aspect-square bg-elevated rounded-[32px] shadow-layer-2 overflow-hidden relative flex items-center justify-center">
         {photo ? (
-          <img src={photo} alt={about.title} class="w-full h-full object-cover" />
+          <img src={resolvePublicUrl(photo)} alt={about.title} class="w-full h-full object-cover" />
         ) : (
           <span class="text-sm text-muted">[Profile Image Space]</span>
         )}

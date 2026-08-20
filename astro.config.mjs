@@ -1,9 +1,11 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
-import cloudflare from '@astrojs/cloudflare';;
 
 // https://astro.build/config
 export default defineConfig({
+    site: 'https://oriel-r.github.io',
+    base: '/webfolio',
+    output: 'static',
     vite: {
         plugins: [tailwindcss()],
         server: {
@@ -17,5 +19,4 @@ export default defineConfig({
             prefixDefaultLocale: false,
         },
     },
-    adapter: cloudflare(),
 });

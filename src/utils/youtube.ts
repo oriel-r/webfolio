@@ -1,3 +1,5 @@
+import { resolvePublicUrl } from './paths';
+
 export type MediaItem =
   | { type: 'image'; src: string }
   | { type: 'youtube'; id: string };
@@ -36,7 +38,7 @@ export function youTubeEmbedUrl(id: string): string {
 export function getMediaThumbnails(items: MediaItem[] | undefined): string | null {
   if (!items || items.length === 0) return null;
   const image = items.find((m) => m.type === 'image');
-  if (image) return image.src;
+  if (image) return resolvePublicUrl(image.src);
   const yt = items.find((m) => m.type === 'youtube');
   if (yt) return youTubeFacadeFallbackImg(yt.id);
   return null;
