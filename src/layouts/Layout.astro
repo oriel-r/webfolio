@@ -1,10 +1,13 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { SEO } from 'astro-seo';
 import { getLangFromUrl, useTranslations } from '../i18n/utils'
 import '../styles/global.css'
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+const description = t('hero.description')
 ---
 <!doctype html>
 <html lang={lang}>
@@ -12,12 +15,38 @@ const t = useTranslations(lang)
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}favicon.svg`} />
-		<link rel="icon" href={`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}favicon.ico`} />
 		<meta name="generator" content={Astro.generator} />
+		<SEO
+			title="Oriel Romero"
+			description={description}
+			canonical={canonicalURL}
+			languageAlternates={[
+				{ hrefLang: 'es', href: new URL('/', Astro.site).toString() },
+				{ hrefLang: 'en', href: new URL('/en/', Astro.site).toString() },
+			]}
+			openGraph={{
+				basic: {
+					title: 'Oriel Romero',
+					type: 'website',
+					image: new URL('favicon.svg', Astro.site).toString(),
+					url: canonicalURL.toString(),
+				},
+				optional: {
+					description,
+					locale: lang === 'es' ? 'es_ES' : 'en_US',
+					siteName: 'Oriel Romero',
+				},
+			}}
+			twitter={{
+				card: 'summary',
+				title: 'Oriel Romero',
+				description,
+			}}
+		/>
+		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400&display=swap" rel="stylesheet">
-		<title>Oriel Romero</title>
 		<ClientRouter fallback="animate" />
 		<script is:inline>
 			(function () {
