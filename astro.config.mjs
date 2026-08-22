@@ -3,8 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://oriel-r.github.io',
-    base: '/webfolio',
+    site: 'https://oriel.is-a.dev',
     output: 'static',
     vite: {
         plugins: [tailwindcss()],
