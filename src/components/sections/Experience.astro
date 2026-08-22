@@ -35,7 +35,7 @@ const experience = experienceEntries
             <>
               <span class="absolute bottom-4 text-sm font-medium text-secondary whitespace-nowrap mb-2">{exp.start_date}</span>
               <div class="w-2.5 h-2.5 bg-accent rounded-full ring-4 ring-canvas"></div>
-              <div class="absolute top-6 mt-4 w-72 h-52 bg-surface rounded-[32px] shadow-layer-2 border border-border p-5 flex flex-col">
+              <div class="exp-card absolute top-6 mt-4 w-72 h-52 bg-surface rounded-[32px] shadow-layer-2 border border-border p-5 flex flex-col" data-exp-slug={exp.id}>
                 <div>
                   <p class="text-sm font-medium text-secondary">{exp.position}</p>
                   <p class="text-base font-semibold text-primary mt-1">{exp.company_name}</p>
@@ -47,7 +47,7 @@ const experience = experienceEntries
             </>
           ) : (
             <>
-              <div class="absolute bottom-6 mb-4 w-72 h-52 bg-surface rounded-[32px] shadow-layer-2 border border-border p-5 flex flex-col">
+              <div class="exp-card absolute bottom-6 mb-4 w-72 h-52 bg-surface rounded-[32px] shadow-layer-2 border border-border p-5 flex flex-col" data-exp-slug={exp.id}>
                 <div>
                   <p class="text-sm font-medium text-secondary">{exp.position}</p>
                   <p class="text-base font-semibold text-primary mt-1">{exp.company_name}</p>
@@ -80,7 +80,7 @@ const experience = experienceEntries
           </div>
 
           <!-- Card -->
-          <div class="flex-1 bg-surface rounded-[32px] shadow-layer-2 border border-border p-5 flex flex-col">
+          <div class="exp-card flex-1 bg-surface rounded-[32px] shadow-layer-2 border border-border p-5 flex flex-col" data-exp-slug={exp.id}>
             <div>
               <span class="text-sm font-medium text-secondary">{exp.start_date}</span>
               <p class="text-sm font-medium text-secondary mt-2">{exp.position}</p>
@@ -95,3 +95,71 @@ const experience = experienceEntries
     </div>
   </div>
 </section>
+
+<style>
+  /* Resaltado temporal al enlazar desde Tecnologías — mismo pulso que
+     tech-link-pulse en Projects, pero sin abrir detalle: solo resalta. */
+  @keyframes exp-link-pulse {
+    0% {
+      box-shadow: var(--shadow-layer-2);
+      border-color: transparent;
+      transform: scale(1);
+    }
+    45% {
+      box-shadow:
+        var(--shadow-layer-2-hover),
+        0 0 0 2px var(--accent),
+        0 12px 36px -8px rgba(0, 173, 255, 0.38);
+      border-color: var(--accent);
+      transform: scale(1.03);
+    }
+    100% {
+      box-shadow: var(--shadow-layer-2);
+      border-color: transparent;
+      transform: scale(1);
+    }
+  }
+
+  .exp-card.exp-link-highlight {
+    animation: exp-link-pulse 720ms var(--ease-hover);
+    z-index: 5;
+  }
+</style>
+
+<script>
+  function cssEscape(value: string): string {
+    return window.CSS ? window.CSS.escape(value) : value;
+  }
+
+  // Enlace desde Tecnologías: centra la card de la experiencia y la resalta.
+  // No hay detalle que abrir: el pulso es solo feedback visual.
+  function focusExpCardBySlug(slug: string) {
+    const card = document.querySelector<HTMLElement>(
+      `[data-exp-slug="${cssEscape(slug)}"]`,
+    );
+    if (!card) return;
+
+    card.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth',
+      block: 'center',
+      inline: 'center',
+    });
+
+    const holdMs = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? 0
+      : 720;
+    window.setTimeout(() => {
+      card.classList.add('exp-link-highlight');
+      window.setTimeout(() => card.classList.remove('exp-link-highlight'), holdMs);
+    }, 300);
+  }
+
+  window.addEventListener(
+    'experience:focusCard',
+    ((e: CustomEvent) => {
+      if (e.detail?.slug) focusExpCardBySlug(e.detail.slug);
+    }) as EventListener,
+  );
+</script>

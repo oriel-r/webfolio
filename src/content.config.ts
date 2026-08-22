@@ -83,6 +83,7 @@ const skills = defineCollection({
     ]),
     order: z.number().int().default(999),
     projects: z.array(langString).optional(),
+    experience: z.array(langString).optional(),
   }),
 });
 

@@ -17,6 +17,7 @@ const skillsByCategory = (category) =>
       category: entry.data.category,
       order: entry.data.order,
       projects: entry.data.projects,
+      experience: entry.data.experience,
       id: entry.id,
     }));
 
@@ -85,7 +86,14 @@ let cardCounter = 0;
                 <Tag
                   icon={skill.icon}
                   linkToProjects={skill.projects}
-                  ariaLabel={skill.projects?.length ? `Ver proyecto ${skill.projects[0]} en Projects` : undefined}
+                  linkToExperience={skill.experience}
+                  ariaLabel={
+                    skill.projects?.length
+                      ? `Ver proyecto ${skill.projects[0]} en Projects`
+                      : skill.experience?.length
+                        ? `Ver experiencia ${skill.experience[0]} en Experience`
+                        : undefined
+                  }
                   data-skill-index={i}
                   style={`view-transition-name: skill-${cardId}-${i};`}
                   class:list={[
@@ -121,16 +129,20 @@ let cardCounter = 0;
 
 <!-- Safelist for dynamically generated iconify classes used above -->
 <div
-  class="hidden icon-[simple-icons--nodedotjs] icon-[simple-icons--typescript] icon-[simple-icons--nestjs] icon-[simple-icons--express] icon-[simple-icons--hono] icon-[simple-icons--swagger] icon-[simple-icons--jsonwebtokens] icon-[simple-icons--betterauth] icon-[simple-icons--docker] icon-[simple-icons--linux] icon-[simple-icons--googlecloud] icon-[simple-icons--amazonwebservices] icon-[simple-icons--githubactions] icon-[simple-icons--render] icon-[simple-icons--react] icon-[simple-icons--astro] icon-[simple-icons--tailwindcss] icon-[simple-icons--redux] icon-[simple-icons--postgresql] icon-[simple-icons--redis] icon-[simple-icons--sqlite] icon-[simple-icons--typeorm] icon-[simple-icons--prisma] icon-[simple-icons--mongodb] icon-[simple-icons--googlegemini]"
+  class="hidden icon-[simple-icons--nodedotjs] icon-[simple-icons--typescript] icon-[simple-icons--nestjs] icon-[simple-icons--express] icon-[simple-icons--hono] icon-[simple-icons--swagger] icon-[simple-icons--jsonwebtokens] icon-[simple-icons--betterauth] icon-[simple-icons--docker] icon-[simple-icons--linux] icon-[simple-icons--googlecloud] icon-[simple-icons--amazonwebservices] icon-[simple-icons--githubactions] icon-[simple-icons--render] icon-[simple-icons--react] icon-[simple-icons--astro] icon-[simple-icons--tailwindcss] icon-[simple-icons--redux] icon-[simple-icons--postgresql] icon-[simple-icons--redis] icon-[simple-icons--sqlite] icon-[simple-icons--typeorm] icon-[simple-icons--prisma] icon-[simple-icons--mongodb] icon-[simple-icons--googlegemini] icon-[simple-icons--figma] icon-[simple-icons--javascript] icon-[simple-icons--mongoose]"
   aria-hidden="true"
 ></div>
 
 <style>
   /* Mobile colapsado: oculta pills 3+ con display:none !important
      (necesario para pisar .inline-flex del baseStyles de Tag, que
-     por cascada gana sobre .hidden de Tailwind). */
-  .skills-list:not(.is-expanded) > :global([data-skill-index].skills-extra) {
-    display: none !important;
+     por cascada gana sobre .hidden de Tailwind). Scoped a <768px:
+     con ambas reglas !important, :not(.is-expanded) da mayor
+     especificidad y ganaba también en desktop. */
+  @media (max-width: 767px) {
+    .skills-list:not(.is-expanded) > :global([data-skill-index].skills-extra) {
+      display: none !important;
+    }
   }
 
   /* En desktop, las pills 3+ siempre visibles */
@@ -173,56 +185,82 @@ let cardCounter = 0;
 </script>
 
 <script>
-  function getProjectsSectionIndex(): number {
+  function getSectionIndex(id: string, fallback: number): number {
     const container = document.getElementById('scroll-container');
-    if (!container) return 2;
+    if (!container) return fallback;
     const sections = Array.from(container.querySelectorAll('section'));
-    const idx = sections.findIndex((s) => s.id === 'projects');
-    return idx >= 0 ? idx : 2;
+    const idx = sections.findIndex((s) => s.id === id);
+    return idx >= 0 ? idx : fallback;
   }
 
-  function isOnProjects(): boolean {
-    return window.location.hash.replace('#', '') === 'projects';
+  function isOnSection(id: string): boolean {
+    return window.location.hash.replace('#', '') === id;
   }
 
-  function focusCard(slug: string) {
-    window.dispatchEvent(
-      new CustomEvent('projects:focusCard', { detail: { slug } }),
-    );
+  interface TechLinkTarget {
+    sectionIndex: number;
+    sectionId: string;
+    eventName: string;
+    slug: string;
+  }
+
+  function resolveTarget(el: HTMLElement): TechLinkTarget | null {
+    const projectsRaw = el.getAttribute('data-tech-projects');
+    const experienceRaw = el.getAttribute('data-tech-experience');
+    const slug = (projectsRaw ?? experienceRaw ?? '')
+      .split(',')[0]
+      .trim();
+    if (!slug) return null;
+
+    if (projectsRaw) {
+      return {
+        sectionIndex: getSectionIndex('projects', 2),
+        sectionId: 'projects',
+        eventName: 'projects:focusCard',
+        slug,
+      };
+    }
+    return {
+      sectionIndex: getSectionIndex('experience', 1),
+      sectionId: 'experience',
+      eventName: 'experience:focusCard',
+      slug,
+    };
   }
 
   function onTechClick(e: Event) {
     const el = e.currentTarget as HTMLElement;
-    const raw = el.getAttribute('data-tech-projects');
-    if (!raw) return;
-    const slugs = raw
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean);
-    const slug = slugs[0];
-    if (!slug) return;
+    const target = resolveTarget(el);
+    if (!target) return;
 
-    const projectsIndex = getProjectsSectionIndex();
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Ya estamos en Projects: ir directo a centrar la card + abrir.
-    if (isOnProjects()) {
-      focusCard(slug);
+    // Ya estamos en la sección destino: resaltar directo.
+    if (isOnSection(target.sectionId)) {
+      window.dispatchEvent(
+        new CustomEvent(target.eventName, { detail: { slug: target.slug } }),
+      );
       return;
     }
 
-    // 1. Scroll animado a la sección Projects (scroll.ts escucha `navClick`).
+    // 1. Scroll animado a la sección (scroll.ts escucha `navClick`).
     window.dispatchEvent(
-      new CustomEvent('navClick', { detail: { index: projectsIndex } }),
+      new CustomEvent('navClick', { detail: { index: target.sectionIndex } }),
     );
 
     // 2. Tras el asentamiento del snap de sección (lock ~800ms en scroll.ts),
-    //    centrar la card en el carrusel y abrirla.
-    window.setTimeout(() => focusCard(slug), reduced ? 60 : 480);
+    //    resaltar la card destino.
+    window.setTimeout(
+      () =>
+        window.dispatchEvent(
+          new CustomEvent(target.eventName, { detail: { slug: target.slug } }),
+        ),
+      reduced ? 60 : 480,
+    );
   }
 
   function initTechLinks() {
-    const tags = document.querySelectorAll('[data-tech-projects]');
+    const tags = document.querySelectorAll('[data-tech-projects], [data-tech-experience]');
     if (!tags.length) return;
     tags.forEach((tag) => {
       tag.addEventListener('click', onTechClick);

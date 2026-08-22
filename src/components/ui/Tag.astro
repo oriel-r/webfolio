@@ -6,6 +6,8 @@ interface Props {
   class?: string;
   /** Slugs de proyectos a los que enlaza. Si se pasa, el tag se vuelve un <button> clicable. */
   linkToProjects?: string[];
+  /** Slugs de experiencias a las que enlaza. Mismo comportamiento clicable que linkToProjects. */
+  linkToExperience?: string[];
   ariaLabel?: string;
   /** Renderiza el Tag como <button type="button"> sin link, para usar como toggle interactivo. */
   interactive?: boolean;
@@ -17,12 +19,15 @@ const {
   icon,
   class: className = '',
   linkToProjects,
+  linkToExperience,
   ariaLabel,
   interactive = false,
   ...rest
 } = Astro.props;
 
-const isLink = Array.isArray(linkToProjects) && linkToProjects.length > 0;
+const isLink =
+  (Array.isArray(linkToProjects) && linkToProjects.length > 0) ||
+  (Array.isArray(linkToExperience) && linkToExperience.length > 0);
 const isInteractive = interactive || isLink;
 
 const baseStyles = 'group inline-flex items-center gap-[0.6em] tracking-[0.04em] font-medium rounded-full transition duration-pill ease-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 font-code';
@@ -46,7 +51,8 @@ const Tag = isInteractive ? 'button' : 'span';
 const extraAttrs = isLink
   ? {
       type: 'button',
-      'data-tech-projects': linkToProjects!.join(','),
+      ...(linkToProjects?.length ? { 'data-tech-projects': linkToProjects.join(',') } : {}),
+      ...(linkToExperience?.length ? { 'data-tech-experience': linkToExperience.join(',') } : {}),
       'aria-label': ariaLabel,
     }
   : interactive
