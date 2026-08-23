@@ -9,17 +9,17 @@ const { class: className } = Astro.props;
 ---
 
 <div class={`hero-pet-wrap relative ${className ?? ''}`}>
+	<HeroPetSvg
+		class="hero-pet-glow absolute inset-0 block w-full h-auto z-0 pointer-events-none opacity-0 dark:opacity-100 transition-opacity duration-base ease-spatial"
+		fill="currentColor"
+		aria-hidden="true"
+	/>
 	<HeroPetSvg class="hero-pet-svg block w-full h-auto relative z-[1]" fill="currentColor" />
 </div>
 
 <style is:global>
 	/* Stack context del wrap: confina el z-index del SVG dentro de un
-	   contexto estable. overflow: visible no es estrictamente necesario
-	   para drop-shadow (el halo se pinta sobre el canvas de la capa),
-	   pero se conserva por seguridad.
-   El halo no se anima mediante `filter`: los blur grandes se recalculan
-   en cada frame y provocaban tirones. El estado `.theme-glow-ready` se
-   añade por JS después de que terminan las transiciones de la página. */
+	   contexto estable. */
 	.hero-pet-wrap {
 		isolation: isolate;
 		overflow: visible;
@@ -44,19 +44,12 @@ const { class: className } = Astro.props;
 	}
 
 	/* Halo envolvente que contornea la silueta del carpincho (solo dark).
-	   Se aplica SOLO a la base (.hero-pet-svg), no al wrap (consistencia
-	   con ContactPet: el halo vive en la base y no envuelve a otras capas).
-	   drop-shadow() usa el canal alpha del contenido renderizado, así el
-	   glow sigue EXACTAMENTE la forma del animal (no el viewBox cuadrado
-	   del SVG); conserva la sombra interna del HeroPet (filter
-	   url(#hero-ground-shadow) se evalúa como parte del contenido).
-	   Halo exterior amplio en dominant-500 + halo interno fino en
-	   dominant-400 para contornear la silueta dominant-900 (punch-out). */
-	.dark.theme-glow-ready .hero-pet-svg {
+	   Se aplica a una capa dedicada (.hero-pet-glow) con filtro estático y
+	   transición de `opacity`. Esto permite a la GPU componer el halo suavemente
+	   sin recalcular el blur de 370px en cada frame y sin retardos ni destellos. */
+	.hero-pet-glow {
 		filter:
 			drop-shadow(0 0 370px color-mix(in srgb, var(--color-brand-dominant-500) 30%, transparent))
 			drop-shadow(0 0 64px color-mix(in srgb, var(--color-brand-dominant-400) 75%, transparent));
-		/* Se aplica una sola vez, ya con la página estable, en lugar de
-		   interpolar un blur de 370px durante cientos de frames. */
 	}
 </style>
