@@ -9,6 +9,11 @@ const { class: className } = Astro.props;
 ---
 
 <div class={`contact-pet-wrap relative ${className ?? ''}`}>
+	<ContactPetSvg
+		class="contact-pet-glow absolute top-0 left-0 block w-full h-auto z-0 pointer-events-none opacity-0 dark:opacity-100 transition-opacity duration-base ease-spatial"
+		fill="currentColor"
+		aria-hidden="true"
+	/>
 	<ContactPetSvg class="contact-pet-svg block w-full h-auto relative z-[1]" fill="currentColor" />
 	<ContactPetSvg
 		class="contact-pet-action-svg absolute top-0 left-0 block w-full h-auto z-[2] pointer-events-none opacity-0"
@@ -25,16 +30,11 @@ const { class: className } = Astro.props;
 	}
 
 	/* Halo envolvente que contornea la silueta del carpincho (solo dark).
-	   Se aplica SOLO a la base (.contact-pet-svg), no al wrap: así el halo
-	   azul se DESVANECE con la base durante el crossfade de acción y no
-	   ensucia la capa de acción (que tiene su propio halo naranja).
-	   Aplicarlo al wrap envolvía a base+action durante toda la animación
-	   y dejaba un residuo dominant-400 visible al dispararse la acción.
-	   drop-shadow() usa el canal alpha del contenido renderizado, así el
-	   glow sigue la forma del animal (no el viewBox cuadrado del SVG).
-	   Halo exterior amplio en dominant-500 + halo interno fino en
-	   dominant-400 para la silueta dominant-900 (efecto punch-out). */
-	.dark.theme-glow-ready .contact-pet-svg {
+	   Se aplica a una capa dedicada (.contact-pet-glow) con filtro estático y
+	   transición de `opacity`. Esto permite a la GPU componer el halo suavemente
+	   sin recalcular el blur de 370px en cada frame. Además, durante el crossfade
+	   de acción, el halo azul se desvanece junto a la base. */
+	.contact-pet-glow {
 		filter:
 			drop-shadow(0 0 370px color-mix(in srgb, var(--color-brand-dominant-500) 30%, transparent))
 			drop-shadow(0 0 64px color-mix(in srgb, var(--color-brand-dominant-400) 75%, transparent));
@@ -51,6 +51,7 @@ const { class: className } = Astro.props;
 			drop-shadow(0 0 32px color-mix(in srgb, var(--color-brand-action-500) 90%, transparent))
 			drop-shadow(0 0 4px var(--color-brand-action-300));
 	}
+	.dark .contact-pet-wrap.contact-pet-action-glow .contact-pet-glow,
 	.dark .contact-pet-wrap.contact-pet-action-glow .contact-pet-svg {
 		animation: contact-pet-base-crossfade 3000ms linear both;
 	}
@@ -85,6 +86,7 @@ const { class: className } = Astro.props;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.dark .contact-pet-wrap.contact-pet-action-glow .contact-pet-glow,
 		.dark .contact-pet-wrap.contact-pet-action-glow .contact-pet-svg {
 			animation: none;
 			opacity: 0;

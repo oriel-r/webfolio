@@ -50,31 +50,6 @@ const description = t('hero.description')
 		<ClientRouter fallback="animate" />
 		<script is:inline>
 			(function () {
-				let glowTimeout;
-
-				function scheduleThemeGlow(delay) {
-					const root = document.documentElement;
-					if (glowTimeout) window.clearTimeout(glowTimeout);
-					root.classList.remove('theme-glow-ready');
-
-					if (!root.classList.contains('dark')) return;
-					if (!delay) {
-						root.classList.add('theme-glow-ready');
-						return;
-					}
-
-					const glowDuration = parseFloat(
-						getComputedStyle(root).getPropertyValue('--duration-glow')
-					) || 1400;
-					glowTimeout = window.setTimeout(() => {
-						if (root.classList.contains('dark')) {
-							root.classList.add('theme-glow-ready');
-						}
-					}, glowDuration);
-				}
-
-				window.__scheduleThemeGlow = scheduleThemeGlow;
-
 				function applyTheme() {
 					const saved = localStorage.getItem('theme');
 					const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -83,14 +58,12 @@ const description = t('hero.description')
 						'dark',
 						isDark
 					);
-					scheduleThemeGlow(false);
 				}
 				applyTheme();
 				window.matchMedia('(prefers-color-scheme: dark)')
 					.addEventListener('change', (e) => {
 						if (!localStorage.getItem('theme')) {
 							document.documentElement.classList.toggle('dark', e.matches);
-							scheduleThemeGlow(true);
 						}
 					});
 				document.addEventListener('astro:after-swap', applyTheme);
@@ -141,7 +114,6 @@ const description = t('hero.description')
 				btn.addEventListener('click', () => {
 					const isDark = document.documentElement.classList.toggle('dark');
 					localStorage.setItem('theme', isDark ? 'dark' : 'light');
-					window.__scheduleThemeGlow(isDark);
 				});
 			}
 			setupThemeToggle();
