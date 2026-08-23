@@ -102,17 +102,23 @@ const { class: className } = Astro.props;
   window.__contactPetGlowBound = true;
 
   var actionTimeout;
+  var isAnimating = false;
   window.addEventListener('contact:actionGlow', function () {
+    if (isAnimating) return;
     var el = document.querySelector('.contact-pet-wrap');
     if (!el) return;
 
-    el.classList.remove('contact-pet-action-glow');
-    void el.offsetWidth;
+    isAnimating = true;
     el.classList.add('contact-pet-action-glow');
-    if (actionTimeout) window.clearTimeout(actionTimeout);
     actionTimeout = window.setTimeout(function () {
       el.classList.remove('contact-pet-action-glow');
+      isAnimating = false;
     }, 3100);
+  });
+
+  document.addEventListener('astro:after-swap', function () {
+    if (actionTimeout) window.clearTimeout(actionTimeout);
+    isAnimating = false;
   });
 })();
 </script>
