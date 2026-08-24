@@ -7,7 +7,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const allSkills = await getCollection('skills');
-const skillsByCategory = (category) =>
+const skillsByCategory = (category: string) =>
   allSkills
     .filter((entry) => entry.data.category === category)
     .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
@@ -43,19 +43,17 @@ const columns = [
     ]
   }
 ];
-
-let cardCounter = 0;
 ---
 
 <section id="technologies" class="w-full md:min-w-[100vw] min-h-screen h-auto flex items-start justify-center shrink-0 snap-start px-4 md:px-8 lg:px-12 xl:px-24 pt-20 md:pt-24 pb-8 md:pb-28">
   <div class="flex flex-col md:flex-row md:items-stretch gap-4 md:gap-4 lg:gap-6 xl:gap-8 w-full max-w-[1664px] mx-auto h-auto md:h-full md:min-h-[300px] lg:min-h-[400px] lg:aspect-[1664/760]">
-    {columns.map((col) => (
+    {columns.map((col, colIdx) => (
       <div class:list={[
         'flex min-w-0 flex-col gap-4 md:gap-4 lg:gap-6 xl:gap-8',
         col.grow
       ]}>
-        {col.cards.map((card) => {
-          const cardId = `tech-card-${cardCounter++}`;
+        {col.cards.map((card, cardIdx) => {
+          const cardId = `tech-card-${colIdx}-${cardIdx}`;
           const skills = skillsByCategory(card.category);
           const sizeClasses = card.tagSize === 'lg'
             ? 'md:px-3 md:py-1.5 md:text-base lg:px-3.5 lg:py-2 lg:text-lg xl:px-6 xl:py-3 xl:text-xl'
@@ -129,7 +127,7 @@ let cardCounter = 0;
 
 <!-- Safelist for dynamically generated iconify classes used above -->
 <div
-  class="hidden icon-[simple-icons--nodedotjs] icon-[simple-icons--typescript] icon-[simple-icons--nestjs] icon-[simple-icons--express] icon-[simple-icons--hono] icon-[simple-icons--swagger] icon-[simple-icons--jsonwebtokens] icon-[simple-icons--betterauth] icon-[simple-icons--docker] icon-[simple-icons--linux] icon-[simple-icons--googlecloud] icon-[simple-icons--amazonwebservices] icon-[simple-icons--githubactions] icon-[simple-icons--render] icon-[simple-icons--react] icon-[simple-icons--astro] icon-[simple-icons--tailwindcss] icon-[simple-icons--redux] icon-[simple-icons--postgresql] icon-[simple-icons--redis] icon-[simple-icons--sqlite] icon-[simple-icons--typeorm] icon-[simple-icons--prisma] icon-[simple-icons--mongodb] icon-[simple-icons--googlegemini] icon-[simple-icons--figma] icon-[simple-icons--javascript] icon-[simple-icons--mongoose]"
+  class="hidden icon-[simple-icons--nodedotjs] icon-[simple-icons--typescript] icon-[simple-icons--nestjs] icon-[simple-icons--express] icon-[simple-icons--hono] icon-[simple-icons--swagger] icon-[simple-icons--jsonwebtokens] icon-[simple-icons--betterauth] icon-[simple-icons--docker] icon-[simple-icons--linux] icon-[simple-icons--googlecloud] icon-[simple-icons--amazonwebservices] icon-[simple-icons--githubactions] icon-[simple-icons--render] icon-[simple-icons--react] icon-[simple-icons--astro] icon-[simple-icons--tailwindcss] icon-[simple-icons--redux] icon-[simple-icons--postgresql] icon-[simple-icons--redis] icon-[simple-icons--typeorm] icon-[simple-icons--googlegemini] icon-[simple-icons--figma] icon-[simple-icons--javascript]"
   aria-hidden="true"
 ></div>
 
@@ -260,9 +258,11 @@ let cardCounter = 0;
   }
 
   function initTechLinks() {
-    const tags = document.querySelectorAll('[data-tech-projects], [data-tech-experience]');
+    const tags = document.querySelectorAll<HTMLElement>('[data-tech-projects], [data-tech-experience]');
     if (!tags.length) return;
     tags.forEach((tag) => {
+      if (tag.dataset.techBound === '1') return;
+      tag.dataset.techBound = '1';
       tag.addEventListener('click', onTechClick);
     });
   }

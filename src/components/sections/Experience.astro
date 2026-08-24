@@ -6,19 +6,40 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const experienceEntries = await getCollection('experience');
+
+const MONTH_ORDER: Record<string, number> = {
+  enero: 1, january: 1, jan: 1,
+  febrero: 2, february: 2, feb: 2,
+  marzo: 3, march: 3, mar: 3,
+  abril: 4, april: 4, apr: 4,
+  mayo: 5, may: 5,
+  junio: 6, june: 6, jun: 6,
+  julio: 7, july: 7, jul: 7,
+  agosto: 8, august: 8, aug: 8,
+  septiembre: 9, september: 9, sep: 9,
+  octubre: 10, october: 10, oct: 10,
+  noviembre: 11, november: 11, nov: 11,
+  diciembre: 12, december: 12, dec: 12,
+};
+
+function parseDateScore(dateStr?: string): number {
+  if (!dateStr) return 0;
+  const parts = dateStr.trim().toLowerCase().split(/\s+/);
+  if (parts.length >= 2) {
+    const month = MONTH_ORDER[parts[0]] ?? 0;
+    const year = parseInt(parts[1], 10) || 0;
+    return year * 100 + month;
+  }
+  const year = parseInt(dateStr, 10);
+  return isNaN(year) ? 0 : year * 100;
+}
+
 const experience = experienceEntries
   .map((entry) => ({
     id: entry.id,
     ...entry.data[lang] || entry.data['es'],
   }))
-  .sort((a, b) => {
-    const dateOrder: Record<string, number> = {
-      'Enero 2025': 1, 'January 2025': 1,
-      'Junio 2025': 2, 'June 2025': 2,
-      'Abril 2026': 3, 'April 2026': 3,
-    };
-    return (dateOrder[b.start_date ?? ''] ?? 0) - (dateOrder[a.start_date ?? ''] ?? 0);
-  });
+  .sort((a, b) => parseDateScore(b.start_date) - parseDateScore(a.start_date));
 ---
 
 <section id="experience" class="w-full md:min-w-[100vw] min-h-screen flex items-start md:items-center justify-center shrink-0 snap-start px-8 md:px-24 pt-20 md:pt-0 pb-28 md:pb-0">
@@ -156,10 +177,13 @@ const experience = experienceEntries
     }, 300);
   }
 
-  window.addEventListener(
-    'experience:focusCard',
-    ((e: CustomEvent) => {
-      if (e.detail?.slug) focusExpCardBySlug(e.detail.slug);
-    }) as EventListener,
-  );
+  if (!(window as any).__expFocusCardBound) {
+    (window as any).__expFocusCardBound = true;
+    window.addEventListener(
+      'experience:focusCard',
+      ((e: CustomEvent) => {
+        if (e.detail?.slug) focusExpCardBySlug(e.detail.slug);
+      }) as EventListener,
+    );
+  }
 </script>

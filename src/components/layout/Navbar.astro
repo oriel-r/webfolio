@@ -71,8 +71,19 @@ const navItems = [
 </style>
 
 <script>
+  let activeNavbarController: AbortController | null = null;
+
   function initNavbar() {
+    if (activeNavbarController) {
+      activeNavbarController.abort();
+      activeNavbarController = null;
+    }
+
     const mobileNav = document.getElementById('mobile-nav');
+    const controller = new AbortController();
+    activeNavbarController = controller;
+    const { signal } = controller;
+
     const mobileLinks = mobileNav
       ? Array.from(mobileNav.querySelectorAll<HTMLAnchorElement>('.nav-mobile-link'))
       : [];
@@ -121,7 +132,7 @@ const navItems = [
         );
         setActive(index);
         centerMobileLink(index);
-      });
+      }, { signal });
     });
 
     desktopLinks.forEach((link) => {
@@ -132,14 +143,14 @@ const navItems = [
           new CustomEvent('navClick', { detail: { index } }),
         );
         setActive(index);
-      });
+      }, { signal });
     });
 
     window.addEventListener('sectionChange', ((e: CustomEvent) => {
       const index = e.detail.index;
       setActive(index);
       centerMobileLink(index);
-    }) as EventListener);
+    }) as EventListener, { signal });
 
     setActive(0);
     requestAnimationFrame(() => {

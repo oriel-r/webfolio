@@ -1,5 +1,5 @@
 ---
-import { useTranslations } from '../../i18n/utils';
+import { useTranslations, useTranslatedPath } from '../../i18n/utils';
 import Tag from '../ui/Tag.astro';
 import type { SkillOverride } from '../../utils/techIcons';
 import {
@@ -47,6 +47,7 @@ const {
 } = Astro.props;
 
 const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 const totalMedia = media.length;
 const galleryId = `gallery-${slug}`;
 
@@ -60,7 +61,7 @@ const collaboratorText =
 
   <!-- Close button (top-right) -->
   <a
-    href={lang === 'en' ? `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}en/#projects` : `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}#projects`}
+    href={translatePath('/#projects')}
     aria-label={t('detail.close')}
     class="close-btn absolute top-4 right-4 md:top-6 md:right-6 z-30 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-2xl bg-canvas/80 backdrop-blur-sm hover:bg-elevated border border-border text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus-ring transition duration-hover ease-hover"
   >
@@ -263,7 +264,7 @@ const collaboratorText =
             class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-canvas text-primary border border-border hover:bg-elevated focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus-ring transition duration-hover ease-hover text-sm"
           >
             <span class="icon-[ic--outline-code] text-lg" aria-hidden="true"></span>
-            <span>Repository</span>
+            <span>{t('detail.repository')}</span>
           </a>
         )}
       </div>
@@ -474,11 +475,14 @@ const collaboratorText =
     }
   });
 
-  window.addEventListener('pagehide', () => {
-    const detail = document.querySelector<HTMLElement>('.project-detail-page[data-project-slug]');
-    const slug = detail?.dataset.projectSlug;
-    if (slug) {
-      try { sessionStorage.setItem('lastProjectSlug', slug); } catch {}
-    }
-  });
+  if (!(window as any).__projectPagehideBound) {
+    (window as any).__projectPagehideBound = true;
+    window.addEventListener('pagehide', () => {
+      const detail = document.querySelector<HTMLElement>('.project-detail-page[data-project-slug]');
+      const slug = detail?.dataset.projectSlug;
+      if (slug) {
+        try { sessionStorage.setItem('lastProjectSlug', slug); } catch {}
+      }
+    });
+  }
 </script>

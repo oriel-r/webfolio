@@ -34,10 +34,12 @@
 - description:
     - type: string
     - required: true
-- images:
+- media:
     - type: list
     - items:
-        - type: string
+        - type: union
+            - image: { type: string, src: string }
+            - youtube: { type: string, id: string }
     - required: false
 - colaborators:
     - type: list

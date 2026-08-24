@@ -17,8 +17,9 @@ if (currentLang === 'es') {
 <div class="fixed bottom-6 left-6 md:bottom-auto md:left-auto md:top-6 md:right-12 z-50 flex flex-row-reverse md:flex-row items-center gap-4">
   <ToggleButton
     id="lang-toggle"
+    href={targetPath}
+    data-base-path={targetPath}
     ariaLabel={`Switch to ${targetLang === 'en' ? 'English' : 'Español'}`}
-    onclick={`window.location.href='${targetPath}'`}
     text={targetLang.toUpperCase()}
     defaultIconColor="text-secondary"
   />
@@ -32,19 +33,16 @@ if (currentLang === 'es') {
   />
 </div>
 
-<script is:inline>
-  (function () {
-    const langBtn = document.getElementById('lang-toggle');
-    if (!langBtn) return;
-    const original = langBtn.getAttribute('onclick') || '';
-    const match = original.match(/window\.location\.href='([^']+)'/);
-    if (!match) return;
-    const originalPath = match[1];
-    function update() {
-      const hash = window.location.hash || '';
-      langBtn.setAttribute('onclick', `window.location.href='${originalPath}${hash}'`);
-    }
-    window.addEventListener('hashchange', update);
-    update();
-  })();
+<script>
+  function updateLangHref() {
+    const langLink = document.getElementById('lang-toggle') as HTMLAnchorElement | null;
+    if (!langLink) return;
+    const basePath = langLink.dataset.basePath || langLink.pathname;
+    const hash = window.location.hash || '';
+    langLink.href = `${basePath}${hash}`;
+  }
+
+  window.addEventListener('hashchange', updateLangHref);
+  document.addEventListener('astro:after-swap', updateLangHref);
+  updateLangHref();
 </script>

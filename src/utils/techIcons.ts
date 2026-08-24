@@ -15,15 +15,15 @@ export type SkillOverride = {
  */
 export function getProjectSkillOverrides(
   skills: CollectionEntry<'skills'>[],
-  projectId: string,
+  _projectId?: string,
 ): Record<string, SkillOverride> {
   return skills.reduce((acc, skill) => {
-    if (skill.data.projects?.includes(projectId)) {
-      acc[skill.data.name] = {
-        name: skill.data.name,
-        icon: skill.data.icon,
-      };
-    }
+    const override: SkillOverride = {
+      name: skill.data.name,
+      icon: skill.data.icon,
+    };
+    acc[skill.data.name] = override;
+    acc[skill.id] = override;
     return acc;
   }, {} as Record<string, SkillOverride>);
 }

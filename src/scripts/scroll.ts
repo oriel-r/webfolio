@@ -1,6 +1,17 @@
+let activeScrollController: AbortController | null = null;
+
 export function initScroll() {
+	if (activeScrollController) {
+		activeScrollController.abort();
+		activeScrollController = null;
+	}
+
 	const scrollContainer = document.getElementById("scroll-container");
 	if (!scrollContainer) return;
+
+	const controller = new AbortController();
+	activeScrollController = controller;
+	const { signal } = controller;
 
 	const sections = Array.from(
 		scrollContainer.querySelectorAll<HTMLElement>("section"),
@@ -12,19 +23,10 @@ export function initScroll() {
 		return window.innerWidth >= 768;
 	}
 
-	function getScroller(): HTMLElement | Element {
-		// En ambos viewports el scroller real es #scroll-container:
-		// móvil: h-screen + overflow-y-scroll (snap-y); desktop: h-screen + overflow-x-scroll (snap-x).
-		return scrollContainer;
-	}
-
 	function getMobileSectionIndex(): number {
 		const scrollTop = scrollContainer.scrollTop;
 		let activeIndex = 0;
 
-		// Una sección expandida puede ser más alta que el viewport. En ese caso
-		// debe seguir activa hasta que el inicio de la siguiente sección entre
-		// en el scroll, no hasta que su inicio sea el punto más cercano.
 		sections.forEach((section, index) => {
 			if (section.offsetTop <= scrollTop + 1) {
 				activeIndex = index;
@@ -102,9 +104,7 @@ export function initScroll() {
 		emitSectionChange(0);
 	}
 
-	// WHEEL: solo desktop. En móvil el snap nativo (+ scroll-snap-stop:always)
-	// gestiona el swipe una-sección-por-gesto; el wheel aquí ni siquiera dispararía
-	// correctamente porque el scroller real es document.scrollingElement.
+	// WHEEL: solo desktop
 	scrollContainer.addEventListener(
 		"wheel",
 		(evt) => {
@@ -119,41 +119,42 @@ export function initScroll() {
 				scrollToSection(Math.max(currentIndex - 1, 0));
 			}
 		},
-		{ passive: false },
+		{ passive: false, signal },
 	);
 
-	document.addEventListener("keydown", (evt) => {
-		if (isScrolling) return;
-		if (isDesktop()) {
-			if (evt.key === "ArrowRight") {
-				evt.preventDefault();
-				scrollToSection(
-					Math.min(currentIndex + 1, sections.length - 1),
-				);
-			} else if (evt.key === "ArrowLeft") {
-				evt.preventDefault();
-				scrollToSection(Math.max(currentIndex - 1, 0));
+	document.addEventListener(
+		"keydown",
+		(evt) => {
+			if (isScrolling) return;
+			if (isDesktop()) {
+				if (evt.key === "ArrowRight") {
+					evt.preventDefault();
+					scrollToSection(
+						Math.min(currentIndex + 1, sections.length - 1),
+					);
+				} else if (evt.key === "ArrowLeft") {
+					evt.preventDefault();
+					scrollToSection(Math.max(currentIndex - 1, 0));
+				}
+			} else {
+				if (evt.key === "ArrowDown") {
+					if (isInsideScrollableSection(1)) return;
+					evt.preventDefault();
+					scrollToSection(
+						Math.min(currentIndex + 1, sections.length - 1),
+					);
+				} else if (evt.key === "ArrowUp") {
+					if (isInsideScrollableSection(-1)) return;
+					evt.preventDefault();
+					scrollToSection(Math.max(currentIndex - 1, 0));
+				}
 			}
-		} else {
-			if (evt.key === "ArrowDown") {
-				if (isInsideScrollableSection(1)) return;
-				evt.preventDefault();
-				scrollToSection(
-					Math.min(currentIndex + 1, sections.length - 1),
-				);
-			} else if (evt.key === "ArrowUp") {
-				if (isInsideScrollableSection(-1)) return;
-				evt.preventDefault();
-				scrollToSection(Math.max(currentIndex - 1, 0));
-			}
-		}
-	});
+		},
+		{ signal },
+	);
 
-	// SCROLL: detecta la sección más cercana y sincroniza estado/activo/navbar.
-	// El scroller es #scroll-container en ambos viewports (snap-y móvil / snap-x desktop),
-	// así este listener dispara tanto tras snap nativo (swipe) como tras scrollIntoView.
-	const scroller = getScroller();
-	scroller.addEventListener(
+	// SCROLL: detecta la sección más cercana
+	scrollContainer.addEventListener(
 		"scroll",
 		() => {
 			if (isScrolling) return;
@@ -180,7 +181,7 @@ export function initScroll() {
 				emitSectionChange(currentIndex);
 			}
 		},
-		{ passive: true },
+		{ passive: true, signal },
 	);
 
 	window.addEventListener(
@@ -188,12 +189,17 @@ export function initScroll() {
 		((e: CustomEvent) => {
 			scrollToSection(e.detail.index);
 		}) as EventListener,
+		{ signal },
 	);
 
-	window.addEventListener("popstate", () => {
-		const idx = getIndexFromHash();
-		if (idx !== currentIndex) {
-			scrollToSection(idx);
-		}
-	});
+	window.addEventListener(
+		"popstate",
+		() => {
+			const idx = getIndexFromHash();
+			if (idx !== currentIndex) {
+				scrollToSection(idx);
+			}
+		},
+		{ signal },
+	);
 }

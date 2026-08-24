@@ -224,12 +224,15 @@ const thumbnails: Record<string, string | null> = Object.fromEntries(
 <script>
   let focusCardBySlugRef: ((slug: string) => void) | null = null;
 
-  window.addEventListener(
-    'projects:focusCard',
-    ((e: CustomEvent) => {
-      if (e.detail?.slug) focusCardBySlugRef?.(e.detail.slug);
-    }) as EventListener,
-  );
+  if (!(window as any).__projectsFocusCardBound) {
+    (window as any).__projectsFocusCardBound = true;
+    window.addEventListener(
+      'projects:focusCard',
+      ((e: CustomEvent) => {
+        if (e.detail?.slug) focusCardBySlugRef?.(e.detail.slug);
+      }) as EventListener,
+    );
+  }
 
   function cssEscape(value: string): string {
     return window.CSS ? window.CSS.escape(value) : value;

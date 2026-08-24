@@ -20,8 +20,8 @@ const photo = aboutEntry.data.photo;
         {about.title}
       </h2>
       <div class="text-base text-secondary max-w-sm leading-relaxed">
-        {about.text.map((paragraph: string) => (
-          <p class={about.text.indexOf(paragraph) > 0 ? 'mt-4' : ''}>
+        {about.text.map((paragraph: string, i: number) => (
+          <p class={i > 0 ? 'mt-4' : ''}>
             {paragraph}
           </p>
         ))}
