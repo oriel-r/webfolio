@@ -1,10 +1,14 @@
-import { ui, defaultLang, type languages } from './ui'
+import { ui, defaultLang } from './ui'
 
 export type Lang = keyof typeof ui
 
 export function getLangFromUrl(url: URL): Lang {
-  const [, lang] = url.pathname.replace(import.meta.env.BASE_URL, '').split('/')
-  if (lang in ui) return lang as Lang
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+  const relativePath = url.pathname.startsWith(base)
+    ? url.pathname.slice(base.length).replace(/^\/+/, '')
+    : url.pathname.replace(/^\/+/, '')
+  const [firstSegment] = relativePath.split('/')
+  if (firstSegment && firstSegment in ui) return firstSegment as Lang
   return defaultLang
 }
 
@@ -17,7 +21,8 @@ export function useTranslations(lang: Lang) {
 export function useTranslatedPath(lang: Lang) {
   return function translatePath(path: string, l: string = lang) {
     const base = import.meta.env.BASE_URL.replace(/\/$/, '')
-    const p = l === defaultLang ? path : `/${l}${path}`
+    const normalizedPath = path.startsWith('/') ? path : `/${path}`
+    const p = l === defaultLang ? normalizedPath : `/${l}${normalizedPath}`
     return `${base}${p}`
   }
 }

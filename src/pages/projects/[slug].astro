@@ -20,7 +20,7 @@ const allSkills = await getCollection('skills');
 const skillOverrides = getProjectSkillOverrides(allSkills, entry.id);
 ---
 
-<Layout>
+<Layout lang={lang} title={`${data.name} - Oriel Romero`} description={data.description}>
   <main class="flex flex-col md:flex-row w-full h-auto md:h-screen overflow-x-hidden">
     <ProjectDetail
       slug={entry.id}

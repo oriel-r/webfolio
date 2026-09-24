@@ -170,14 +170,13 @@
     position: relative;
   }
 
-  html,
-  html *,
-  html *::before,
-  html *::after {
-    /* opacity incluido para que el fade de los halos glow de las mascotas
-       (HeroPet/ContactPet ::after) acompañe el cambio de tema con suavidad,
-       sin "pop" duro al alternar light/dark. No afecta a capas que no usen
-       opacity (transition-property solo anima propiedades declaradas). */
+  /* Transición suave acotada exclusivamente al cambio de tema (activada
+     por .theme-transitioning en el toggle), evitando el coste de rendimiento
+     continuo sobre cada elemento durante el scroll, animaciones y view transitions. */
+  html.theme-transitioning,
+  html.theme-transitioning *,
+  html.theme-transitioning *::before,
+  html.theme-transitioning *::after {
     transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity;
     transition-duration: var(--duration-base);
     transition-timing-function: var(--ease-spatial);

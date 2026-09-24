@@ -1,0 +1,10 @@
+es:
+  company_name: "CoPAS"
+  position: "Fundador & Desarrollador Principal"
+  short_description: "Plataforma SaaS B2B para gestión de seguros (PAS y agencias), integrando pipelines de IA y desarrollo serverless full stack."
+  start_date: "Junio 2026"
+en:
+  company_name: "CoPAS"
+  position: "Founder & Lead Developer"
+  short_description: "B2B SaaS platform for insurance management (brokers and agencies), integrating AI pipelines and full-stack serverless development."
+  start_date: "June 2026"

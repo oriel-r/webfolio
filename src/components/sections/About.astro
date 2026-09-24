@@ -1,14 +1,19 @@
 ---
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getLangFromUrl } from '../../i18n/utils';
 import { getEntry } from 'astro:content';
 import { resolvePublicUrl } from '../../utils/paths';
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 
 const aboutEntry = await getEntry('about', 'index');
-const about = aboutEntry.data[lang] || aboutEntry.data['es'];
-const photo = aboutEntry.data.photo;
+const about = aboutEntry
+  ? (aboutEntry.data[lang] || aboutEntry.data['es'])
+  : {
+      title: lang === 'es' ? 'Mi porqué' : 'About me',
+      text: [],
+    };
+const photo = aboutEntry?.data.photo ?? '/oriel_romero_portrait.jpg';
+const photoAlt = lang === 'es' ? 'Foto de perfil de Leandro Oriel Romero' : 'Portrait photo of Leandro Oriel Romero';
 ---
 
 <section id="about" class="w-full md:min-w-[100vw] min-h-screen flex items-start md:items-center justify-center shrink-0 snap-start px-8 md:px-24 pt-20 md:pt-0">
@@ -32,7 +37,7 @@ const photo = aboutEntry.data.photo;
     <div class="w-full md:w-1/2 flex justify-center md:justify-end">
       <div class="w-[min(85vw,288px)] md:w-[clamp(288px,30vw,578px)] aspect-square bg-elevated rounded-[32px] shadow-layer-2 overflow-hidden relative flex items-center justify-center">
         {photo ? (
-          <img src={resolvePublicUrl(photo)} alt={about.title} class="w-full h-full object-cover" />
+          <img src={resolvePublicUrl(photo)} alt={photoAlt} width="578" height="578" loading="lazy" class="w-full h-full object-cover" />
         ) : (
           <span class="text-sm text-muted">[Profile Image Space]</span>
         )}

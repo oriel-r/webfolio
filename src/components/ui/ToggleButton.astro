@@ -3,6 +3,7 @@ interface Props {
   id?: string;
   href?: string;
   ariaLabel: string;
+  ariaPressed?: boolean | 'true' | 'false';
   onclick?: string;
   icon?: string;
   text?: string;
@@ -17,6 +18,7 @@ const {
   id,
   href,
   ariaLabel,
+  ariaPressed,
   onclick,
   icon,
   text,
@@ -34,7 +36,9 @@ const Tag = href ? 'a' : 'button';
 <Tag
 	id={id}
 	href={href}
+	type={!href ? 'button' : undefined}
 	aria-label={ariaLabel}
+	aria-pressed={ariaPressed}
 	onclick={onclick}
 	class={`w-[54px] h-[54px] flex items-center justify-center rounded-2xl bg-elevated border border-border hover:bg-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus-ring transition duration-hover ease-hover ${className}`}
 	{...rest}

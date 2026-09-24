@@ -6,15 +6,16 @@ export function initScroll() {
 		activeScrollController = null;
 	}
 
-	const scrollContainer = document.getElementById("scroll-container");
+	const scrollContainer = document.getElementById("scroll-container") as HTMLElement | null;
 	if (!scrollContainer) return;
+	const container = scrollContainer;
 
 	const controller = new AbortController();
 	activeScrollController = controller;
 	const { signal } = controller;
 
 	const sections = Array.from(
-		scrollContainer.querySelectorAll<HTMLElement>("section"),
+		container.querySelectorAll<HTMLElement>("section"),
 	);
 	let currentIndex = 0;
 	let isScrolling = false;
@@ -24,7 +25,7 @@ export function initScroll() {
 	}
 
 	function getMobileSectionIndex(): number {
-		const scrollTop = scrollContainer.scrollTop;
+		const scrollTop = container.scrollTop;
 		let activeIndex = 0;
 
 		sections.forEach((section, index) => {
@@ -38,16 +39,16 @@ export function initScroll() {
 
 	function isInsideScrollableSection(direction: 1 | -1): boolean {
 		const section = sections[currentIndex];
-		if (!section || section.offsetHeight <= scrollContainer.clientHeight) {
+		if (!section || section.offsetHeight <= container.clientHeight) {
 			return false;
 		}
 
-		const scrollTop = scrollContainer.scrollTop;
+		const scrollTop = container.scrollTop;
 		const sectionStart = section.offsetTop;
 		const sectionEnd = sectionStart + section.offsetHeight;
 
 		if (direction > 0) {
-			return scrollTop + scrollContainer.clientHeight < sectionEnd - 1;
+			return scrollTop + container.clientHeight < sectionEnd - 1;
 		}
 
 		return scrollTop > sectionStart + 1;
@@ -94,18 +95,16 @@ export function initScroll() {
 		history.scrollRestoration = "manual";
 	}
 
-	scrollContainer.scrollTo(0, 0);
 	const initialIndex = getIndexFromHash();
 	if (initialIndex !== 0) {
-		requestAnimationFrame(() => {
-			scrollToSection(initialIndex, false);
-		});
+		scrollToSection(initialIndex, false);
 	} else {
+		container.scrollTo(0, 0);
 		emitSectionChange(0);
 	}
 
 	// WHEEL: solo desktop
-	scrollContainer.addEventListener(
+	container.addEventListener(
 		"wheel",
 		(evt) => {
 			if (!isDesktop()) return;
@@ -154,7 +153,7 @@ export function initScroll() {
 	);
 
 	// SCROLL: detecta la sección más cercana
-	scrollContainer.addEventListener(
+	container.addEventListener(
 		"scroll",
 		() => {
 			if (isScrolling) return;
@@ -163,7 +162,7 @@ export function initScroll() {
 			let minDist = Infinity;
 
 			if (isDesktop()) {
-				const scrollLeft = scrollContainer.scrollLeft;
+				const scrollLeft = container.scrollLeft;
 				sections.forEach((section, i) => {
 					const dist = Math.abs(section.offsetLeft - scrollLeft);
 					if (dist < minDist) {

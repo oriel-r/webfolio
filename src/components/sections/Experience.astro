@@ -1,9 +1,8 @@
 ---
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getLangFromUrl } from '../../i18n/utils';
 import { getCollection } from 'astro:content';
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 
 const experienceEntries = await getCollection('experience');
 
@@ -155,9 +154,12 @@ const experience = experienceEntries
   // Enlace desde Tecnologías: centra la card de la experiencia y la resalta.
   // No hay detalle que abrir: el pulso es solo feedback visual.
   function focusExpCardBySlug(slug: string) {
-    const card = document.querySelector<HTMLElement>(
-      `[data-exp-slug="${cssEscape(slug)}"]`,
+    const cards = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        `[data-exp-slug="${cssEscape(slug)}"]`,
+      ),
     );
+    const card = cards.find((el) => el.offsetParent !== null) || cards[0];
     if (!card) return;
 
     card.scrollIntoView({

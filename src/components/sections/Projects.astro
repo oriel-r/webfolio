@@ -68,7 +68,7 @@ const thumbnails: Record<string, string | null> = Object.fromEntries(
 
         <!-- Indicators: fixed dots below carousel on mobile (OUTSIDE scroll container) -->
         <div id="carousel-indicators" class="flex flex-row gap-2 justify-center mt-4 md:hidden shrink-0">
-          {projects.map((_: any, i: number) => (
+          {projects.map((_, i) => (
             <div
               class:list={[
                 "w-2 h-2 rounded-full transition-colors duration-base ease-spatial",
@@ -82,7 +82,7 @@ const thumbnails: Record<string, string | null> = Object.fromEntries(
 
       <!-- Desktop indicators: right side -->
       <div id="carousel-indicators-desktop" class="hidden md:flex absolute right-[-2rem] top-1/2 -translate-y-1/2 flex-col gap-2">
-        {projects.map((_: any, i: number) => (
+        {projects.map((_, i) => (
           <div
             class:list={[
                 "w-2 h-2 rounded-full transition-colors duration-base ease-spatial",
@@ -239,29 +239,30 @@ const thumbnails: Record<string, string | null> = Object.fromEntries(
   }
 
   function initCarousel() {
-    const carousel = document.getElementById('projects-carousel');
+    const carousel = document.getElementById('projects-carousel') as HTMLElement | null;
     if (!carousel) return;
+    const carouselEl = carousel;
 
     const mobileIndicators = document.querySelectorAll('#carousel-indicators > div');
     const desktopIndicators = document.querySelectorAll('#carousel-indicators-desktop > div');
-    const cards = carousel.querySelectorAll('a');
+    const cards = carouselEl.querySelectorAll('a');
     const totalCards = cards.length;
     let currentIndex = 0;
     let isAnimating = false;
 
-function getCardOffset(index: number): number {
+    function getCardOffset(index: number): number {
       const card = cards[index] as HTMLElement;
       if (!card) return 0;
       const isDesktop = window.innerWidth >= 768;
 
       if (isDesktop) {
         const cardTop = card.offsetTop;
-        const containerCenter = carousel.clientHeight / 2;
+        const containerCenter = carouselEl.clientHeight / 2;
         const cardCenter = card.offsetHeight / 2;
         return cardTop - containerCenter + cardCenter;
       } else {
         const cardLeft = card.offsetLeft;
-        const containerCenter = carousel.clientWidth / 2;
+        const containerCenter = carouselEl.clientWidth / 2;
         const cardCenter = card.offsetWidth / 2;
         return cardLeft - containerCenter + cardCenter;
       }
@@ -275,7 +276,7 @@ function getCardOffset(index: number): number {
       currentIndex = index;
       const offset = getCardOffset(index);
       const isDesktop = window.innerWidth >= 768;
-      carousel.scrollTo({
+      carouselEl.scrollTo({
         [isDesktop ? 'top' : 'left']: offset,
         behavior,
       });
@@ -297,7 +298,7 @@ function getCardOffset(index: number): number {
     // Cuando `open` es false (p. ej. al volver desde el detalle) solo centra,
     // sin disparar highlight ni click (evita reabrir el detalle en bucle).
     function focusCardBySlug(slug: string, open = true) {
-      const card = carousel.querySelector<HTMLAnchorElement>(
+      const card = carouselEl.querySelector<HTMLAnchorElement>(
         `a[data-project-slug="${cssEscape(slug)}"]`,
       );
       if (!card) return;
@@ -360,8 +361,8 @@ function getCardOffset(index: number): number {
 
     function syncCurrentIndex() {
       const isDesktop = window.innerWidth >= 768;
-      const scrollPos = isDesktop ? carousel.scrollTop : carousel.scrollLeft;
-      const containerCenter = isDesktop ? carousel.clientHeight / 2 : carousel.clientWidth / 2;
+      const scrollPos = isDesktop ? carouselEl.scrollTop : carouselEl.scrollLeft;
+      const containerCenter = isDesktop ? carouselEl.clientHeight / 2 : carouselEl.clientWidth / 2;
 
       let closest = 0;
       let minDist = Infinity;
@@ -384,14 +385,14 @@ function getCardOffset(index: number): number {
       }
     }
 
-    carousel.addEventListener('scroll', () => {
+    carouselEl.addEventListener('scroll', () => {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(syncCurrentIndex, 50);
     }, { passive: true });
 
     // scrollend: sync más confiable donde esté disponible
-    if ('onscrollend' in carousel) {
-      carousel.addEventListener('scrollend', syncCurrentIndex, { passive: true });
+    if ('onscrollend' in carouselEl) {
+      carouselEl.addEventListener('scrollend', syncCurrentIndex, { passive: true });
     }
 
     // Keyboard navigation

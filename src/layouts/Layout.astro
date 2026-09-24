@@ -2,14 +2,37 @@
 import { ClientRouter } from 'astro:transitions';
 import { SEO } from 'astro-seo';
 import { getEntry } from 'astro:content';
-import { getLangFromUrl } from '../i18n/utils';
+import { getLangFromUrl, type Lang } from '../i18n/utils';
 import '../styles/global.css';
 
-const lang = getLangFromUrl(Astro.url);
+interface Props {
+	lang?: Lang;
+	title?: string;
+	description?: string;
+}
+
+const {
+	lang: propLang,
+	title = 'Oriel Romero',
+	description: propDescription,
+} = Astro.props;
+
+const lang = propLang ?? getLangFromUrl(Astro.url);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const heroEntry = await getEntry('hero', 'index');
 const heroData = heroEntry?.data[lang] ?? heroEntry?.data['es'];
-const description = heroData?.description ?? 'Oriel Romero - Portfolio';
+const description = propDescription ?? heroData?.description ?? 'Oriel Romero - Portfolio';
+
+// Compute path relative to locale for language alternates
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const pathnameWithoutBase = Astro.url.pathname.startsWith(base)
+	? Astro.url.pathname.slice(base.length)
+	: Astro.url.pathname;
+const cleanPath = pathnameWithoutBase.replace(/^\/(?:en|es)(?=\/|$)/, '') || '/';
+const esPath = cleanPath;
+const enPath = cleanPath === '/' ? '/en/' : `/en${cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`}`;
+const esUrl = new URL(`${base}${esPath}`.replace(/\/+/g, '/'), Astro.site).toString();
+const enUrl = new URL(`${base}${enPath}`.replace(/\/+/g, '/'), Astro.site).toString();
 ---
 <!doctype html>
 <html lang={lang}>
@@ -19,16 +42,16 @@ const description = heroData?.description ?? 'Oriel Romero - Portfolio';
 		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}favicon.svg`} />
 		<meta name="generator" content={Astro.generator} />
 		<SEO
-			title="Oriel Romero"
+			title={title}
 			description={description}
 			canonical={canonicalURL}
 			languageAlternates={[
-				{ hrefLang: 'es', href: new URL('/', Astro.site).toString() },
-				{ hrefLang: 'en', href: new URL('/en/', Astro.site).toString() },
+				{ hrefLang: 'es', href: esUrl },
+				{ hrefLang: 'en', href: enUrl },
 			]}
 			openGraph={{
 				basic: {
-					title: 'Oriel Romero',
+					title,
 					type: 'website',
 					image: new URL('favicon.svg', Astro.site).toString(),
 					url: canonicalURL.toString(),
@@ -41,7 +64,7 @@ const description = heroData?.description ?? 'Oriel Romero - Portfolio';
 			}}
 			twitter={{
 				card: 'summary',
-				title: 'Oriel Romero',
+				title,
 				description,
 			}}
 		/>
@@ -93,16 +116,17 @@ const description = heroData?.description ?? 'Oriel Romero - Portfolio';
 				if (!glow || glow.dataset.bound === '1') return;
 				glow.dataset.bound = '1';
 				const order = ['hero', 'experience', 'projects', 'technologies', 'about', 'contact'];
-				const setActive = (id) => {
+				const setActive = (id: string) => {
 					if (order.indexOf(id) >= 0) glow.dataset.active = id;
 				};
 				// Estado inicial desde el hash (covers primeros ms antes de que scroll.ts emita).
 				const hash = window.location.hash.replace('#', '');
 				setActive(hash && order.indexOf(hash) >= 0 ? hash : 'hero');
-				window.addEventListener('sectionChange', ((e) => {
-					const idx = e && e.detail && typeof e.detail.index === 'number' ? e.detail.index : 0;
+				window.addEventListener('sectionChange', ((e: Event) => {
+					const customEvent = e as CustomEvent<{ index: number }>;
+					const idx = customEvent?.detail && typeof customEvent.detail.index === 'number' ? customEvent.detail.index : 0;
 					setActive(order[idx] || 'hero');
-				}));
+				}) as EventListener);
 
 			}
 			setupAmbientGlow();
@@ -113,9 +137,17 @@ const description = heroData?.description ?? 'Oriel Romero - Portfolio';
 				const btn = document.getElementById('theme-toggle');
 				if (!btn || btn.dataset.bound === '1') return;
 				btn.dataset.bound = '1';
+				btn.setAttribute('aria-pressed', String(document.documentElement.classList.contains('dark')));
+				let transitionTimer: ReturnType<typeof setTimeout> | null = null;
 				btn.addEventListener('click', () => {
+					document.documentElement.classList.add('theme-transitioning');
 					const isDark = document.documentElement.classList.toggle('dark');
+					btn.setAttribute('aria-pressed', String(isDark));
 					localStorage.setItem('theme', isDark ? 'dark' : 'light');
+					if (transitionTimer) clearTimeout(transitionTimer);
+					transitionTimer = setTimeout(() => {
+						document.documentElement.classList.remove('theme-transitioning');
+					}, 500);
 				});
 			}
 			setupThemeToggle();
@@ -202,14 +234,6 @@ const description = heroData?.description ?? 'Oriel Romero - Portfolio';
 		inset: -12%;
 		background: radial-gradient(ellipse at center, var(--glow-dominant), transparent 80%);
 	}
-	:global(.dark) #ambient-glow > [data-glow="technologies"] {
-		background: radial-gradient(ellipse at center, var(--glow-dominant), transparent 80%);
-	}
-	/* Glow Hero boosteado ×1.35 en dark (0.18 × 1.35 ≈ 0.24).
-	   Mismo foco/size que light, solo subimos opacidad para más presencia. */
-	:global(.dark) #ambient-glow > [data-glow="hero"] {
-		background: radial-gradient(ellipse 68% 60% at 72% 45%, rgba(0, 173, 255, 0.24), transparent 76%);
-	}
 	#ambient-glow > [data-glow="about"] {
 		background: radial-gradient(ellipse 50% 55% at 72% 50%, var(--glow-dominant), transparent 72%);
 	}
@@ -236,14 +260,8 @@ const description = heroData?.description ?? 'Oriel Romero - Portfolio';
 		#ambient-glow > [data-glow="hero"] {
 			background: radial-gradient(ellipse 110% 45% at 50% 78%, var(--glow-dominant), transparent 76%);
 		}
-		:global(.dark) #ambient-glow > [data-glow="hero"] {
-			background: radial-gradient(ellipse 110% 45% at 50% 78%, rgba(0, 173, 255, 0.24), transparent 76%);
-		}
 		#ambient-glow > [data-glow="technologies"] {
 			inset: 0;
-			background: radial-gradient(ellipse 85% 38% at 50% 72%, var(--glow-dominant), transparent 80%);
-		}
-		:global(.dark) #ambient-glow > [data-glow="technologies"] {
 			background: radial-gradient(ellipse 85% 38% at 50% 72%, var(--glow-dominant), transparent 80%);
 		}
 		#ambient-glow > [data-glow="about"] {

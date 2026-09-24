@@ -7,7 +7,13 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const heroEntry = await getEntry('hero', 'index');
-const hero = heroEntry.data[lang] || heroEntry.data['es'];
+const hero = heroEntry
+  ? (heroEntry.data[lang] || heroEntry.data['es'])
+  : {
+      title: 'Oriel Romero',
+      subtitle: 'Hago que la tecnología compleja se sienta simple',
+      description: 'Traduzco ideas complejas en código que resulta en experiencias fluidas y eficientes para el usuario.',
+    };
 ---
 
 <section id="hero" class="relative w-full md:min-w-[100vw] min-h-screen flex flex-col md:flex-row items-start md:items-center justify-center shrink-0 snap-start px-8 md:px-24 pt-20 md:pt-0">

@@ -5,7 +5,6 @@ import type { SkillOverride } from '../../utils/techIcons';
 import {
   youTubeFacadeImg,
   youTubeFacadeFallbackImg,
-  youTubeEmbedUrl,
   type MediaItem,
 } from '../../utils/youtube';
 import { resolvePublicUrl } from '../../utils/paths';
@@ -147,7 +146,9 @@ const collaboratorText =
         {i > 0 && (
           <label
             for={`${galleryId}-${i - 1}`}
-            class="gallery-nav-btn pointer-events-auto p-3 md:p-2 flex items-center justify-center text-white cursor-pointer"
+            role="button"
+            tabindex="0"
+            class="gallery-nav-btn pointer-events-auto p-3 md:p-2 flex items-center justify-center text-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg"
             aria-label="Previous media"
           >
             <span class="icon-[ic--outline-chevron-left] md:hidden text-2xl" aria-hidden="true"></span>
@@ -157,7 +158,9 @@ const collaboratorText =
         {i < totalMedia - 1 && (
           <label
             for={`${galleryId}-${i + 1}`}
-            class="gallery-nav-btn pointer-events-auto p-3 md:p-2 flex items-center justify-center text-white cursor-pointer ml-auto md:ml-0 md:mt-auto"
+            role="button"
+            tabindex="0"
+            class="gallery-nav-btn pointer-events-auto p-3 md:p-2 flex items-center justify-center text-white cursor-pointer ml-auto md:ml-0 md:mt-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg"
             aria-label="Next media"
           >
             <span class="icon-[ic--outline-chevron-right] md:hidden text-2xl" aria-hidden="true"></span>
@@ -396,6 +399,17 @@ const collaboratorText =
             setTimeout(() => {
               isProgrammaticScroll = false;
             }, 500);
+          }
+        });
+      });
+
+      gallery.querySelectorAll<HTMLElement>('label.gallery-nav-btn').forEach((btn) => {
+        if (btn.dataset.keyReady === '1') return;
+        btn.dataset.keyReady = '1';
+        btn.addEventListener('keydown', (e: KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            btn.click();
           }
         });
       });

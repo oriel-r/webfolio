@@ -1,6 +1,6 @@
-name: "Hono"
-icon: "hono"
+name: "Drizzle ORM"
+icon: "drizzle"
 category: "Backend & Architecture"
-order: 5
+order: 7
 projects: []
 experience: ["copas"]

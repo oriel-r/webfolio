@@ -1,17 +1,30 @@
 ---
 import ToggleButton from './ToggleButton.astro';
-import { getLangFromUrl } from '../../i18n/utils';
+import { getLangFromUrl, type Lang } from '../../i18n/utils';
 
-const currentLang = getLangFromUrl(Astro.url);
-const targetLang = currentLang === 'es' ? 'en' : 'es';
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-const cleanPath = Astro.url.pathname.replace(base, '').replace(/^\//, '');
-let targetPath: string;
-if (currentLang === 'es') {
-  targetPath = `${base}en/${cleanPath}`;
-} else {
-  targetPath = `${base}${cleanPath.replace(/^en\/?/, '')}`;
+interface Props {
+  lang?: Lang;
 }
+
+const { lang: propLang } = Astro.props;
+const currentLang = propLang ?? getLangFromUrl(Astro.url);
+const targetLang = currentLang === 'es' ? 'en' : 'es';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const pathnameWithoutBase = Astro.url.pathname.startsWith(base)
+  ? Astro.url.pathname.slice(base.length)
+  : Astro.url.pathname;
+const cleanPath = pathnameWithoutBase.replace(/^\/(?:en|es)(?=\/|$)/, '') || '/';
+
+let targetPath: string;
+if (targetLang === 'es') {
+  targetPath = `${base}${cleanPath}`.replace(/\/+/g, '/');
+} else {
+  targetPath = `${base}/en${cleanPath === '/' ? '/' : cleanPath}`.replace(/\/+/g, '/');
+}
+
+const langAriaLabel = currentLang === 'es' ? 'Cambiar a inglés' : 'Switch to Spanish';
+const themeAriaLabel = currentLang === 'es' ? 'Alternar modo oscuro y claro' : 'Toggle theme';
 ---
 
 <div class="fixed bottom-6 left-6 md:bottom-auto md:left-auto md:top-6 md:right-12 z-50 flex flex-row-reverse md:flex-row items-center gap-4">
@@ -19,13 +32,13 @@ if (currentLang === 'es') {
     id="lang-toggle"
     href={targetPath}
     data-base-path={targetPath}
-    ariaLabel={`Switch to ${targetLang === 'en' ? 'English' : 'Español'}`}
+    ariaLabel={langAriaLabel}
     text={targetLang.toUpperCase()}
     defaultIconColor="text-secondary"
   />
   <ToggleButton
     id="theme-toggle"
-    ariaLabel="Toggle Theme"
+    ariaLabel={themeAriaLabel}
     icon="icon-[ic--outline-dark-mode]"
     activeIcon="icon-[ic--outline-light-mode]"
     lightModeIconColor="text-brand-dominant-500"
