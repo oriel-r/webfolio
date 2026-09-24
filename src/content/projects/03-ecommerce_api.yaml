@@ -1,8 +1,8 @@
 es:
   name: "E-commerce API"
   type: "API"
-  description: "API RESTful de comercio electrónico con autenticación JWT, gestión de productos, pedidos, categorías y carga de archivos a Cloudinary."
-  long_description: "Backend construido con NestJS que expone endpoints para gestionar usuarios (registro, autenticación JWT, roles), productos (CRUD completo), pedidos, categorías y carga de imágenes a Cloudinary. Documentado con Swagger, utiliza TypeORM con PostgreSQL y sigue una arquitectura modular con guards de autorización."
+  description: "API REST modular para e-commerce con NestJS, TypeORM, PostgreSQL, autenticación JWT con roles y subida a Cloudinary."
+  long_description: "API REST modular para comercio electrónico, con foco en seguridad y consistencia en cada transacción. La construí en NestJS con PostgreSQL y TypeORM, blindando endpoints con guards de JWT y roles, subida de assets a Cloudinary y documentación viva con Swagger."
   media:
     - type: image
       src: "/ecomerce_api_oriel_romero_cover.png"
@@ -27,8 +27,8 @@ es:
 en:
   name: "E-commerce API"
   type: "API"
-  description: "RESTful e-commerce API with JWT authentication, product management, orders, categories, and file uploads to Cloudinary."
-  long_description: "NestJS backend exposing endpoints for user management (registration, JWT auth, roles), products (full CRUD), orders, categories, and image upload to Cloudinary. Documented with Swagger, uses TypeORM with PostgreSQL, and follows a modular architecture with authorization guards."
+  description: "Modular RESTful e-commerce API built with NestJS, TypeORM, PostgreSQL, role-based JWT auth, and Cloudinary uploads."
+  long_description: "A modular REST API for e-commerce focusing on security and transactional consistency. Built with NestJS, PostgreSQL, and TypeORM, protecting endpoints with JWT guards and role authorization, handling media uploads to Cloudinary, and documented with Swagger."
   media:
     - type: image
       src: "/ecomerce_api_oriel_romero_cover.png"

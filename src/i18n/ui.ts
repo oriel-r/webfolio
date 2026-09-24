@@ -18,8 +18,8 @@ export const ui = {
 
     'section.experience': 'Experiencia',
     'section.projects': 'Proyectos',
-    'projects.description': 'Una selección de proyectos destacados donde diseño e implemento soluciones escalables, APIs robustas y arquitecturas modernas.',
-    'projects.cta': 'Explora los proyectos para ver los detalles técnicos →',
+    'projects.description': 'Cosas que armé para poner a prueba mis límites, desafiar la arquitectura y aprender haciendo.',
+    'projects.cta': 'Mirá los detalles técnicos →',
     'section.about': 'Mi porqué',
     'section.technologies': 'Tecnologías',
     'section.contact': 'Contacto',
@@ -71,8 +71,8 @@ export const ui = {
 
     'section.experience': 'Experience',
     'section.projects': 'Projects',
-    'projects.description': 'A selection of featured projects where I design and implement scalable solutions, robust APIs, and modern architectures.',
-    'projects.cta': 'Explore the projects to see technical details →',
+    'projects.description': 'Things I built to test my limits, challenge system architecture, and learn by doing.',
+    'projects.cta': 'Check out the technical details →',
     'section.about': 'About me',
     'section.technologies': 'Technologies',
     'section.contact': 'Contact',

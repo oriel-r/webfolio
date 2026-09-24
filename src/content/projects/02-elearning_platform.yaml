@@ -1,8 +1,8 @@
 es:
-  name: "Online Courses Platform"
+  name: "Plataforma E-learning"
   type: "SaaS"
-  description: "Plataforma de cursos online con suscripciones, pagos por Mercado Pago, chatbot con IA, roles de usuario y código de referidos."
-  long_description: "Plataforma completa de aprendizaje con backend en NestJS y frontend en Next.js. Incluye registro y autenticación (JWT + Auth0), suscripciones (Básica/Premium/Pro), inscripción a cursos, pagos con Mercado Pago, chatbot con Google Gemini, carga de archivos a Cloudinary, notificaciones por email y paneles por rol (Admin, Profesor, Estudiante). Comunicación en tiempo real con Socket.io."
+  description: "SaaS de cursos online con suscripciones, pagos vía Mercado Pago, roles y WebSockets montado sobre NestJS y PostgreSQL."
+  long_description: "Plataforma de cursos pensada como SaaS real, con suscripciones escalonadas y cobros integrados vía webhooks de Mercado Pago. En el backend monté la arquitectura en NestJS con PostgreSQL, control de acceso por roles (Auth0/JWT) y WebSockets para interacciones en vivo."
   media:
     - type: image
       src: "/elearning_platform_cover.png"
@@ -32,10 +32,10 @@ es:
   back_repo: "https://github.com/oriel-r/PT21A-Grupo5-PF-Backend"
   front_repo: "https://github.com/oriel-r/PT21A-Grupo5-PF-Frontend"
 en:
-  name: "Online Courses Platform"
+  name: "E-learning Platform"
   type: "SaaS"
-  description: "Online course platform with subscriptions, Mercado Pago payments, AI chatbot, user roles, and referral codes."
-  long_description: "Full learning platform with NestJS backend and Next.js frontend. Includes registration and authentication (JWT + Auth0), subscriptions (Basic/Premium/Pro), course enrollment, Mercado Pago payments, Google Gemini chatbot, Cloudinary file uploads, email notifications, and role-based dashboards (Admin, Teacher, Student). Real-time communication via Socket.io."
+  description: "Online course SaaS with tiered subscriptions, Mercado Pago payments, role-based access, and WebSockets on NestJS and PostgreSQL."
+  long_description: "An e-learning platform built as a real-world SaaS, featuring tiered subscriptions and payments handled via Mercado Pago webhooks. Backend architecture powered by NestJS and PostgreSQL, role-based access (Auth0/JWT), and WebSockets for real-time interactions."
   media:
     - type: image
       src: "/elearning_platform_cover.png"
