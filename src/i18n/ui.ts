@@ -28,7 +28,7 @@ export const ui = {
     'technologies.devops': 'DevOps & Cloud',
     'technologies.frontend': 'Frontend',
     'technologies.databases': 'Databases',
-    'technologies.ai': 'AI & Automations',
+    'technologies.tools': 'Tools',
     'technologies.seeMore': 'Ver más',
     'technologies.seeLess': 'Ver menos',
 
@@ -81,7 +81,7 @@ export const ui = {
     'technologies.devops': 'DevOps & Cloud',
     'technologies.frontend': 'Frontend',
     'technologies.databases': 'Databases',
-    'technologies.ai': 'AI & Automations',
+    'technologies.tools': 'Tools',
     'technologies.seeMore': 'See more',
     'technologies.seeLess': 'See less',
 

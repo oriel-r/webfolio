@@ -1,0 +1,4 @@
+name: "AI Integration"
+category: "Backend & Architecture"
+order: 8
+projects: ["01-leads_insight_generator", "02-elearning_platform"]

@@ -1,5 +1,5 @@
 name: "Redis"
 icon: "redis"
 category: "Databases"
-order: 2
+order: 3
 projects: ["01-leads_insight_generator"]

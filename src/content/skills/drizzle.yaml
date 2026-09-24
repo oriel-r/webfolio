@@ -1,6 +1,6 @@
 name: "Drizzle ORM"
 icon: "drizzle"
-category: "Backend & Architecture"
-order: 7
+category: "Databases"
+order: 4
 projects: []
 experience: ["copas"]

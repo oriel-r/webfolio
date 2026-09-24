@@ -1,5 +1,5 @@
 name: "Swagger/OpenAPI"
 icon: "swagger"
 category: "Backend & Architecture"
-order: 8
+order: 9
 projects: ["03-ecommerce_api", "02-elearning_platform"]

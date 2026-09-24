@@ -79,7 +79,7 @@ const skills = defineCollection({
       'Frontend',
       'DevTool',
       'Databases',
-      'AI & Automations',
+      'Tools',
     ]),
     order: z.number().int().default(999),
     projects: z.array(langString).optional(),

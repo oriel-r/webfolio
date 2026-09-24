@@ -1,5 +1,4 @@
-name: "PostgreSQL"
-icon: "postgresql"
+name: "SQL"
 category: "Databases"
 order: 1
 projects: ["03-ecommerce_api", "02-elearning_platform", "04-appointments_app", "01-leads_insight_generator"]

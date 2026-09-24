@@ -26,12 +26,12 @@ type TechCategory =
   | 'DevOps & Cloud'
   | 'Frontend'
   | 'Databases'
-  | 'AI & Automations';
+  | 'Tools';
 
 type TechTitleKey =
   | 'technologies.backend'
   | 'technologies.devops'
-  | 'technologies.ai'
+  | 'technologies.tools'
   | 'technologies.frontend'
   | 'technologies.databases';
 
@@ -57,7 +57,7 @@ const columns: ColumnConfig[] = [
     grow: 'md:flex-[1.5]',
     cards: [
       { titleKey: 'technologies.devops', category: 'DevOps & Cloud', cardGrow: 'flex-[2]', tagSize: 'sm', titleSize: 'md' },
-      { titleKey: 'technologies.ai', category: 'AI & Automations', cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
+      { titleKey: 'technologies.tools', category: 'Tools', cardGrow: 'flex-1', tagSize: 'sm', titleSize: 'sm' }
     ]
   },
   {
@@ -152,7 +152,7 @@ const columns: ColumnConfig[] = [
 
 <!-- Safelist for dynamically generated iconify classes used above -->
 <div
-  class="hidden icon-[simple-icons--nodedotjs] icon-[simple-icons--typescript] icon-[simple-icons--nestjs] icon-[simple-icons--express] icon-[simple-icons--hono] icon-[simple-icons--swagger] icon-[simple-icons--jsonwebtokens] icon-[simple-icons--betterauth] icon-[simple-icons--docker] icon-[simple-icons--linux] icon-[simple-icons--googlecloud] icon-[simple-icons--amazonwebservices] icon-[simple-icons--githubactions] icon-[simple-icons--render] icon-[simple-icons--react] icon-[simple-icons--astro] icon-[simple-icons--tailwindcss] icon-[simple-icons--redux] icon-[simple-icons--postgresql] icon-[simple-icons--redis] icon-[simple-icons--typeorm] icon-[simple-icons--googlegemini] icon-[simple-icons--figma] icon-[simple-icons--javascript] icon-[simple-icons--cloudflare] icon-[simple-icons--drizzle]"
+  class="hidden icon-[simple-icons--nodedotjs] icon-[simple-icons--typescript] icon-[simple-icons--nestjs] icon-[simple-icons--express] icon-[simple-icons--hono] icon-[simple-icons--swagger] icon-[simple-icons--jsonwebtokens] icon-[simple-icons--betterauth] icon-[simple-icons--docker] icon-[simple-icons--linux] icon-[simple-icons--googlecloud] icon-[simple-icons--amazonwebservices] icon-[simple-icons--githubactions] icon-[simple-icons--render] icon-[simple-icons--react] icon-[simple-icons--astro] icon-[simple-icons--tailwindcss] icon-[simple-icons--redux] icon-[simple-icons--postgresql] icon-[simple-icons--redis] icon-[simple-icons--typeorm] icon-[simple-icons--googlegemini] icon-[simple-icons--figma] icon-[simple-icons--javascript] icon-[simple-icons--cloudflare] icon-[simple-icons--drizzle] icon-[simple-icons--prisma] icon-[simple-icons--git]"
   aria-hidden="true"
 ></div>
 

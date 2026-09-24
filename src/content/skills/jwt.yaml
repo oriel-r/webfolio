@@ -1,5 +1,5 @@
 name: "JWT"
 icon: "jsonwebtokens"
 category: "Backend & Architecture"
-order: 9
+order: 10
 projects: ["03-ecommerce_api", "02-elearning_platform"]
