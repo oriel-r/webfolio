@@ -33,12 +33,20 @@ function parseDateScore(dateStr?: string): number {
   return isNaN(year) ? 0 : year * 100;
 }
 
-const experience = experienceEntries
-  .map((entry) => ({
-    id: entry.id,
-    ...entry.data[lang] || entry.data['es'],
-  }))
-  .sort((a, b) => parseDateScore(b.start_date) - parseDateScore(a.start_date));
+const baseExperience = experienceEntries.map((entry) => ({
+  id: entry.id,
+  ...(entry.data[lang] || entry.data['es']),
+}));
+
+// Desktop: cronológico directo (más antigua a la izquierda -> más reciente a la derecha)
+const experienceDesktop = [...baseExperience].sort(
+  (a, b) => parseDateScore(a.start_date) - parseDateScore(b.start_date)
+);
+
+// Móvil: cronológico inverso (más reciente arriba -> más antigua abajo)
+const experienceMobile = [...baseExperience].sort(
+  (a, b) => parseDateScore(b.start_date) - parseDateScore(a.start_date)
+);
 ---
 
 <section id="experience" class="w-full md:min-w-[100vw] min-h-screen flex items-start md:items-center justify-center shrink-0 snap-start px-8 md:px-24 pt-20 md:pt-0 pb-28 md:pb-0">
@@ -49,7 +57,7 @@ const experience = experienceEntries
 
     <!-- Timeline items -->
     <div class="relative z-10 w-full flex justify-between items-center px-12">
-      {experience.map((exp, i) => (
+      {experienceDesktop.map((exp, i) => (
         <div class="relative flex justify-center">
           {i % 2 === 0 ? (
             <>
@@ -92,7 +100,7 @@ const experience = experienceEntries
 
     <!-- Timeline items -->
     <div class="relative z-10 flex flex-col gap-10">
-      {experience.map((exp) => (
+      {experienceMobile.map((exp) => (
         <div class="flex items-start">
           <!-- Dot area -->
           <div class="w-6 shrink-0 flex justify-center pt-1.5">
