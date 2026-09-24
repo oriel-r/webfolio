@@ -2,10 +2,10 @@ photo: "/oriel_romero_portrait.jpg"
 es:
   title: "Mi porqué"
   text:
-    - "Creo firmemente en la práctica deliberada como el mejor camino para dominar una habilidad."
-    - "Esta colección de proyectos es mi forma de resolver desafíos concretos y aplicar esos conocimientos."
+    - 'De chico me pasaba probando programas y desconfigurando la computadora de casa. Como siempre terminaba en el técnico, en un momento me dije "no puede ser tan difícil, tengo que aprender a arreglarla yo".'
+    - 'Hoy mantengo esa curiosidad: voy a la causa raíz de cada problema y veo el código como un medio, no un fin. Mi enfoque es desarmar la complejidad para construir sistemas que se adapten a las personas y resuelvan necesidades reales.'
 en:
-  title: "About me"
+  title: "My Why"
   text:
-    - "I firmly believe in deliberate practice as the best way to master a skill."
-    - "This collection of projects is my way of solving concrete challenges and applying that knowledge."
+    - 'As a kid, I was always exploring software and messing up settings on the family computer. Since it constantly ended up at the repair shop, at one point I told myself "it can''t be that hard, I have to learn how to fix this myself."'
+    - 'Today, I keep that same curiosity: I dig into the root cause of every problem and see code as a means, not an end. My approach is about breaking down complexity to build systems that adapt to people and solve real-world needs.'

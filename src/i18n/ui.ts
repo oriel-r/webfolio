@@ -32,8 +32,8 @@ export const ui = {
     'technologies.seeMore': 'Ver más',
     'technologies.seeLess': 'Ver menos',
 
-    'contact.title': 'Buscas un dev que marque la diferencia?',
-    'contact.body': 'Estoy listo para ayudarte a convertir tus ideas en soluciones y resultados concretos.',
+    'contact.title': 'Tenés un problema para resolver?',
+    'contact.body': 'Si buscás sumar a tu equipo a alguien con criterio técnico, o necesitás construir una solución desde cero...',
     'contact.cta': 'Hablemos!',
     'contact.call': 'Agenda una llamada',
     'contact.callOpened': 'Se abrió el enlace de agenda en otra pestaña',
@@ -85,8 +85,8 @@ export const ui = {
     'technologies.seeMore': 'See more',
     'technologies.seeLess': 'See less',
 
-    'contact.title': 'Looking for a dev who makes a difference?',
-    'contact.body': 'I am ready to help you turn your ideas into solutions and concrete results.',
+    'contact.title': 'Got a problem to solve?',
+    'contact.body': "Whether you're looking to add someone with technical discernment to your team, or need to build a solution from scratch...",
     'contact.cta': "Let's talk!",
     'contact.call': 'Schedule a call',
     'contact.callOpened': 'The scheduling link opened in another tab',

@@ -24,7 +24,7 @@ const photoAlt = lang === 'es' ? 'Foto de perfil de Leandro Oriel Romero' : 'Por
       <h2 class="text-4xl md:text-5xl font-medium tracking-tight text-primary font-display">
         {about.title}
       </h2>
-      <div class="text-base text-secondary max-w-sm leading-relaxed">
+      <div class="text-base text-secondary max-w-md leading-relaxed">
         {about.text.map((paragraph: string, i: number) => (
           <p class={i > 0 ? 'mt-4' : ''}>
             {paragraph}
