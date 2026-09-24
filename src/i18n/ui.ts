@@ -18,7 +18,7 @@ export const ui = {
 
     'section.experience': 'Experiencia',
     'section.projects': 'Proyectos',
-    'projects.description': 'Acá es donde esa premisa se vuelve código: sistemas diseñados para resolver necesidades concretas, combinando arquitecturas escalables, procesos asíncronos y soluciones listas para producción.',
+    'projects.description': 'Acá bajo esas ideas al código, creando sistemas que resuelven problemas reales con arquitecturas escalables y código listo para producción',
     'projects.cta': 'Mirá los detalles técnicos →',
     'section.about': 'Mi porqué',
     'section.technologies': 'Tecnologías',
@@ -56,7 +56,7 @@ export const ui = {
 
     '404.tag': 'error: ruta no encontrada',
     '404.title': 'Página no encontrada',
-    '404.description': 'La página que buscas no existe o fue movida. Volvamos a un lugar seguro.',
+    '404.description': 'La página que buscas no existe o fue movida. Volvamos a un lugar seguro',
     '404.cta': 'Volver al inicio',
   },
   en: {
@@ -71,7 +71,7 @@ export const ui = {
 
     'section.experience': 'Experience',
     'section.projects': 'Projects',
-    'projects.description': 'This is where that premise turns into code: systems designed to solve real-world needs, combining scalable architectures, background processes, and production-ready solutions.',
+    'projects.description': 'This is where I turn those ideas into code, building systems that solve real-world problems with scalable architectures and production-ready solutions',
     'projects.cta': 'Check out the technical details →',
     'section.about': 'About me',
     'section.technologies': 'Technologies',
@@ -109,7 +109,7 @@ export const ui = {
 
     '404.tag': 'error: route not found',
     '404.title': 'Page not found',
-    '404.description': "The page you are looking for doesn't exist or was moved. Let's get back to safety.",
+    '404.description': "The page you are looking for doesn't exist or was moved. Let's get back to safety",
     '404.cta': 'Back to home',
   },
 } as const;

@@ -1,8 +1,8 @@
 es:
   name: "Leads Insight Generator"
   type: "API"
-  description: "Backend con NestJS, BullMQ y Redis para procesar leads en segundo plano y generar insights con IA."
-  long_description: "Backend para procesar leads de ventas y generar insights con IA sin ahorcar el servidor. Toda la carga pesada —desde la ingesta periódica hasta el análisis con Gemini— corre en segundo plano con BullMQ y Redis, persistiendo en PostgreSQL."
+  description: "Backend con NestJS, BullMQ y Redis para procesar leads en segundo plano y generar insights con IA"
+  long_description: "Backend para procesar leads de ventas y generar insights con IA sin ahorcar el servidor. Toda la carga pesada —desde la ingesta periódica hasta el análisis con Gemini— corre en segundo plano con BullMQ y Redis, persistiendo en PostgreSQL"
   media:
     - type: image
       src: "/leads_insights_generator_cover.png"
@@ -25,8 +25,8 @@ es:
 en:
   name: "Leads Insight Generator"
   type: "API"
-  description: "NestJS backend with BullMQ and Redis to process leads asynchronously and generate AI insights."
-  long_description: "A sales lead backend designed to deliver AI insights without choking the server. Heavy jobs—from periodic ingestion to Gemini analysis—run asynchronously via BullMQ and Redis, persisted in PostgreSQL."
+  description: "NestJS backend with BullMQ and Redis to process leads asynchronously and generate AI insights"
+  long_description: "A sales lead backend designed to deliver AI insights without choking the server. Heavy jobs—from periodic ingestion to Gemini analysis—run asynchronously via BullMQ and Redis, persisted in PostgreSQL"
   media:
     - type: image
       src: "/leads_insights_generator_cover.png"

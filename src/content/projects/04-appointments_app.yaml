@@ -1,8 +1,8 @@
 es:
   name: "Turnera Web"
   type: "WebApp"
-  description: "Aplicación full-stack para reserva de turnos en tiempo real con Express, React, Vite y Redux Toolkit."
-  long_description: "Gestor de turnos pensado para que reservar o cancelar sea cuestión de dos clics. Stack completo: backend ágil en Express + PostgreSQL para la disponibilidad horaria y frontend en React con Redux Toolkit para una experiencia fluida."
+  description: "Aplicación full-stack para reserva de turnos en tiempo real con Express, React, Vite y Redux Toolkit"
+  long_description: "Gestor de turnos pensado para que reservar o cancelar sea cuestión de dos clics. Stack completo: backend ágil en Express + PostgreSQL para la disponibilidad horaria y frontend en React con Redux Toolkit para una experiencia fluida"
   media:
     - type: image
       src: "/turnera_cover.png"
@@ -26,8 +26,8 @@ es:
 en:
   name: "Appointments App"
   type: "WebApp"
-  description: "Full-stack appointment booking app with Express, React, Vite, and Redux Toolkit."
-  long_description: "An appointment manager designed so booking or canceling takes just two clicks. Full stack: an agile Express + PostgreSQL backend handling schedule availability, and a reactive React frontend with Redux Toolkit for a seamless user experience."
+  description: "Full-stack appointment booking app with Express, React, Vite, and Redux Toolkit"
+  long_description: "An appointment manager designed so booking or canceling takes just two clicks. Full stack: an agile Express + PostgreSQL backend handling schedule availability, and a reactive React frontend with Redux Toolkit for a seamless user experience"
   media:
     - type: image
       src: "/turnera_cover.png"
