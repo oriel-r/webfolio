@@ -18,7 +18,7 @@ export const ui = {
 
     'section.experience': 'Experiencia',
     'section.projects': 'Proyectos',
-    'projects.description': 'Cosas que armé para poner a prueba mis límites, desafiar la arquitectura y aprender haciendo.',
+    'projects.description': 'Acá es donde esa premisa se vuelve código: sistemas diseñados para resolver necesidades concretas, combinando arquitecturas escalables, procesos asíncronos y soluciones listas para producción.',
     'projects.cta': 'Mirá los detalles técnicos →',
     'section.about': 'Mi porqué',
     'section.technologies': 'Tecnologías',
@@ -71,7 +71,7 @@ export const ui = {
 
     'section.experience': 'Experience',
     'section.projects': 'Projects',
-    'projects.description': 'Things I built to test my limits, challenge system architecture, and learn by doing.',
+    'projects.description': 'This is where that premise turns into code: systems designed to solve real-world needs, combining scalable architectures, background processes, and production-ready solutions.',
     'projects.cta': 'Check out the technical details →',
     'section.about': 'About me',
     'section.technologies': 'Technologies',
