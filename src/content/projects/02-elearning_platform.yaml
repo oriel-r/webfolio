@@ -6,10 +6,6 @@ es:
   media:
     - type: image
       src: "/elearning_platform_cover.png"
-    - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   technologies:
     - "NestJS"
     - "Next.js"
@@ -39,10 +35,6 @@ en:
   media:
     - type: image
       src: "/elearning_platform_cover.png"
-    - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   technologies:
     - "NestJS"
     - "Next.js"

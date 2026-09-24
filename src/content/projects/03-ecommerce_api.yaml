@@ -6,10 +6,6 @@ es:
   media:
     - type: image
       src: "/ecomerce_api_oriel_romero_cover.png"
-    - type: image
-      src: "/ecomerce_api_oriel_romero_cover.png"
-    - type: image
-      src: "/ecomerce_api_oriel_romero_cover.png"
   technologies:
     - "NestJS"
     - "TypeScript"
@@ -30,10 +26,6 @@ en:
   description: "Modular RESTful e-commerce API built with NestJS, TypeORM, PostgreSQL, role-based JWT auth, and Cloudinary uploads"
   long_description: "A modular REST API for e-commerce focusing on security and transactional consistency. Built with NestJS, PostgreSQL, and TypeORM, protecting endpoints with JWT guards and role authorization, handling media uploads to Cloudinary, and documented with Swagger"
   media:
-    - type: image
-      src: "/ecomerce_api_oriel_romero_cover.png"
-    - type: image
-      src: "/ecomerce_api_oriel_romero_cover.png"
     - type: image
       src: "/ecomerce_api_oriel_romero_cover.png"
   technologies:

@@ -128,14 +128,16 @@ const collaboratorText =
     </div>
 
     <!-- Dot indicators -->
-    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-auto md:right-4 md:left-auto md:top-1/2 md:-translate-y-1/2 md:translate-x-0 z-20 flex md:flex-col gap-2" aria-label="Media indicators">
-      {Array.from({ length: totalMedia }).map((_, i) => (
-        <div
-          class="gallery-dot w-2 h-2 rounded-2xl bg-white/40 transition-colors duration-base ease-spatial"
-          data-dot-index={i}
-        />
-      ))}
-    </div>
+    {totalMedia > 1 && (
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-auto md:right-4 md:left-auto md:top-1/2 md:-translate-y-1/2 md:translate-x-0 z-20 flex md:flex-col gap-2" aria-label="Media indicators">
+        {Array.from({ length: totalMedia }).map((_, i) => (
+          <div
+            class="gallery-dot w-2 h-2 rounded-2xl bg-white/40 transition-colors duration-base ease-spatial"
+            data-dot-index={i}
+          />
+        ))}
+      </div>
+    )}
 
     <!-- Prev / Next navigation (CSS-only via labels + :has) -->
     {totalMedia > 1 && Array.from({ length: totalMedia }).map((_, i) => (

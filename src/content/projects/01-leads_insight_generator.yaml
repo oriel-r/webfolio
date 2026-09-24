@@ -6,8 +6,6 @@ es:
   media:
     - type: image
       src: "/leads_insights_generator_cover.png"
-    - type: youtube
-      id: "https://www.youtube.com/watch?v=XyuR-x5PMcU"
   technologies:
     - "NestJS"
     - "TypeScript"
@@ -30,8 +28,6 @@ en:
   media:
     - type: image
       src: "/leads_insights_generator_cover.png"
-    - type: youtube
-      id: "https://www.youtube.com/watch?v=XyuR-x5PMcU"
   technologies:
     - "NestJS"
     - "TypeScript"

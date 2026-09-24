@@ -6,10 +6,6 @@ es:
   media:
     - type: image
       src: "/turnera_cover.png"
-    - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   technologies:
     - "Express"
     - "TypeScript"
@@ -31,10 +27,6 @@ en:
   media:
     - type: image
       src: "/turnera_cover.png"
-    - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
-    - type: image
-      src: "/yuri-krupenin-lNd5dX8XkKY-unsplash.jpg"
   technologies:
     - "Express"
     - "TypeScript"
