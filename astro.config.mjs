@@ -6,7 +6,17 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
     site: 'https://oriel.is-a.dev',
     output: 'static',
-    integrations: [sitemap()],
+    integrations: [
+        sitemap({
+            i18n: {
+                defaultLocale: 'es',
+                locales: {
+                    es: 'es-ES',
+                    en: 'en-US',
+                },
+            },
+        }),
+    ],
     vite: {
         plugins: [tailwindcss()],
         server: {

@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
 import { getCollection } from 'astro:content';
+import { resolveProjectImage, isImageMetadata } from '../../utils/images';
 import { getMediaThumbnails } from '../../utils/youtube';
 
 const lang = getLangFromUrl(Astro.url);
@@ -13,9 +15,18 @@ const projects = projectEntries.map((entry) => ({
   ...entry.data[lang] || entry.data['es'],
 }));
 
-const thumbnails: Record<string, string | null> = Object.fromEntries(
-  projects.map((p) => [p.id, getMediaThumbnails(p.media)]),
-);
+// Resolve cover images: try optimized src/assets first, fall back to public URL
+const coverImages: Record<string, ReturnType<typeof resolveProjectImage> | null> = {};
+projects.forEach((p) => {
+  const imageItem = p.media?.find((m: any) => m.type === 'image');
+  if (imageItem) {
+    coverImages[p.id] = resolveProjectImage(imageItem.src);
+  } else {
+    // YouTube thumbnails remain as external URLs
+    const thumb = getMediaThumbnails(p.media);
+    coverImages[p.id] = thumb;
+  }
+});
 ---
 
 <section id="projects" class="w-full md:min-w-[100vw] min-h-screen h-auto md:h-screen flex items-start md:items-center justify-center shrink-0 snap-start px-0 pt-20 md:pt-0 py-0">
@@ -41,17 +52,36 @@ const thumbnails: Record<string, string | null> = Object.fromEntries(
               class="projects-card flex-shrink-0 w-[min(85vw,288px)] md:w-[clamp(288px,30vw,578px)] aspect-square rounded-[32px] overflow-hidden relative group cursor-pointer shadow-layer-2 hover:shadow-layer-2-hover transition duration-slow ease-hover md:hover:scale-[1.02] will-change-transform isolate block"
               style={`view-transition-name: project-card-${project.id};`}
             >
-              {thumbnails[project.id] ? (
-                <img
-                  src={thumbnails[project.id]!}
-                  alt={project.name}
-                  style={`view-transition-name: project-${project.id}-gallery;`}
-                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-slow ease-hover group-hover:scale-105"
-                  loading="lazy"
-                />
-              ) : (
-                <div class="absolute inset-0 bg-elevated" />
-              )}
+              {(() => {
+                const cover = coverImages[project.id];
+                if (isImageMetadata(cover)) {
+                  return (
+                    <Image
+                      src={cover}
+                      alt={`${project.name} — ${project.description}`}
+                      width={578}
+                      height={578}
+                      format="webp"
+                      quality={75}
+                      style={`view-transition-name: project-${project.id}-gallery;`}
+                      class="absolute inset-0 w-full h-full object-cover transition-transform duration-slow ease-hover group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  );
+                } else if (typeof cover === 'string') {
+                  return (
+                    <img
+                      src={cover}
+                      alt={`${project.name} — ${project.description}`}
+                      style={`view-transition-name: project-${project.id}-gallery;`}
+                      class="absolute inset-0 w-full h-full object-cover transition-transform duration-slow ease-hover group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  );
+                } else {
+                  return <div class="absolute inset-0 bg-elevated" />;
+                }
+              })()}
 
               <div class="absolute inset-0 bg-gradient-to-t from-overlay-strong via-overlay-soft to-transparent" />
 

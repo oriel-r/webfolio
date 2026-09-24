@@ -4,6 +4,7 @@ import ProjectDetail from '../../../components/project/ProjectDetail.astro';
 import { getCollection } from 'astro:content';
 import type { Lang } from '../../../i18n/utils';
 import { getProjectSkillOverrides } from '../../../utils/techIcons';
+import { generateProjectPageLdJson, SITE_URL } from '../../../utils/seo';
 
 export async function getStaticPaths() {
   const entries = await getCollection('projects');
@@ -18,9 +19,25 @@ const lang: Lang = 'en';
 const data = entry.data[lang] ?? entry.data['es'];
 const allSkills = await getCollection('skills');
 const skillOverrides = getProjectSkillOverrides(allSkills, entry.id);
+
+const coverImage = data.media?.find((m) => m.type === 'image');
+const imageUrl = coverImage?.src ?? '/og-image.png';
+const currentUrl = `${SITE_URL}/en/projects/${entry.id}/`;
+const jsonLd = generateProjectPageLdJson(entry, lang, currentUrl);
+const pageTitle = `${data.name} | Oriel Romero - Backend Engineer`;
+const keywords = `${data.technologies.join(', ')}, ${data.name}, Oriel Romero, backend developer, portfolio`;
 ---
 
-<Layout lang={lang} title={`${data.name} - Oriel Romero`} description={data.description}>
+<Layout
+  lang={lang}
+  title={pageTitle}
+  description={data.description}
+  image={imageUrl}
+  imageAlt={`${data.name} - Project Cover`}
+  keywords={keywords}
+  jsonLd={jsonLd}
+  type="article"
+>
   <main class="flex flex-col md:flex-row w-full h-auto md:h-screen overflow-x-hidden">
     <ProjectDetail
       slug={entry.id}

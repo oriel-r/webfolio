@@ -7,6 +7,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
+<footer>
 <section id="contact" class="relative overflow-hidden w-full md:min-w-[100vw] min-h-screen flex items-start md:items-center justify-center shrink-0 snap-start px-8 md:px-24 pt-20 md:pt-0">
   <!-- Capa 2+3: Glow + ContactPet, esquina inferior derecha (mitad fuera del viewport en desktop).
        Wrapper externo hace el posicionamiento absoluto (evita conflicto con el `relative`
@@ -78,6 +79,7 @@ const t = useTranslations(lang);
     <span class="text-sm font-medium text-primary font-body" data-toast-message></span>
   </div>
 </section>
+</footer>
 
 <script is:inline>
   (function () {

@@ -9,19 +9,31 @@ interface Props {
 	lang?: Lang;
 	title?: string;
 	description?: string;
+	image?: string;
+	imageAlt?: string;
+	keywords?: string;
+	jsonLd?: Record<string, any>;
+	type?: string;
+	noindex?: boolean;
 }
 
 const {
 	lang: propLang,
-	title = 'Oriel Romero',
+	title = 'Oriel Romero | Desarrollador Backend & Software Engineer',
 	description: propDescription,
+	image: propImage,
+	imageAlt,
+	keywords,
+	jsonLd,
+	type: propType = 'website',
+	noindex,
 } = Astro.props;
 
 const lang = propLang ?? getLangFromUrl(Astro.url);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const heroEntry = await getEntry('hero', 'index');
 const heroData = heroEntry?.data[lang] ?? heroEntry?.data['es'];
-const description = propDescription ?? heroData?.description ?? 'Oriel Romero - Portfolio';
+const description = propDescription ?? heroData?.description ?? 'Oriel Romero - Product-Minded Backend Engineer';
 
 // Compute path relative to locale for language alternates
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -33,6 +45,11 @@ const esPath = cleanPath;
 const enPath = cleanPath === '/' ? '/en/' : `/en${cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`}`;
 const esUrl = new URL(`${base}${esPath}`.replace(/\/+/g, '/'), Astro.site).toString();
 const enUrl = new URL(`${base}${enPath}`.replace(/\/+/g, '/'), Astro.site).toString();
+
+const defaultOgImage = new URL('/og-image.png', Astro.site).toString();
+const resolvedImage = propImage
+	? (propImage.startsWith('http') ? propImage : new URL(propImage, Astro.site).toString())
+	: defaultOgImage;
 ---
 <!doctype html>
 <html lang={lang}>
@@ -40,7 +57,19 @@ const enUrl = new URL(`${base}${enPath}`.replace(/\/+/g, '/'), Astro.site).toStr
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}favicon.svg`} />
+		<link rel="manifest" href="/manifest.webmanifest">
+		<meta name="theme-color" content="#00ADFF" media="(prefers-color-scheme: light)">
+		<meta name="theme-color" content="#0C0F10" media="(prefers-color-scheme: dark)">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 		<meta name="generator" content={Astro.generator} />
+		<meta name="author" content="Oriel Romero" />
+		{keywords && <meta name="keywords" content={keywords} />}
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
+		<meta name="geo.region" content="AR-C" />
+		<meta name="geo.placename" content="Buenos Aires" />
+		<meta name="geo.position" content="-34.6037;-58.3816" />
+		<meta name="ICBM" content="-34.6037, -58.3816" />
 		<SEO
 			title={title}
 			description={description}
@@ -48,13 +77,21 @@ const enUrl = new URL(`${base}${enPath}`.replace(/\/+/g, '/'), Astro.site).toStr
 			languageAlternates={[
 				{ hrefLang: 'es', href: esUrl },
 				{ hrefLang: 'en', href: enUrl },
+				{ hrefLang: 'x-default', href: esUrl },
 			]}
 			openGraph={{
 				basic: {
 					title,
-					type: 'website',
-					image: new URL('favicon.svg', Astro.site).toString(),
+					type: propType,
+					image: resolvedImage,
 					url: canonicalURL.toString(),
+				},
+				image: {
+					url: resolvedImage,
+					alt: imageAlt ?? title,
+					width: 1200,
+					height: 630,
+					type: 'image/png',
 				},
 				optional: {
 					description,
@@ -63,15 +100,28 @@ const enUrl = new URL(`${base}${enPath}`.replace(/\/+/g, '/'), Astro.site).toStr
 				},
 			}}
 			twitter={{
-				card: 'summary',
+				card: 'summary_large_image',
 				title,
 				description,
+				image: resolvedImage,
+				imageAlt: imageAlt ?? title,
+				site: '@oriel_romero',
+				creator: '@oriel_romero',
 			}}
 		/>
 		<link rel="sitemap" href="/sitemap-index.xml" />
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400&display=swap" rel="stylesheet">
+
+		<!-- LLM & AI Discovery (GEO: Generative Engine Optimization) -->
+		<link rel="alternate" type="text/markdown" hreflang="es" title="Contexto LLM (llms.txt)" href="/es/llms.txt" />
+		<link rel="alternate" type="text/markdown" hreflang="en" title="LLM Context (llms.txt)" href="/llms.txt" />
+		<link rel="alternate" type="text/markdown" title="Full LLM Knowledge Graph (llms-full.txt)" href="/llms-full.txt" />
+
+		<!-- Schema.org JSON-LD Enterprise Knowledge Graph -->
+		{jsonLd && (
+			<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+		)}
+
+
 		<ClientRouter fallback="animate" />
 		<script is:inline>
 			(function () {

@@ -58,8 +58,15 @@ export const ui = {
     '404.title': 'Página no encontrada',
     '404.description': 'La página que buscas no existe o fue movida. Volvamos a un lugar seguro',
     '404.cta': 'Volver al inicio',
+
+    'site.title': 'Oriel Romero | Desarrollador Backend & Software Engineer (Buenos Aires & Remoto)',
+    'site.description': 'Portfolio de Oriel Romero, Desarrollador Backend e Ingeniero de Software en Buenos Aires, Argentina. Especializado en arquitectura de sistemas, Node.js, TypeScript, NestJS, BullMQ, Cloud e IA. Disponible para trabajo remoto internacional (UTC-3).',
+    'site.keywords': 'desarrollador backend, backend engineer, nodejs, typescript, nestjs, bullmq, postgresql, arquitecturas escalables, sistemas distribuidos, argentina, buenos aires, desarrollador remoto',
   },
   en: {
+    'site.title': 'Oriel Romero | Product-Minded Backend Engineer (Remote & Argentina)',
+    'site.description': 'Portfolio of Oriel Romero, Product-Minded Backend Engineer based in Buenos Aires, Argentina. Specialized in scalable architectures, Node.js, TypeScript, NestJS, BullMQ, Cloud, and AI integrations. Available for global remote roles (UTC-3).',
+    'site.keywords': 'backend engineer, software engineer, product-minded engineer, node.js, typescript, nestjs, bullmq, postgresql, distributed systems, argentina, buenos aires, remote developer, ai integration',
     'nav.home': 'Home',
     'nav.experience': 'Experience',
     'nav.projects': 'Projects',

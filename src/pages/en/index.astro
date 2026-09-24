@@ -8,9 +8,25 @@ import Projects from '../../components/sections/Projects.astro'
 import Technologies from '../../components/sections/Technologies.astro'
 import About from '../../components/sections/About.astro'
 import Contact from '../../components/sections/Contact.astro'
+import { useTranslations } from '../../i18n/utils'
+import { getCollection } from 'astro:content'
+import { generateHomepageLdJson, SITE_URL } from '../../utils/seo'
+
+const t = useTranslations('en')
+const allSkills = await getCollection('skills')
+const skillNames = allSkills.map((s) => s.data.name)
+const currentUrl = `${SITE_URL}/en/`
+const jsonLd = generateHomepageLdJson('en', currentUrl, skillNames)
 ---
 
-<Layout lang="en">
+<Layout
+	lang="en"
+	title={t('site.title')}
+	description={t('site.description')}
+	keywords={t('site.keywords')}
+	jsonLd={jsonLd}
+	image="/og-image.png"
+>
 	<Navbar />
 	<UxControls lang="en" />
 	<main

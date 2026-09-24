@@ -1,0 +1,20 @@
+{
+  "name": "Oriel Romero | Backend Engineer & Software Developer",
+  "short_name": "Oriel Romero",
+  "description": "Portfolio de Oriel Romero — Product-Minded Backend Engineer. Node.js, TypeScript, NestJS, PostgreSQL, AI.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#00ADFF",
+  "background_color": "#EFF2F3",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "lang": "es",
+  "categories": ["portfolio", "technology"],
+  "orientation": "any"
+}

@@ -1,8 +1,9 @@
 ---
-import { getLangFromUrl } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { getCollection } from 'astro:content';
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const experienceEntries = await getCollection('experience');
 
@@ -50,6 +51,7 @@ const experienceMobile = [...baseExperience].sort(
 ---
 
 <section id="experience" class="w-full md:min-w-[100vw] min-h-screen flex items-start md:items-center justify-center shrink-0 snap-start px-8 md:px-24 pt-20 md:pt-0 pb-28 md:pb-0">
+  <h2 class="sr-only">{t('section.experience')}</h2>
   <!-- Desktop: Horizontal timeline -->
   <div class="hidden md:flex relative w-full max-w-[1664px] mx-auto h-[560px] items-center">
     <!-- Horizontal line -->
